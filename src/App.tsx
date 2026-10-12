@@ -645,7 +645,7 @@ const getStyles = (theme: Theme) => {
       borderRadius: 10,
       background: "transparent",
       color: c.muted,
-      fontSize: 10,
+      fontSize: 13,
       fontWeight: 700,
       cursor: "pointer",
       flex: 1
