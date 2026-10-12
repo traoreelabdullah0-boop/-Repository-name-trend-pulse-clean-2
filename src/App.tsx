@@ -33,7 +33,7 @@ const ebooks = [
     description: "Un guide officiel pour comprendre les habitudes favorables au sommeil.",
     image: "https://images.unsplash.com/photo-1511295742362-92c96b5d8f5a?auto=format&fit=crop&w=700&q=80",
     source: "National Heart, Lung, and Blood Institute",
-    url: "https://www.nhlbi.nih.gov/files/docs/public/sleep/healthy_sleep.pdf",
+    url: "https://www.nhlbi.nih.gov/resources/brief-your-guide-healthy-sleep-fact-sheet",
     action: "Lire le PDF"
   },
   {
