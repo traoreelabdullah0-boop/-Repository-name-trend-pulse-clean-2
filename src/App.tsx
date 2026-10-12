@@ -935,7 +935,7 @@ export default function App() {
                 }
                 aria-label="Change language"
               >
-                {language === "fr" ? "EN" : "FR"}
+                {language === "fr" ? "Français" : "English"}
               </button>
             </div>
           </div>
