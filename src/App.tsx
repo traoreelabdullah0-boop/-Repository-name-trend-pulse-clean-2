@@ -396,8 +396,7 @@ export default function App() {
                 {[
                   { icon: "↗", title: t.trends, text: language === "fr" ? "Explorez les thèmes et les dernières lectures." : "Explore topics and featured reading.", id: "trends" as Page },
                   { icon: "✳", title: t.tips, text: language === "fr" ? "Découvrez des conseils et suivez votre activité." : "Find practical tips and track your activity.", id: "tips" as Page },
-                  { icon: "▤", title: t.articles, text: language === "fr" ? "Lisez des articles pratiques et leurs sources
-." : "Read practical articles and their sources.", id: "articles" as Page },
+                  { icon: "▤", title: t.articles, text: language === "fr" ? "Lisez des articles pratiques et leurs sources." : "Read practical articles and their sources.", id: "articles" as Page },
                   { icon: "▣", title: t.ebooks, text: language === "fr" ? "Accédez à des guides et ressources gratuits." : "Access free guides and resources.", id: "ebooks" as Page }
                 ].map((item) => (
                   <div className="tp-card" key={item.id}>
