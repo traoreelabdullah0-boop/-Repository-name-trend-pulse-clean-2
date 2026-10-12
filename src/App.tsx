@@ -1,51 +1,113 @@
 
+const articles = [
+  {
+    category: "NUTRITION",
+    title: "Le jeûne intermittent 16:8 : bien débuter",
+    desc: "Comprendre cette méthode et adopter des habitudes alimentaires équilibrées.",
+    image: "https://images.unsplash.com/photo-1490645935967-10de6ba17061?auto=format&fit=crop&w=800&q=80",
+  },
+  {
+    category: "SOMMEIL",
+    title: "5 habitudes pour mieux dormir",
+    desc: "Créez une routine du soir pour favoriser un sommeil régulier et réparateur.",
+    image: "https://images.unsplash.com/photo-1511295742362-92c96b5d8f5a?auto=format&fit=crop&w=800&q=80",
+  },
+  {
+    category: "FITNESS",
+    title: "Bouger chaque jour à son rythme",
+    desc: "Découvrez des activités simples pour intégrer davantage de mouvement à votre journée.",
+    image: "https://images.unsplash.com/photo-1534438327276-14e5300c3a48?auto=format&fit=crop&w=800&q=80",
+  },
+];
+
 export default function App() {
   return (
-    <main className="min-h-screen bg-slate-950 p-5 text-white sm:p-10">
-      <header className="mx-auto max-w-5xl">
-        <p className="text-sm font-semibold uppercase tracking-widest text-cyan-400">
-          Trend Pulse
-        </p>
-        <h1 className="mt-3 text-3xl font-bold sm:text-4xl">
-          Tableau de bord
-        </h1>
-        <p className="mt-2 text-slate-400">
-          Suivez les tendances et découvrez les sujets du moment.
-        </p>
+    <main className="site">
+      <div className="notice">
+        Votre bien-être commence par de bonnes habitudes.
+        Les informations de ce site ne remplacent pas un avis médical.
+      </div>
 
-        <section className="mt-8 grid gap-4 sm:grid-cols-3">
-          {[
-            ["Tendances suivies", "12"],
-            ["Sujets populaires", "08"],
-            ["État du système", "Initialisé"],
-          ].map(([label, value]) => (
-            <article
-              key={label}
-              className="rounded-2xl border border-slate-800 bg-slate-900 p-5"
-            >
-              <p className="text-sm text-slate-400">{label}</p>
-              <p className="mt-3 text-2xl font-bold text-cyan-400">
-                {value}
-              </p>
+      <header className="header">
+        <a className="logo" href="#accueil">
+          <span>✳</span> TREND PULSE
+          <small>MODE DE VIE SAIN</small>
+        </a>
+        <nav>
+          <a href="#accueil">Accueil</a>
+          <a href="#tendances">Tendances</a>
+          <a href="#conseils">Conseils</a>
+          <a href="#articles">Articles</a>
+        </nav>
+      </header>
+
+      <section className="hero" id="accueil">
+        <div className="hero-text">
+          <span className="eyebrow">VOTRE GUIDE BIEN-ÊTRE</span>
+          <h1>Prenez soin de vous, un jour à la fois.</h1>
+          <p>
+            Nutrition, sommeil, activité physique et équilibre de vie :
+            découvrez des idées simples pour prendre soin de vous.
+          </p>
+          <a className="button" href="#articles">Découvrir les conseils ↗</a>
+          <div className="hero-note">Des conseils pratiques · FR / EN</div>
+        </div>
+        <img
+          className="hero-image"
+          src="https://images.unsplash.com/photo-1544367567-0f2fcb009e0b?auto=format&fit=crop&w=1200&q=85"
+          alt="Personne pratiquant le yoga dans un environnement naturel"
+        />
+      </section>
+
+      <section className="intro" id="tendances">
+        <span className="eyebrow">EXPLORER ET APPRENDRE</span>
+        <h2>Votre bien-être, en toute simplicité</h2>
+        <p>Des informations accessibles pour construire une routine qui vous ressemble.</p>
+        <div className="pillars">
+          <a href="#articles"><span>🥗</span><b>Nutrition équilibrée</b><small>Mieux manger au quotidien</small></a>
+          <a href="#articles"><span>🌙</span><b>Sommeil réparateur</b><small>Créer une routine apaisante</small></a>
+          <a href="#articles"><span>🌿</span><b>Équilibre de vie</b><small>Prendre du temps pour soi</small></a>
+        </div>
+      </section>
+
+      <section className="articles" id="articles">
+        <div className="section-heading">
+          <div>
+            <span className="eyebrow">LE MAGAZINE</span>
+            <h2>Conseils et découvertes</h2>
+          </div>
+          <a href="#conseils">Explorer les thèmes →</a>
+        </div>
+        <div className="article-grid">
+          {articles.map((article) => (
+            <article className="article-card" key={article.title}>
+              <img src={article.image} alt={article.title} loading="lazy" />
+              <div className="article-body">
+                <span className="category">{article.category}</span>
+                <h3>{article.title}</h3>
+                <p>{article.desc}</p>
+                <a href="#conseils">Lire le conseil →</a>
+              </div>
             </article>
           ))}
-        </section>
+        </div>
+      </section>
 
-        <section className="mt-6 rounded-2xl border border-slate-800 bg-slate-900 p-6">
-          <h2 className="text-xl font-semibold">
-            Espace tendances
-          </h2>
-          <p className="mt-3 leading-7 text-slate-400">
-            Ton espace est prêt. La prochaine étape consiste à
-            connecter une source de données pour afficher les
-            tendances réelles.
-          </p>
-          <span className="mt-5 inline-block rounded-lg bg-cyan-400 px-4 py-2 font-semibold text-slate-950">
-            Interface initialisée
-          </span>
-        </section>
-        
-      </header>
+      <section className="guide" id="conseils">
+        <div>
+          <span className="eyebrow">VOTRE BIBLIOTHÈQUE</span>
+          <h2>Apprenez à votre rythme.</h2>
+          <p>Retrouvez bientôt des guides pratiques sur l'alimentation, le sommeil et les habitudes de vie.</p>
+        </div>
+        <a className="button" href="#articles">Découvrir le magazine ↗</a>
+      </section>
+
+      <footer className="footer">
+        <a className="logo" href="#accueil"><span>✳</span> TREND PULSE</a>
+        <p>Des idées simples pour un mode de vie plus équilibré.</p>
+        <p>© 2026 Trend Pulse · Français | English</p>
+        <small>Les contenus sont informatifs et ne remplacent pas les conseils d'un professionnel de santé.</small>
+      </footer>
     </main>
   );
 }
