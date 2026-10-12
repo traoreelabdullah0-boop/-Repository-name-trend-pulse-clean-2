@@ -682,3 +682,59 @@ h2 {
     transition: none !important;
   }
   }
+
+/* Trend Pulse — modes clair et sombre */
+:root {
+  color-scheme: light;
+  --tp-bg: #f5f7fb;
+  --tp-surface: #ffffff;
+  --tp-text: #172033;
+  --tp-muted: #5c667a;
+  --tp-border: #e2e8f0;
+  --tp-accent: #2563eb;
+}
+
+:root[data-theme="dark"] {
+  color-scheme: dark;
+  --tp-bg: #101827;
+  --tp-surface: #1b2638;
+  --tp-text: #f1f5f9;
+  --tp-muted: #b7c2d2;
+  --tp-border: #344256;
+  --tp-accent: #93c5fd;
+}
+
+body {
+  background: var(--tp-bg);
+  color: var(--tp-text);
+}
+
+body,
+button,
+a,
+input,
+textarea,
+select {
+  transition: background-color 0.2s ease, color 0.2s ease,
+    border-color 0.2s ease;
+}
+
+:root[data-theme="dark"] body,
+:root[data-theme="dark"] main,
+:root[data-theme="dark"] section,
+:root[data-theme="dark"] article,
+:root[data-theme="dark"] footer,
+:root[data-theme="dark"] header {
+  color: var(--tp-text);
+}
+
+:root[data-theme="dark"] article,
+:root[data-theme="dark"] .card,
+:root[data-theme="dark"] button {
+  border-color: var(--tp-border);
+}
+
+:root[data-theme="dark"] p,
+:root[data-theme="dark"] small {
+  color: var(--tp-muted);
+}
