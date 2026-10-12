@@ -18,29 +18,34 @@ type Article = {
   category: string;
   categoryEn: string;
   title: string;
-  en: string;
+  titleEn: string;
   summary: string;
   summaryEn: string;
   body: string[];
   bodyEn: string[];
   source: string;
+  image: string;
 };
 
-type EbookResource = {
+type Resource = {
   title: string;
   titleEn: string;
   description: string;
   descriptionEn: string;
   organization: string;
   url: string;
+  image: string;
 };
 
-type VideoResource = {
-  title: string;
-  titleEn: string;
-  description: string;
-  descriptionEn: string;
-  url: string;
+const images = {
+  hero: "https://images.unsplash.com/photo-1490645935967-10de6ba17061?auto=format&fit=crop&w=1600&q=85",
+  food: "https://images.unsplash.com/photo-1540420773420-3366772f4999?auto=format&fit=crop&w=1000&q=85",
+  sleep: "https://images.unsplash.com/photo-1511295742362-92c96b6d4d67?auto=format&fit=crop&w=1000&q=85",
+  activity: "https://images.unsplash.com/photo-1476480862126-209bfaa8edc8?auto=format&fit=crop&w=1000&q=85",
+  wellness: "https://images.unsplash.com/photo-1506126613408-eca07ce68773?auto=format&fit=crop&w=1000&q=85",
+  habits: "https://images.unsplash.com/photo-1499209974431-9dddcece7f88?auto=format&fit=crop&w=1000&q=85",
+  books: "https://images.unsplash.com/photo-1512820790803-83ca734da794?auto=format&fit=crop&w=1000&q=85",
+  water: "https://images.unsplash.com/photo-1532634896-26909d0d4b8c?auto=format&fit=crop&w=1000&q=85"
 };
 
 const articles: Article[] = [
@@ -49,193 +54,202 @@ const articles: Article[] = [
     category: "Nutrition",
     categoryEn: "Nutrition",
     title: "Comment construire une alimentation équilibrée",
-    en: "How to Build a Balanced Diet",
-    summary:
-      "Des habitudes simples pour varier les aliments et mieux organiser ses repas.",
-    summaryEn:
-      "Simple habits to diversify foods and plan balanced meals.",
+    titleEn: "How to Build a Balanced Diet",
+    summary: "Des habitudes simples pour varier les aliments et mieux organiser ses repas.",
+    summaryEn: "Simple habits to diversify foods and plan balanced meals.",
     body: [
-      "Une alimentation équilibrée repose sur la variété, la modération et des habitudes adaptées à ses besoins. Il n'est pas nécessaire d'acheter des produits coûteux pour commencer.",
-      "Variez les aliments disponibles localement : légumes, fruits, céréales, légumineuses et sources de protéines. Buvez de l'eau régulièrement et adaptez les portions à votre faim et à votre activité.",
-      "Conseil pratique : planifiez quelques repas à l'avance et privilégiez les aliments peu transformés lorsque cela est possible. Les besoins varient selon l'âge, l'activité et l'état de santé."
+      "Une alimentation variée aide à apporter différents nutriments au corps.",
+      "Essaie de varier les fruits, les légumes, les céréales et les sources de protéines selon tes possibilités.",
+      "Boire de l’eau et organiser ses repas peut aider à installer de bonnes habitudes.",
+      "Les besoins varient selon les personnes. Pour une situation médicale particulière, demande conseil à un professionnel de santé."
     ],
     bodyEn: [
-      "A balanced diet relies on variety, moderation, and habits suited to individual needs. You do not need expensive products to get started.",
-      "Choose a variety of locally available foods, including vegetables, fruit, grains, legumes, and protein sources. Drink water regularly and adapt portions to your appetite and activity.",
-      "Practical tip: plan a few meals ahead and choose minimally processed foods when possible. Needs vary with age, activity, and health."
+      "A varied diet helps provide the body with different nutrients.",
+      "Try to vary fruits, vegetables, grains, and protein sources according to what is available to you.",
+      "Drinking water and planning meals can help build healthy habits.",
+      "Needs vary from person to person. For a medical concern, seek advice from a qualified health professional."
     ],
-    source: "https://www.who.int/health-topics/healthy-diet"
+    source: "https://www.who.int/health-topics/healthy-diet",
+    image: images.food
   },
   {
     id: 2,
     category: "Sommeil",
     categoryEn: "Sleep",
     title: "7 habitudes pour améliorer son sommeil",
-    en: "7 Habits for Better Sleep",
-    summary:
-      "Une routine régulière peut aider à créer de meilleures conditions pour dormir.",
-    summaryEn:
-      "A regular routine can help create better conditions for sleep.",
+    titleEn: "7 Habits for Better Sleep",
+    summary: "Une routine régulière peut aider à préparer le corps au sommeil.",
+    summaryEn: "A regular routine can help prepare the body for sleep.",
     body: [
-      "Le sommeil participe au bien-être, à la mémoire et à la concentration. La quantité nécessaire varie selon l'âge et les personnes.",
-      "Essayez de vous coucher et de vous lever à des heures régulières. Gardez votre chambre calme, sombre et confortable. Limitez la caféine en fin de journée et détendez-vous avant le coucher.",
-      "Si vos difficultés de sommeil persistent ou affectent votre vie quotidienne, demandez conseil à un professionnel de santé."
+      "Essaie de garder des horaires de coucher et de réveil réguliers.",
+      "Crée un environnement calme, confortable et adapté au sommeil.",
+      "Réduis les activités stimulantes avant le coucher.",
+      "Si tes difficultés de sommeil persistent, demande conseil à un professionnel de santé."
     ],
     bodyEn: [
-      "Sleep supports well-being, memory, and concentration. Sleep needs vary with age and from person to person.",
-      "Try to go to bed and wake up at regular times. Keep your bedroom quiet, dark, and comfortable. Limit caffeine late in the day and relax before bedtime.",
-      "If sleep difficulties persist or affect daily life, seek advice from a healthcare professional."
+      "Try to keep regular bedtimes and wake-up times.",
+      "Create a calm, comfortable sleeping environment.",
+      "Reduce stimulating activities before bedtime.",
+      "If sleep difficulties persist, seek advice from a health professional."
     ],
-    source:
-      "https://www.nhlbi.nih.gov/resources/brief-your-guide-healthy-sleep-fact-sheet"
+    source: "https://www.nhlbi.nih.gov/health/sleep-deprivation",
+    image: images.sleep
   },
   {
     id: 3,
     category: "Activité physique",
     categoryEn: "Physical activity",
     title: "Bouger davantage au quotidien",
-    en: "Move More Every Day",
-    summary:
-      "Marcher, danser et faire des activités quotidiennes peuvent contribuer à un mode de vie actif.",
-    summaryEn:
-      "Walking, dancing, and everyday activities can support an active lifestyle.",
+    titleEn: "Move More Every Day",
+    summary: "La marche et les activités quotidiennes peuvent aider à rester actif.",
+    summaryEn: "Walking and everyday activities can help you stay active.",
     body: [
-      "L'activité physique ne se limite pas à la salle de sport. Marcher, danser, faire du vélo ou effectuer certaines tâches quotidiennes sont différentes façons de bouger.",
-      "Commencez progressivement avec une activité adaptée à votre condition. Choisissez quelque chose que vous appréciez et augmentez la durée selon vos capacités.",
-      "Les recommandations dépendent notamment de l'âge et de l'état de santé. Consultez les conseils officiels de l'Organisation mondiale de la Santé."
+      "Marcher, danser ou faire des tâches quotidiennes sont des façons de bouger.",
+      "Commence progressivement et choisis une activité adaptée à tes capacités.",
+      "Des périodes courtes de mouvement peuvent s’intégrer à ta journée.",
+      "Adapte toujours ton activité à ta condition physique et demande un avis médical si nécessaire."
     ],
     bodyEn: [
-      "Physical activity is not limited to the gym. Walking, dancing, cycling, and some everyday tasks are all ways to move.",
-      "Start gradually with an activity suited to your condition. Choose something you enjoy and increase the duration according to your abilities.",
-      "Recommendations depend on factors such as age and health. Consult official World Health Organization guidance."
+      "Walking, dancing, and everyday tasks are ways to move.",
+      "Start gradually and choose an activity suited to your abilities.",
+      "Short periods of movement can fit into your day.",
+      "Adapt activity to your physical condition and seek medical advice when necessary."
     ],
-    source: "https://www.who.int/health-topics/physical-activity"
+    source: "https://www.who.int/health-topics/physical-activity",
+    image: images.activity
   },
   {
     id: 4,
     category: "Bien-être",
     categoryEn: "Well-being",
     title: "Des pauses pour mieux gérer le stress",
-    en: "Simple Ways to Manage Stress",
-    summary:
-      "Des exercices simples pour prendre du recul pendant une journée chargée.",
-    summaryEn:
-      "Simple exercises to help you pause during a busy day.",
+    titleEn: "Simple Ways to Manage Stress",
+    summary: "Quelques minutes de pause peuvent aider à retrouver son attention.",
+    summaryEn: "A few minutes of rest can help you refocus.",
     body: [
-      "Le stress fait partie de la vie, mais des moments de pause peuvent aider certaines personnes à mieux traverser les journées difficiles.",
-      "Essayez de respirer lentement, de marcher quelques minutes, de parler à une personne de confiance ou de diviser une tâche difficile en petites étapes.",
-      "Ces habitudes ne remplacent pas une aide professionnelle. Si le stress devient intense ou persistant, cherchez un soutien adapté."
+      "Quand la journée est chargée, prends quelques instants pour ralentir.",
+      "Respire calmement, marche un peu ou éloigne-toi brièvement de ton écran.",
+      "Parler à une personne de confiance peut aussi être utile.",
+      "Si le stress devient difficile à gérer, un professionnel peut t’accompagner."
     ],
     bodyEn: [
-      "Stress is part of life, but taking breaks may help some people cope with difficult days.",
-      "Try breathing slowly, walking for a few minutes, talking to someone you trust, or breaking a difficult task into smaller steps.",
-      "These habits do not replace professional support. If stress becomes intense or persistent, seek appropriate help."
+      "When the day feels busy, take a moment to slow down.",
+      "Breathe calmly, take a short walk, or briefly step away from your screen.",
+      "Talking to someone you trust can also help.",
+      "If stress becomes difficult to manage, a professional can support you."
     ],
-    source: "https://www.nimh.nih.gov/health"
+    source: "https://www.nimh.nih.gov/health",
+    image: images.wellness
   },
   {
     id: 5,
     category: "Habitudes saines",
     categoryEn: "Healthy habits",
     title: "Comment construire une routine durable",
-    en: "How to Build a Sustainable Routine",
-    summary:
-      "Commencez petit, répétez vos habitudes et adaptez votre programme à votre quotidien.",
-    summaryEn:
-      "Start small, repeat your habits, and adapt your routine to everyday life.",
+    titleEn: "How to Build a Sustainable Routine",
+    summary: "Commence petit, répète tes habitudes et adapte-les à ton quotidien.",
+    summaryEn: "Start small, repeat your habits, and adapt them to everyday life.",
     body: [
-      "Une routine utile doit être réaliste. Il est souvent plus facile de commencer par une petite habitude que de modifier toute sa journée d'un seul coup.",
-      "Choisissez un objectif précis : marcher quelques minutes, préparer un repas ou prévoir une heure de coucher régulière. Associez cette habitude à une activité que vous faites déjà.",
-      "Suivez vos progrès sans chercher la perfection. Ajustez votre routine quand votre emploi du temps change."
+      "Choisis une petite habitude facile à répéter.",
+      "Associe-la à un moment précis de ta journée.",
+      "Observe ce qui fonctionne et ajuste ton organisation sans chercher la perfection.",
+      "La régularité et la souplesse peuvent aider à maintenir une routine."
     ],
     bodyEn: [
-      "A useful routine should be realistic. Starting with one small habit is often easier than changing your entire day at once.",
-      "Choose a specific goal: walk for a few minutes, prepare a meal, or set a regular bedtime. Connect the new habit to something you already do.",
-      "Track your progress without expecting perfection. Adjust your routine when your schedule changes."
+      "Choose a small habit that is easy to repeat.",
+      "Connect it to a specific moment in your day.",
+      "Notice what works and adjust your routine without aiming for perfection.",
+      "Consistency and flexibility can help you maintain a routine."
     ],
-    source: "https://www.who.int/health-topics"
+    source: "https://www.who.int/health-topics",
+    image: images.habits
   }
 ];
 
-const ebooks: EbookResource[] = [
+const ebooks: Resource[] = [
   {
     title: "Guide pour un sommeil sain",
     titleEn: "Your Guide to Healthy Sleep",
-    description: "Fiche et ressources officielles sur le sommeil.",
-    descriptionEn: "Official sleep information and resources.",
+    description: "Informations et conseils officiels sur le sommeil.",
+    descriptionEn: "Official sleep information and guidance.",
     organization: "NHLBI",
-    url: "https://www.nhlbi.nih.gov/resources/brief-your-guide-healthy-sleep-fact-sheet"
+    url: "https://www.nhlbi.nih.gov/health/sleep-deprivation",
+    image: images.sleep
   },
   {
-    title: "Activité physique",
-    titleEn: "Physical Activity",
-    description: "Informations et recommandations de l'OMS.",
-    descriptionEn: "World Health Organization information and recommendations.",
+    title: "Comprendre l’alimentation saine",
+    titleEn: "Understanding Healthy Eating",
+    description: "Découvrez les informations de l’OMS sur l’alimentation.",
+    descriptionEn: "Explore WHO information about healthy diets.",
     organization: "OMS / WHO",
-    url: "https://www.who.int/health-topics/physical-activity"
+    url: "https://www.who.int/health-topics/healthy-diet",
+    image: images.food
   },
   {
-    title: "E-books gratuits sur la santé",
-    titleEn: "Free Health E-books",
-    description: "Livres électroniques et ressources de santé du NIH.",
-    descriptionEn: "Health e-books and resources from the NIH.",
-    organization: "NIH News in Health",
-    url: "https://newsinhealth.nih.gov/2017/07/free-ebooks-health"
-  },
-  {
-    title: "Alimentation saine",
-    titleEn: "Healthy Diet",
-    description: "Informations pour comprendre l'alimentation équilibrée.",
-    descriptionEn: "Information about healthy and balanced eating.",
+    title: "Bouger pour sa santé",
+    titleEn: "Move for Your Health",
+    description: "Des informations pour comprendre l’activité physique.",
+    descriptionEn: "Information about physical activity and health.",
     organization: "OMS / WHO",
-    url: "https://www.who.int/health-topics/healthy-diet"
+    url: "https://www.who.int/health-topics/physical-activity",
+    image: images.activity
   },
   {
-    title: "Santé mentale et bien-être",
-    titleEn: "Mental Health and Well-being",
-    description: "Informations et ressources sur la santé mentale.",
-    descriptionEn: "Mental health information and resources.",
+    title: "Ressources sur le bien-être",
+    titleEn: "Well-being Resources",
+    description: "Des informations sur la santé mentale et le bien-être.",
+    descriptionEn: "Information about mental health and well-being.",
     organization: "NIMH",
-    url: "https://www.nimh.nih.gov/health"
+    url: "https://www.nimh.nih.gov/health",
+    image: images.wellness
   },
   {
     title: "Bibliothèque de santé",
-    titleEn: "Health Library",
-    description: "Informations fiables et ressources médicales.",
-    descriptionEn: "Reliable health information and medical resources.",
+    titleEn: "Health Information Library",
+    description: "Consultez une bibliothèque de ressources fiables.",
+    descriptionEn: "Explore a library of reliable health resources.",
     organization: "MedlinePlus",
-    url: "https://medlineplus.gov/"
+    url: "https://medlineplus.gov/",
+    image: images.books
   }
 ];
 
-const videos: VideoResource[] = [
+const videos: Resource[] = [
   {
     title: "Nutrition et alimentation saine",
     titleEn: "Nutrition and Healthy Eating",
-    description: "Vidéos éducatives sur l'alimentation.",
+    description: "Vidéos éducatives sur l’alimentation.",
     descriptionEn: "Educational videos about healthy eating.",
-    url: "https://www.youtube.com/results?search_query=healthy+eating+official+health+education"
+    organization: "YouTube",
+    url: "https://www.youtube.com/results?search_query=WHO+healthy+diet",
+    image: images.food
   },
   {
     title: "Sommeil et récupération",
     titleEn: "Sleep and Recovery",
-    description: "Contenus éducatifs sur les habitudes de sommeil.",
-    descriptionEn: "Educational content about healthy sleep habits.",
-    url: "https://www.youtube.com/results?search_query=healthy+sleep+official+health+education"
+    description: "Des contenus éducatifs sur le sommeil.",
+    descriptionEn: "Educational content about sleep.",
+    organization: "YouTube",
+    url: "https://www.youtube.com/results?search_query=healthy+sleep+education",
+    image: images.sleep
   },
   {
-    title: "Activité physique",
-    titleEn: "Physical Activity",
-    description: "Idées pour bouger davantage au quotidien.",
+    title: "Activité physique au quotidien",
+    titleEn: "Everyday Physical Activity",
+    description: "Des idées pour bouger davantage.",
     descriptionEn: "Ideas to move more every day.",
-    url: "https://www.youtube.com/results?search_query=WHO+physical+activity+health"
+    organization: "YouTube",
+    url: "https://www.youtube.com/results?search_query=WHO+physical+activity",
+    image: images.activity
   },
   {
     title: "Bien-être et gestion du stress",
     titleEn: "Well-being and Stress Management",
-    description: "Exercices et explications sur le bien-être.",
-    descriptionEn: "Exercises and explanations about well-being.",
-    url: "https://www.youtube.com/results?search_query=stress+management+health+education"
+    description: "Des contenus éducatifs sur le bien-être.",
+    descriptionEn: "Educational content about well-being.",
+    organization: "YouTube",
+    url: "https://www.youtube.com/results?search_query=stress+management+health+education",
+    image: images.wellness
   }
 ];
 
@@ -248,46 +262,57 @@ const translations = {
     articles: "Articles",
     ebooks: "E-books",
     about: "À propos",
-    eyebrow: "VOTRE ESPACE BIEN-ÊTRE",
-    headline: "De meilleures habitudes, un jour à la fois.",
-    intro: "Explorez des conseils pratiques sur la nutrition, le sommeil, l'activité physique et le bien-être.",
-    explore: "Explorer les conseils",
-    read: "Lire les articles",
-    featured: "À découvrir",
-    latest: "Articles à découvrir",
-    resources: "Ressources gratuites",
-    viewAll: "Tout découvrir",
+    explore: "Découvrir",
+    read: "Lire l’article",
+    learnMore: "En savoir plus",
     search: "Rechercher un article...",
-    open: "Consulter la ressource",
-    back: "← Retour aux articles",
-    tipsTitle: "Des habitudes simples pour votre quotidien",
-    tipsIntro: "Choisissez un petit objectif et progressez à votre rythme.",
-    calculator: "Mon suivi d'activité",
-    minutes: "Combien de minutes avez-vous bougé aujourd'hui ?",
-    calculate: "Mettre à jour",
-    result: "Votre activité du jour",
-    minuteLabel: "minutes",
-    videosTitle: "Vidéos pour apprendre",
-    videosIntro: "Ces liens ouvrent des recherches YouTube. Vérifiez la qualité et la fiabilité des vidéos.",
-    ebooksTitle: "E-books et ressources gratuites",
-    ebooksIntro: "Accédez à des ressources d'organismes reconnus. Certains liens ouvrent une page web plutôt qu'un PDF.",
+    filter: "Filtrer par thème",
+    all: "Tous les thèmes",
+    latest: "Articles récents",
+    featured: "À découvrir",
+    heroEyebrow: "VOTRE ESPACE BIEN-ÊTRE",
+    heroTitle: "De meilleures habitudes, un jour à la fois.",
+    heroText:
+      "Découvrez des idées pratiques pour prendre soin de vous, mieux manger, dormir et bouger au quotidien.",
+    trendsTitle: "Tendances et habitudes saines",
+    tipsTitle: "Des conseils pour votre quotidien",
+    videosTitle: "Vidéos éducatives",
+    ebooksTitle: "Guides et ressources",
     aboutTitle: "À propos de Trend Pulse",
-    aboutText: "Trend Pulse est un espace bilingue consacré à la nutrition, au sommeil, à l'activité physique et au bien-être.",
-    disclaimer: "Les informations de ce site sont éducatives et ne remplacent pas un avis médical personnalisé.",
-    noResults: "Aucun article trouvé.",
-    readArticle: "Lire l'article",
-    source: "Source d'information",
-    all: "Tous",
-    more: "En savoir plus",
-    quickLinks: "Explorer Trend Pulse",
-    footer: "Des informations pour avancer vers un mode de vie plus sain.",
-    filterTopic: "Filtrer par thème",
-    seeVideos: "Voir les vidéos",
-    ourGoal: "Notre objectif",
-    ourSources: "Nos sources",
-    importantDisclaimer: "Avertissement important",
-    howToUseResources: "Comment utiliser ces ressources ?",
-    officialRecommendations: "Recommandations officielles"
+    source: "Consulter la source",
+    back: "Retour aux articles",
+    disclaimer:
+      "Ces contenus sont informatifs et ne remplacent pas l’avis d’un professionnel de santé.",
+    footer:
+      "Des informations pratiques pour un quotidien plus équilibré.",
+    openResource: "Découvrir la ressource",
+    searchEmpty: "Aucun article trouvé. Essaie un autre mot.",
+    categories:
+      "Nutrition, sommeil, activité physique et bien-être",
+    activityQuestion:
+      "Combien de minutes d’activité fais-tu par jour ?",
+    activityDays: "Combien de jours par semaine ?",
+    calculate: "Calculer",
+    activityResult: "minutes d’activité par semaine",
+    activityAdvice:
+      "Commence progressivement et choisis une activité adaptée à tes capacités.",
+    welcome: "Bienvenue sur Trend Pulse",
+    discoverArticles: "Explorer les articles",
+    discoverTips: "Voir les conseils",
+    discoverVideos: "Regarder les vidéos",
+    discoverEbooks: "Explorer les ressources",
+    newsletterTitle: "Une inspiration pour chaque journée",
+    newsletterText:
+      "Découvre régulièrement de nouvelles idées pour ton bien-être.",
+    quality: "Des informations pratiques",
+    qualityText:
+      "Des explications accessibles et des sources à consulter.",
+    simple: "Des habitudes simples",
+    simpleText:
+      "Des idées réalistes à adapter à ton quotidien.",
+    exploreTopics: "Explore nos thèmes",
+    noDiagnosis:
+      "Trend Pulse ne pose aucun diagnostic et ne remplace pas un avis médical."
   },
   en: {
     home: "Home",
@@ -297,409 +322,224 @@ const translations = {
     articles: "Articles",
     ebooks: "E-books",
     about: "About",
-    eyebrow: "YOUR WELLNESS SPACE",
-    headline: "Better habits, one day at a time.",
-    intro: "Explore practical tips on nutrition, sleep, physical activity, and well-being.",
-    explore: "Explore tips",
-    read: "Read articles",
-    featured: "Featured",
-    latest: "Articles to explore",
-    resources: "Free resources",
-    viewAll: "Explore all",
+    explore: "Explore",
+    read: "Read article",
+    learnMore: "Learn more",
     search: "Search articles...",
-    open: "Open resource",
-    back: "← Back to articles",
-    tipsTitle: "Simple habits for everyday life",
-    tipsIntro: "Choose one small goal and progress at your own pace.",
-    calculator: "My activity tracker",
-    minutes: "How many minutes did you move today?",
-    calculate: "Update",
-    result: "Your activity today",
-    minuteLabel: "minutes",
-    videosTitle: "Videos to learn",
-    videosIntro: "These links open YouTube searches. Check the quality and reliability of each video.",
-    ebooksTitle: "Free e-books and resources",
-    ebooksIntro: "Access resources from recognized organizations. Some links open web pages rather than PDFs.",
+    filter: "Filter by topic",
+    all: "All topics",
+    latest: "Latest articles",
+    featured: "Featured",
+    heroEyebrow: "YOUR WELL-BEING SPACE",
+    heroTitle: "Better habits, one day at a time.",
+    heroText:
+      "Discover practical ideas to care for yourself, eat well, sleep better, and stay active every day.",
+    trendsTitle: "Trends and healthy habits",
+    tipsTitle: "Tips for everyday life",
+    videosTitle: "Educational videos",
+    ebooksTitle: "Guides and resources",
     aboutTitle: "About Trend Pulse",
-    aboutText: "Trend Pulse is a bilingual space about nutrition, sleep, physical activity, and well-being.",
-    disclaimer: "The information on this website is educational and does not replace personalized medical advice.",
-    noResults: "No articles found.",
-    readArticle: "Read article",
-    source: "Information source",
-    all: "All",
-    more: "Learn more",
-    quickLinks: "Explore Trend Pulse",
-    footer: "Information to help you move toward a healthier lifestyle.",
-    filterTopic: "Filter by topic",
-    seeVideos: "Watch videos",
-    ourGoal: "Our goal",
-    ourSources: "Our sources",
-    importantDisclaimer: "Important disclaimer",
-    howToUseResources: "How to use these resources",
-    officialRecommendations: "Official recommendations"
+    source: "View source",
+    back: "Back to articles",
+    disclaimer:
+      "This content is for information only and does not replace professional medical advice.",
+    footer:
+      "Practical information for a more balanced everyday life.",
+    openResource: "Explore resource",
+    searchEmpty: "No articles found. Try another search term.",
+    categories:
+      "Nutrition, sleep, physical activity, and well-being",
+    activityQuestion:
+      "How many minutes do you exercise each day?",
+    activityDays: "How many days per week?",
+    calculate: "Calculate",
+    activityResult: "activity minutes per week",
+    activityAdvice:
+      "Start gradually and choose an activity suited to your abilities.",
+    welcome: "Welcome to Trend Pulse",
+    discoverArticles: "Explore articles",
+    discoverTips: "View tips",
+    discoverVideos: "Watch videos",
+    discoverEbooks: "Explore resources",
+    newsletterTitle: "A little inspiration for every day",
+    newsletterText:
+      "Discover fresh ideas for your well-being regularly.",
+    quality: "Practical information",
+    qualityText:
+      "Accessible explanations and sources to explore.",
+    simple: "Simple habits",
+    simpleText:
+      "Realistic ideas you can adapt to everyday life.",
+    exploreTopics: "Explore our topics",
+    noDiagnosis:
+      "Trend Pulse does not diagnose conditions or replace medical advice."
   }
-} as const;
-
-const socialLinks = [
-  {
-    name: "WhatsApp",
-    url: "https://wa.me/22893328956"
-  },
-  {
-    name: "Instagram",
-    url: "https://www.instagram.com/trendpulses2.0/"
-  },
-  {
-    name: "Facebook",
-    url: "https://www.facebook.com/share/14snJ1uWFZM/"
-  },
-  {
-    name: "TikTok",
-    url: "https://www.tiktok.com/@trendpulses2.0"
-  }
-];
-
-const navItems: {
-  id: Page;
-  labelKey: keyof typeof translations.fr;
-  symbol: string;
-}[] = [
-  { id: "home", labelKey: "home", symbol: "⌂" },
-  { id: "trends", labelKey: "trends", symbol: "✦" },
-  { id: "tips", labelKey: "tips", symbol: "✓" },
-  { id: "videos", labelKey: "videos", symbol: "▷" },
-  { id: "articles", labelKey: "articles", symbol: "▤" },
-  { id: "ebooks", labelKey: "ebooks", symbol: "▣" },
-  { id: "about", labelKey: "about", symbol: "ⓘ" }
-];
-
-const themeColors = {
-  light: {
-    background: "#f7f7f0",
-    surface: "#ffffff",
-    surfaceAlt: "#edf2e9",
-    text: "#26382d",
-    muted: "#647267",
-    border: "#e0e7dd",
-    primary: "#315d43",
-    primaryText: "#ffffff",
-    header: "rgba(255,255,255,0.96)",
-    footer: "#edf2e9",
-    input: "#ffffff",
-    chip: "#e5efe2",
-    shadow: "0 8px 24px rgba(38,56,45,0.06)"
-  },
-  dark: {
-    background: "#101827",
-    surface: "#1e293b",
-    surfaceAlt: "#263449",
-    text: "#f1f5f9",
-    muted: "#cbd5e1",
-    border: "#334155",
-    primary: "#a7d7b1",
-    primaryText: "#102018",
-    header: "rgba(16,24,39,0.97)",
-    footer: "#111827",
-    input: "#1e293b",
-    chip: "#334155",
-    shadow: "0 8px 24px rgba(0,0,0,0.18)"
-  }
-} as const;
-
-const getStyles = (theme: Theme) => {
-  const c = themeColors[theme];
-
-  return {
-    page: {
-      minHeight: "100vh",
-      background: c.background,
-      color: c.text,
-      fontFamily: "Arial, sans-serif",
-      transition: "background 0.2s ease, color 0.2s ease"
-    } as const,
-
-    wrap: {
-      width: "min(1120px, 100% - 32px)",
-      margin: "0 auto"
-    } as const,
-
-    header: {
-      position: "sticky" as const,
-      top: 0,
-      zIndex: 20,
-      background: c.header,
-      borderBottom: `1px solid ${c.border}`,
-      backdropFilter: "blur(12px)"
-    } as const,
-
-    headerInner: {
-      display: "flex",
-      alignItems: "center",
-      justifyContent: "space-between",
-      gap: 16,
-      padding: "14px 0",
-      flexWrap: "wrap" as const
-    } as const,
-
-    brand: {
-      display: "flex",
-      alignItems: "center",
-      gap: 10,
-      fontSize: 20,
-      fontWeight: 800,
-      color: c.text,
-      cursor: "pointer",
-      border: 0,
-      background: "transparent"
-    } as const,
-
-    brandMark: {
-      display: "grid",
-      placeItems: "center",
-      width: 38,
-      height: 38,
-      borderRadius: 12,
-      background: c.primary,
-      color: c.primaryText,
-      fontWeight: 900
-    } as const,
-
-    nav: {
-      display: "flex",
-      alignItems: "center",
-      flexWrap: "wrap" as const,
-      gap: 6
-    } as const,
-
-    navButton: {
-      padding: "9px 12px",
-      border: "none",
-      borderRadius: 999,
-      background: "transparent",
-      color: c.text,
-      fontWeight: 700,
-      cursor: "pointer"
-    } as const,
-
-    activeNavButton: {
-      background: c.surfaceAlt,
-      color: c.primary
-    } as const,
-
-    smallButton: {
-      padding: "9px 12px",
-      border: `1px solid ${c.border}`,
-      borderRadius: 999,
-      background: c.surface,
-      color: c.text,
-      fontWeight: 700,
-      cursor: "pointer"
-    } as const,
-
-    primaryButton: {
-      display: "inline-flex",
-      alignItems: "center",
-      justifyContent: "center",
-      gap: 8,
-      padding: "12px 18px",
-      border: "none",
-      borderRadius: 999,
-      background: c.primary,
-      color: c.primaryText,
-      fontWeight: 700,
-      cursor: "pointer",
-      textDecoration: "none"
-    } as const,
-
-    secondaryButton: {
-      display: "inline-flex",
-      alignItems: "center",
-      justifyContent: "center",
-      gap: 8,
-      padding: "11px 16px",
-      border: `1px solid ${c.border}`,
-      borderRadius: 999,
-      background: c.surfaceAlt,
-      color: c.text,
-      fontWeight: 700,
-      cursor: "pointer",
-      textDecoration: "none"
-    } as const,
-
-    section: {
-      padding: "28px 0 44px"
-    } as const,
-
-    hero: {
-      padding: "clamp(24px,5vw,54px)",
-      borderRadius: 28,
-      border: `1px solid ${c.border}`,
-      background: `linear-gradient(135deg, ${c.surfaceAlt}, ${c.surface})`,
-      boxShadow: c.shadow
-    } as const,
-
-    eyebrow: {
-      color: c.primary,
-      fontSize: 12,
-      fontWeight: 800,
-      letterSpacing: "0.12em",
-      textTransform: "uppercase" as const
-    } as const,
-
-    heading: {
-      color: c.text,
-      lineHeight: 1.15,
-      letterSpacing: "-0.03em"
-    } as const,
-
-    lead: {
-      color: c.muted,
-      fontSize: 17,
-      lineHeight: 1.75,
-      maxWidth: 760
-    } as const,
-
-    grid: {
-      display: "grid",
-      gridTemplateColumns: "repeat(auto-fit, minmax(min(100%, 260px), 1fr))",
-      gap: 18,
-      marginTop: 20
-    } as const,
-
-    card: {
-      padding: 22,
-      border: `1px solid ${c.border}`,
-      borderRadius: 20,
-      background: c.surface,
-      color: c.text,
-      boxShadow: c.shadow,
-      minWidth: 0
-    } as const,
-
-    chip: {
-      display: "inline-block",
-      padding: "6px 10px",
-      borderRadius: 999,
-      background: c.chip,
-      color: c.primary,
-      fontSize: 12,
-      fontWeight: 700
-    } as const,
-
-    muted: {
-      color: c.muted,
-      lineHeight: 1.75
-    } as const,
-
-    textButton: {
-      padding: 0,
-      border: "none",
-      background: "transparent",
-      color: c.primary,
-      fontWeight: 800,
-      cursor: "pointer",
-      textAlign: "left" as const
-    } as const,
-
-    input: {
-      display: "block",
-      width: "100%",
-      padding: "12px 14px",
-      margin: "8px 0 18px",
-      border: `1px solid ${c.border}`,
-      borderRadius: 12,
-      background: c.input,
-      color: c.text,
-      fontSize: 16
-    } as const,
-
-    footer: {
-      padding: "34px 0 100px",
-      background: c.footer,
-      color: c.text,
-      borderTop: `1px solid ${c.border}`
-    } as const,
-
-    mobileNav: {
-      display: "none" as const,
-      position: "fixed" as const,
-      bottom: 0,
-      left: 0,
-      right: 0,
-      zIndex: 30,
-      justifyContent: "space-around",
-      gap: 2,
-      padding: "8px 4px calc(8px + env(safe-area-inset-bottom))",
-      background: c.header,
-      borderTop: `1px solid ${c.border}`,
-      backdropFilter: "blur(12px)"
-    } as const,
-
-    mobileNavButton: {
-      display: "flex",
-      flexDirection: "column" as const,
-      alignItems: "center",
-      gap: 4,
-      padding: "6px 4px",
-      border: "none",
-      borderRadius: 10,
-      background: "transparent",
-      color: c.muted,
-      fontSize: 13,
-      fontWeight: 700,
-      cursor: "pointer",
-      flex: 1
-    } as const,
-
-    mobileNavActive: {
-      color: c.primary,
-      background: c.surfaceAlt
-    } as const
-  };
 };
-    
+
+const trendCards = [
+  {
+    title: "Mieux organiser ses repas",
+    titleEn: "Plan Meals More Effectively",
+    text:
+      "Préparer quelques repas à l’avance peut faciliter l’organisation.",
+    textEn:
+      "Preparing a few meals in advance can make planning easier.",
+    image: images.food,
+    category: "Nutrition",
+    icon: "🥗"
+  },
+  {
+    title: "Créer une routine de sommeil",
+    titleEn: "Build a Sleep Routine",
+    text:
+      "Des horaires réguliers peuvent favoriser de bonnes habitudes de sommeil.",
+    textEn:
+      "Regular schedules can support healthier sleep habits.",
+    image: images.sleep,
+    category: "Sommeil",
+    icon: "🌙"
+  },
+  {
+    title: "Ajouter du mouvement à sa journée",
+    titleEn: "Add More Movement to Your Day",
+    text:
+      "La marche et les pauses actives sont des moyens simples de bouger.",
+    textEn:
+      "Walking and active breaks are simple ways to move more.",
+    image: images.activity,
+    category: "Activité physique",
+    icon: "🏃"
+  },
+  {
+    title: "Prendre le temps de respirer",
+    titleEn: "Make Time to Breathe",
+    text:
+      "Une courte pause peut aider à retrouver son attention.",
+    textEn:
+      "A short pause can help you refocus your attention.",
+    image: images.wellness,
+    category: "Bien-être",
+    icon: "🌿"
+  }
+];
+
+const tipCards = [
+  {
+    title: "Prépare tes repas",
+    titleEn: "Plan Your Meals",
+    text:
+      "Prévois des repas variés et garde des options simples à portée de main.",
+    textEn:
+      "Plan varied meals and keep simple options within reach.",
+    image: images.food,
+    icon: "🍎"
+  },
+  {
+    title: "Protège ton sommeil",
+    titleEn: "Protect Your Sleep",
+    text:
+      "Essaie de garder des horaires réguliers et une routine calme le soir.",
+    textEn:
+      "Try to keep regular sleep times and a calm evening routine.",
+    image: images.sleep,
+    icon: "😴"
+  },
+  {
+    title: "Bouge à ton rythme",
+    titleEn: "Move at Your Own Pace",
+    text:
+      "Choisis une activité agréable et augmente progressivement sa durée.",
+    textEn:
+      "Choose an enjoyable activity and gradually increase its duration.",
+    image: images.activity,
+    icon: "🚶"
+  },
+  {
+    title: "Fais une pause",
+    titleEn: "Take a Break",
+    text:
+      "Éloigne-toi quelques instants de ton écran et respire calmement.",
+    textEn:
+      "Step away from your screen briefly and breathe calmly.",
+    image: images.wellness,
+    icon: "🌼"
+  }
+];
+
+const visualCards = [
+  {
+    title: "La beauté de la nature",
+    titleEn: "The Beauty of Nature",
+    text: "Prends un instant pour apprécier les petites choses de la vie.",
+    textEn: "Take a moment to appreciate the little things in life.",
+    image:
+      "https://images.unsplash.com/photo-1470252649378-9c29740c9fa8?auto=format&fit=crop&w=1000&q=85",
+    page: "tips" as Page
+  },
+  {
+    title: "Marcher pour se sentir mieux",
+    titleEn: "Walk to Feel Better",
+    text: "Intègre quelques minutes de marche à ta routine quotidienne.",
+    textEn: "Add a few minutes of walking to your daily routine.",
+    image: images.activity,
+    page: "trends" as Page
+  },
+  {
+    title: "Préparer une nuit paisible",
+    titleEn: "Prepare for a Peaceful Night",
+    text: "Crée une ambiance calme avant de te coucher.",
+    textEn: "Create a calm atmosphere before going to bed.",
+    image: images.sleep,
+    page: "tips" as Page
+  },
+  {
+    title: "Découvrir nos vidéos",
+    titleEn: "Discover Our Videos",
+    text: "Retrouve des idées simples pour améliorer tes habitudes.",
+    textEn: "Discover simple ideas to improve your habits.",
+    image:
+      "https://images.unsplash.com/photo-1492619375914-88005aa9e8fb?auto=format&fit=crop&w=1000&q=85",
+    page: "videos" as Page
+  }
+];
+
 export default function App() {
   const [page, setPage] = useState<Page>("home");
   const [language, setLanguage] = useState<Language>("fr");
-  const [theme, setTheme] = useState<Theme>("dark");
-  const [selectedArticle, setSelectedArticle] = useState<number | null>(null);
+  const [theme, setTheme] = useState<Theme>("light");
   const [search, setSearch] = useState("");
   const [category, setCategory] = useState("all");
-  const [minutes, setMinutes] = useState("20");
+  const [selectedArticle, setSelectedArticle] =
+    useState<Article | null>(null);
+  const [minutesPerDay, setMinutesPerDay] = useState(30);
+  const [daysPerWeek, setDaysPerWeek] = useState(5);
 
   const t = translations[language];
-  const styles = getStyles(theme);
 
-  const categories = [
-    "all",
-    ...Array.from(
-      new Set(articles.map((article) => article.category))
-    )
-  ];
+  const isFrench = language === "fr";
 
   const filteredArticles = articles.filter((article) => {
-    const title =
-      language === "fr" ? article.title : article.en;
-    const summary =
-      language === "fr" ? article.summary : article.summaryEn;
-    const categoryName =
-      language === "fr" ? article.category : article.categoryEn;
-
-    const matchesSearch =
-      `${title} ${summary} ${categoryName}`
-        .toLowerCase()
-        .includes(search.toLowerCase());
+    const matchesSearch = [
+      article.title,
+      article.titleEn,
+      article.summary,
+      article.summaryEn,
+      article.category,
+      article.categoryEn
+    ]
+      .join(" ")
+      .toLowerCase()
+      .includes(search.toLowerCase());
 
     const matchesCategory =
       category === "all" ||
-      article.category === category;
+      article.category === category ||
+      article.categoryEn === category;
 
     return matchesSearch && matchesCategory;
   });
 
-  const activeArticle = articles.find(
-    (article) => article.id === selectedArticle
-  );
+  const activityTotal = minutesPerDay * daysPerWeek;
 
   const navigate = (nextPage: Page) => {
     setPage(nextPage);
@@ -707,355 +547,689 @@ export default function App() {
     window.scrollTo({ top: 0, behavior: "smooth" });
   };
 
-  const openArticle = (id: number) => {
-    setSelectedArticle(id);
-    setPage("articles");
+  const openArticle = (article: Article) => {
+    setSelectedArticle(article);
     window.scrollTo({ top: 0, behavior: "smooth" });
   };
 
-  const openExternal = (url: string) => {
-    window.open(url, "_blank", "noopener,noreferrer");
+  const toggleTheme = () => {
+    setTheme((current) =>
+      current === "light" ? "dark" : "light"
+    );
   };
+      
+  const styles = `
+    .tp-app {
+      --tp-bg: #f6f8f4;
+      --tp-card: #ffffff;
+      --tp-text: #24352d;
+      --tp-muted: #68776d;
+      --tp-primary: #24734b;
+      --tp-accent: #e6b83f;
+      min-height: 100vh;
+      background: var(--tp-bg);
+      color: var(--tp-text);
+      font-family: Arial, Helvetica, sans-serif;
+      transition: background 0.3s, color 0.3s;
+    }
 
-  const displayTitle = (article: Article) =>
-    language === "fr" ? article.title : article.en;
+    .tp-app.dark {
+      --tp-bg: #142019;
+      --tp-card: #202e25;
+      --tp-text: #f1f5ef;
+      --tp-muted: #bdc9bf;
+      --tp-primary: #81c99b;
+      --tp-accent: #f2cf69;
+    }
 
-  const displaySummary = (article: Article) =>
-    language === "fr" ? article.summary : article.summaryEn;
+    .tp-app * {
+      box-sizing: border-box;
+    }
 
-  const displayCategory = (article: Article) =>
-    language === "fr" ? article.category : article.categoryEn;
+    .tp-container {
+      width: min(1180px, 92%);
+      margin: 0 auto;
+    }
 
-  const displayBody = (article: Article) =>
-    language === "fr" ? article.body : article.bodyEn;
+    .tp-header {
+      position: sticky;
+      top: 0;
+      z-index: 20;
+      background: var(--tp-card);
+      border-bottom: 1px solid rgba(120, 140, 120, 0.18);
+    }
 
-  const displayVideoTitle = (video: VideoResource) =>
-    language === "fr" ? video.title : video.titleEn;
+    .tp-header-inner {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 16px;
+      padding: 15px 0;
+    }
 
-  const displayVideoDescription = (video: VideoResource) =>
-    language === "fr"
-      ? video.description
-      : video.descriptionEn;
+    .tp-logo {
+      color: var(--tp-primary);
+      font-size: 25px;
+      font-weight: 800;
+      letter-spacing: -1px;
+      cursor: pointer;
+    }
 
-  const displayEbookTitle = (book: EbookResource) =>
-    language === "fr" ? book.title : book.titleEn;
+    .tp-actions {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      flex-wrap: wrap;
+    }
 
-  const displayEbookDescription = (book: EbookResource) =>
-    language === "fr"
-      ? book.description
-      : book.descriptionEn;
+    .tp-button {
+      border: 0;
+      border-radius: 24px;
+      padding: 10px 15px;
+      background: var(--tp-primary);
+      color: #ffffff;
+      font-weight: 700;
+      cursor: pointer;
+      transition: transform 0.2s, opacity 0.2s;
+    }
 
+    .tp-button:hover {
+      transform: translateY(-2px);
+      opacity: 0.9;
+    }
+
+    .tp-button.secondary {
+      background: transparent;
+      color: var(--tp-text);
+      border: 1px solid rgba(130, 150, 130, 0.4);
+    }
+
+    .tp-hero {
+      display: grid;
+      grid-template-columns: 1.05fr 0.95fr;
+      align-items: center;
+      gap: 32px;
+      padding: 44px 0;
+    }
+
+    .tp-hero h1 {
+      font-size: clamp(34px, 5vw, 58px);
+      line-height: 1.08;
+      margin: 12px 0 18px;
+      letter-spacing: -1.8px;
+    }
+
+    .tp-hero p,
+    .tp-description {
+      color: var(--tp-muted);
+      line-height: 1.8;
+    }
+
+    .tp-eyebrow {
+      color: var(--tp-primary);
+      font-weight: 800;
+      font-size: 12px;
+      letter-spacing: 2px;
+    }
+
+    .tp-hero-image {
+      width: 100%;
+      height: 390px;
+      object-fit: cover;
+      border-radius: 28px;
+      box-shadow: 0 18px 45px rgba(30, 60, 35, 0.13);
+    }
+
+    .tp-section {
+      padding: 32px 0 46px;
+    }
+
+    .tp-section-heading {
+      margin-bottom: 22px;
+    }
+
+    .tp-section-heading h2 {
+      font-size: clamp(25px, 3vw, 36px);
+      margin: 0 0 8px;
+    }
+
+    .tp-grid {
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: 22px;
+    }
+
+    .tp-card {
+      background: var(--tp-card);
+      border-radius: 20px;
+      overflow: hidden;
+      box-shadow: 0 8px 28px rgba(35, 60, 40, 0.07);
+      animation: tp-appear 0.5s ease both;
+    }
+
+    .tp-card-image {
+      display: block;
+      width: 100%;
+      height: 220px;
+      object-fit: cover;
+      transition: transform 0.4s;
+    }
+
+    .tp-card:hover .tp-card-image {
+      transform: scale(1.04);
+    }
+
+    .tp-card-content {
+      padding: 20px;
+    }
+
+    .tp-card h3 {
+      margin: 0 0 10px;
+      line-height: 1.4;
+    }
+
+    .tp-card p {
+      color: var(--tp-muted);
+      line-height: 1.7;
+    }
+
+    .tp-tag {
+      display: inline-block;
+      color: var(--tp-primary);
+      font-size: 12px;
+      font-weight: 800;
+      margin-bottom: 10px;
+    }
+
+    .tp-fields {
+      display: flex;
+      gap: 12px;
+      flex-wrap: wrap;
+      margin: 18px 0;
+    }
+
+    .tp-input {
+      width: 100%;
+      min-width: 0;
+      padding: 13px 15px;
+      border: 1px solid rgba(130, 150, 130, 0.4);
+      border-radius: 12px;
+      background: var(--tp-card);
+      color: var(--tp-text);
+      font: inherit;
+    }
+
+    .tp-search {
+      flex: 1;
+      min-width: 200px;
+    }
+
+    .tp-article-body {
+      max-width: 780px;
+      margin: 0 auto;
+      line-height: 1.9;
+      font-size: 17px;
+    }
+
+    .tp-article-body p {
+      margin: 20px 0;
+    }
+
+    .tp-footer {
+      margin-top: 35px;
+      padding: 35px 0 110px;
+      background: var(--tp-card);
+      color: var(--tp-muted);
+      text-align: center;
+      line-height: 1.8;
+    }
+
+    .tp-bottom-nav {
+      display: none;
+    }
+
+    @keyframes tp-appear {
+      from {
+        opacity: 0;
+        transform: translateY(12px);
+      }
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+
+    @media (max-width: 760px) {
+      .tp-container {
+        width: 92%;
+      }
+
+      .tp-header-inner {
+        padding: 12px 0;
+      }
+
+      .tp-logo {
+        font-size: 21px;
+      }
+
+      .tp-hero {
+        grid-template-columns: 1fr;
+        gap: 20px;
+        padding: 28px 0;
+      }
+
+      .tp-hero-image {
+        height: 260px;
+      }
+
+      .tp-grid {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+        gap: 13px;
+      }
+
+      .tp-card-image {
+        height: 155px;
+      }
+
+      .tp-card-content {
+        padding: 14px;
+      }
+
+      .tp-card h3 {
+        font-size: 16px;
+      }
+
+      .tp-card p {
+        font-size: 14px;
+      }
+
+      .tp-bottom-nav {
+        position: fixed;
+        z-index: 30;
+        bottom: 0;
+        left: 0;
+        right: 0;
+        display: grid;
+        grid-template-columns: repeat(5, minmax(0, 1fr));
+        gap: 2px;
+        padding: 8px 3px calc(8px + env(safe-area-inset-bottom));
+        background: var(--tp-card);
+        border-top: 1px solid rgba(120, 140, 120, 0.22);
+        box-shadow: 0 -5px 22px rgba(0, 0, 0, 0.06);
+      }
+
+      .tp-nav-item {
+        border: 0;
+        background: transparent;
+        color: var(--tp-muted);
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        gap: 4px;
+        min-width: 0;
+        padding: 6px 0;
+        font-size: 10px;
+        cursor: pointer;
+      }
+
+      .tp-nav-item.active {
+        color: var(--tp-primary);
+        font-weight: 800;
+      }
+
+      .tp-nav-icon {
+        width: 28px;
+        height: 28px;
+        object-fit: cover;
+        border-radius: 9px;
+      }
+    }
+
+    @media (max-width: 390px) {
+      .tp-grid {
+        grid-template-columns: 1fr;
+      }
+
+      .tp-actions .tp-button {
+        padding: 8px 10px;
+        font-size: 12px;
+      }
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+      .tp-app *,
+      .tp-app *::before,
+      .tp-app *::after {
+        animation-duration: 0.01ms !important;
+        transition-duration: 0.01ms !important;
+      }
+    }
+  `;
+      
   return (
-    <div style={styles.page}>
-      <style>{`
-        * { box-sizing: border-box; }
-        html { scroll-behavior: smooth; }
-        body { margin: 0; }
-        button, input, select { font: inherit; }
-        button:focus-visible, a:focus-visible,
-        input:focus-visible, select:focus-visible {
-          outline: 3px solid #86b7fe;
-          outline-offset: 3px;
-        }
-        a { color: ${themeColors[theme].primary}; }
-        .tp-wrap {
-          width: min(1120px, calc(100% - 32px));
-          margin: 0 auto;
-        }
-        .tp-nav {
-          display: flex;
-          flex-wrap: wrap;
-          align-items: center;
-          gap: 4px;
-        }
-        .tp-grid {
-          display: grid;
-          grid-template-columns:
-            repeat(auto-fit, minmax(min(100%, 260px), 1fr));
-          gap: 18px;
-          margin-top: 20px;
-        }
-        .tp-section { padding: 28px 0 44px; }
-        .tp-muted {
-          color: ${themeColors[theme].muted};
-          line-height: 1.75;
-        }
-        .tp-lead {
-          color: ${themeColors[theme].muted};
-          font-size: 17px;
-          line-height: 1.75;
-          max-width: 760px;
-        }
-        .tp-eyebrow {
-          color: ${themeColors[theme].primary};
-          font-size: 12px;
-          font-weight: 800;
-          letter-spacing: .12em;
-          text-transform: uppercase;
-        }
-        .tp-card {
-          padding: 22px;
-          border: 1px solid ${themeColors[theme].border};
-          border-radius: 20px;
-          background: ${themeColors[theme].surface};
-          color: ${themeColors[theme].text};
-          box-shadow: ${themeColors[theme].shadow};
-          min-width: 0;
-        }
-        .tp-hero {
-          padding: clamp(24px, 5vw, 54px);
-          border-radius: 28px;
-          border: 1px solid ${themeColors[theme].border};
-          background: linear-gradient(
-            135deg,
-            ${themeColors[theme].surfaceAlt},
-            ${themeColors[theme].surface}
-          );
-        }
-        .tp-chip {
-          display: inline-block;
-          padding: 6px 10px;
-          border-radius: 999px;
-          background: ${themeColors[theme].chip};
-          color: ${themeColors[theme].primary};
-          font-size: 12px;
-          font-weight: 700;
-        }
-        .tp-input {
-          display: block;
-          width: 100%;
-          padding: 12px 14px;
-          margin: 8px 0 18px;
-          border: 1px solid ${themeColors[theme].border};
-          border-radius: 12px;
-          background: ${themeColors[theme].input};
-          color: ${themeColors[theme].text};
-        }
-        .tp-bottom {
-          display: none;
-          position: fixed;
-          bottom: 0;
-          left: 0;
-          right: 0;
-          z-index: 30;
-          justify-content: space-around;
-          gap: 2px;
-          padding: 8px 4px
-            calc(8px + env(safe-area-inset-bottom));
-          background: ${themeColors[theme].header};
-          border-top: 1px solid ${themeColors[theme].border};
-          backdrop-filter: blur(12px);
-        }
-        .tp-bottom button {
-          display: flex;
-          flex: 1;
-          flex-direction: column;
-          align-items: center;
-          gap: 4px;
-          padding: 6px 2px;
-          border: none;
-          border-radius: 10px;
-          background: transparent;
-          color: ${themeColors[theme].muted};
-          font-size: 10px;
-          font-weight: 700;
-          cursor: pointer;
-        }
-        .tp-bottom button.active {
-          color: ${themeColors[theme].primary};
-          background: ${themeColors[theme].surfaceAlt};
-        }
-        @media (max-width: 760px) {
-          .tp-desktop-nav { display: none !important; }
-          .tp-bottom { display: flex; }
-          .tp-footer { padding-bottom: 110px !important; }
-        }
-        @media (prefers-reduced-motion: reduce) {
-          *, *::before, *::after {
-            scroll-behavior: auto !important;
-            transition: none !important;
-          }
-        }
-      `}</style>
+    <div className={`tp-app ${theme}`}>
+      <style>{styles}</style>
 
-      <header style={styles.header}>
-        <div className="tp-wrap">
-          <div style={styles.headerInner}>
+      <header className="tp-header">
+        <div className="tp-container tp-header-inner">
+          <div
+            className="tp-logo"
+            onClick={() => navigate("home")}
+          >
+            Trend Pulse
+          </div>
+
+          <div className="tp-actions">
             <button
-              style={styles.brand}
-              onClick={() => navigate("home")}
-              aria-label="Trend Pulse - Home"
+              className="tp-button secondary"
+              onClick={() =>
+                setLanguage(isFrench ? "en" : "fr")
+              }
+              type="button"
             >
-              <span style={styles.brandMark}>T</span>
-              <span>Trend Pulse</span>
+              {isFrench ? "EN 🇬🇧" : "FR 🇫🇷"}
             </button>
 
-            <nav
-              className="tp-nav tp-desktop-nav"
-              aria-label={language === "fr" ? "Navigation principale" : "Main navigation"}
+            <button
+              className="tp-button secondary"
+              onClick={toggleTheme}
+              type="button"
+              aria-label={
+                isFrench
+                  ? "Changer le thème"
+                  : "Change theme"
+              }
             >
-              {navItems.map((item) => (
-                <button
-                  key={item.id}
-                  style={{
-                    ...styles.navButton,
-                    ...(page === item.id
-                      ? styles.activeNavButton
-                      : {})
-                  }}
-                  onClick={() => navigate(item.id)}
-                >
-                  {t[item.labelKey]}
-                </button>
-              ))}
-            </nav>
-
-            <div style={{ display: "flex", gap: 8 }}>
-              <button
-                style={styles.smallButton}
-                onClick={() =>
-                  setTheme(theme === "dark" ? "light" : "dark")
-                }
-                aria-label={
-                  theme === "dark"
-                    ? "Activer le mode clair"
-                    : "Activer le mode sombre"
-                }
-                title={
-                  theme === "dark" ? "Light mode" : "Dark mode"
-                }
-              >
-                {theme === "dark" ? "☀️" : "🌙"}
-              </button>
-
-              <button
-                style={styles.smallButton}
-                onClick={() =>
-                  setLanguage(language === "fr" ? "en" : "fr")
-                }
-                aria-label="Change language"
-              >
-                {language === "fr" ? "Français" : "English"}
-              </button>
-            </div>
+              {theme === "light" ? "🌙" : "☀️"}
+            </button>
           </div>
         </div>
-      </header>
 
-      <main className="tp-wrap">
-        {page === "home" && (
-          <section className="tp-section">
-            <div className="tp-hero">
-              <div className="tp-eyebrow">{t.eyebrow}</div>
-              <h1
-                style={{
-                  ...styles.heading,
-                  fontSize: "clamp(34px, 6vw, 60px)",
-                  margin: "18px 0"
-                }}
+        <div className="tp-container">
+          <nav
+            style={{
+              display: "flex",
+              gap: "8px",
+              overflowX: "auto",
+              paddingBottom: "12px"
+            }}
+          >
+            {(
+              [
+                ["home", t.home],
+                ["trends", t.trends],
+                ["tips", t.tips],
+                ["videos", t.videos],
+                ["articles", t.articles],
+                ["ebooks", t.ebooks],
+                ["about", t.about]
+              ] as [Page, string][]
+            ).map(([key, label]) => (
+              <button
+                key={key}
+                type="button"
+                className={`tp-button ${
+                  page === key
+                    ? ""
+                    : "secondary"
+                }`}
+                onClick={() => navigate(key)}
+                style={{ whiteSpace: "nowrap" }}
               >
-                {t.headline}
-              </h1>
-              <p className="tp-lead">{t.intro}</p>
+                {label}
+              </button>
+            ))}
+          </nav>
+        </div>
+      </header>
+        
+      <main className="tp-container">
+        {page === "home" && (
+          <>
+            <section className="tp-hero">
+              <div>
+                <span className="tp-eyebrow">
+                  {t.heroEyebrow}
+                </span>
 
-              <div style={{ display: "flex", gap: 12, flexWrap: "wrap", marginTop: 24 }}>
-                <button
-                  style={styles.primaryButton}
-                  onClick={() => navigate("tips")}
-                >
-                  {t.explore} →
-                </button>
-                <button
-                  style={styles.secondaryButton}
-                  onClick={() => navigate("articles")}
-                >
-                  {t.read}
-                </button>
+                <h1>{t.heroTitle}</h1>
+
+                <p>{t.heroText}</p>
+
+                <div className="tp-fields">
+                  <button
+                    className="tp-button"
+                    onClick={() => navigate("articles")}
+                    type="button"
+                  >
+                    {t.discoverArticles} →
+                  </button>
+
+                  <button
+                    className="tp-button secondary"
+                    onClick={() => navigate("tips")}
+                    type="button"
+                  >
+                    {t.discoverTips}
+                  </button>
+                </div>
               </div>
-            </div>
 
-            <section style={{ paddingTop: 36 }}>
-              <div className="tp-eyebrow">{t.quickLinks}</div>
-              <h2>{t.featured}</h2>
+              <img
+                className="tp-hero-image"
+                src={images.hero}
+                alt={
+                  isFrench
+                    ? "Aliments frais et colorés pour une alimentation équilibrée"
+                    : "Fresh colorful food for a balanced diet"
+                }
+                loading="eager"
+              />
+            </section>
+
+            <section className="tp-section">
+              <div className="tp-section-heading">
+                <span className="tp-eyebrow">
+                  TREND PULSE
+                </span>
+
+                <h2>{t.exploreTopics}</h2>
+
+                <p className="tp-description">
+                  {t.categories}
+                </p>
+              </div>
+
               <div className="tp-grid">
-                {[
-                  { icon: "🥗", title: language === "fr" ? "Nutrition" : "Nutrition", id: 1 },
-                  { icon: "🌙", title: language === "fr" ? "Sommeil" : "Sleep", id: 2 },
-                  { icon: "🚶", title: language === "fr" ? "Activité physique" : "Physical activity", id: 3 },
-                  { icon: "🌿", title: language === "fr" ? "Bien-être" : "Well-being", id: 4 }
-                ].map((item) => (
-                  <article className="tp-card" key={item.id}>
-                    <div style={{ fontSize: 30 }}>{item.icon}</div>
-                    <h3>{item.title}</h3>
-                    <button
-                      style={styles.textButton}
-                      onClick={() => openArticle(item.id)}
-                    >
-                      {t.readArticle} →
-                    </button>
+                {visualCards.map((item, index) => (
+                  <article className="tp-card" key={item.title}>
+                    <img
+                      className="tp-card-image"
+                      src={item.image}
+                      alt={
+                        isFrench
+                          ? item.title
+                          : item.titleEn
+                      }
+                      loading="lazy"
+                    />
+
+                    <div className="tp-card-content">
+                      <span className="tp-tag">
+                        {index === 0
+                          ? isFrench
+                            ? "NATURE"
+                            : "NATURE"
+                          : index === 1
+                            ? isFrench
+                              ? "ACTIVITÉ"
+                              : "ACTIVITY"
+                            : index === 2
+                              ? isFrench
+                                ? "SOMMEIL"
+                                : "SLEEP"
+                              : isFrench
+                                ? "VIDÉOS"
+                                : "VIDEOS"}
+                      </span>
+
+                      <h3>
+                        {isFrench
+                          ? item.title
+                          : item.titleEn}
+                      </h3>
+
+                      <p>
+                        {isFrench
+                          ? item.text
+                          : item.textEn}
+                      </p>
+
+                      <button
+                        className="tp-button"
+                        type="button"
+                        onClick={() => navigate(item.page)}
+                      >
+                        {t.explore} →
+                      </button>
+                    </div>
                   </article>
                 ))}
               </div>
             </section>
 
-            <section style={{ paddingTop: 36 }}>
-              <div className="tp-eyebrow">{t.latest}</div>
-              <h2>{t.articles}</h2>
+            <section className="tp-section">
+              <div className="tp-section-heading">
+                <h2>{t.latest}</h2>
+                <p className="tp-description">
+                  {isFrench
+                    ? "Des lectures pratiques pour prendre soin de toi au quotidien."
+                    : "Practical reading to help you care for yourself every day."}
+                </p>
+              </div>
+
               <div className="tp-grid">
                 {articles.slice(0, 3).map((article) => (
-                  <article className="tp-card" key={article.id}>
-                    <span className="tp-chip">
-                      {displayCategory(article)}
-                    </span>
-                    <h3>{displayTitle(article)}</h3>
-                    <p className="tp-muted">
-                      {displaySummary(article)}
-                    </p>
-                    <button
-                      style={styles.textButton}
-                      onClick={() => openArticle(article.id)}
-                    >
-                      {t.readArticle} →
-                    </button>
+                  <article
+                    className="tp-card"
+                    key={article.id}
+                  >
+                    <img
+                      className="tp-card-image"
+                      src={article.image}
+                      alt={
+                        isFrench
+                          ? article.title
+                          : article.titleEn
+                      }
+                      loading="lazy"
+                    />
+
+                    <div className="tp-card-content">
+                      <span className="tp-tag">
+                        {isFrench
+                          ? article.category
+                          : article.categoryEn}
+                      </span>
+
+                      <h3>
+                        {isFrench
+                          ? article.title
+                          : article.titleEn}
+                      </h3>
+
+                      <p>
+                        {isFrench
+                          ? article.summary
+                          : article.summaryEn}
+                      </p>
+
+                      <button
+                        className="tp-button"
+                        type="button"
+                        onClick={() => openArticle(article)}
+                      >
+                        {t.read} →
+                      </button>
+                    </div>
                   </article>
                 ))}
               </div>
-              <button
-                style={{ ...styles.secondaryButton, marginTop: 18 }}
-                onClick={() => navigate("articles")}
-              >
-                {t.viewAll} →
-              </button>
             </section>
-          </section>
-        )}
 
+            <section className="tp-section">
+              <div className="tp-card">
+                <div className="tp-card-content">
+                  <h2>{t.newsletterTitle}</h2>
+                  <p>{t.newsletterText}</p>
+
+                  <button
+                    className="tp-button"
+                    type="button"
+                    onClick={() => navigate("videos")}
+                  >
+                    {t.discoverVideos} →
+                  </button>
+                </div>
+              </div>
+            </section>
+          </>
+        )}
+                          
         {page === "trends" && (
           <section className="tp-section">
-            <div className="tp-eyebrow">{t.featured}</div>
-            <h2>{t.trends}</h2>
-            <p className="tp-lead">
-              {language === "fr"
-                ? "Explorez nos grands thèmes pour découvrir des informations pratiques et des ressources fiables."
-                : "Explore our main topics for practical information and reliable resources."}
-            </p>
+            <div className="tp-section-heading">
+              <span className="tp-eyebrow">
+                TREND PULSE
+              </span>
+              <h1>{t.trendsTitle}</h1>
+              <p className="tp-description">
+                {isFrench
+                  ? "Découvre des habitudes simples à intégrer dans ta journée."
+                  : "Discover simple habits you can add to your day."}
+              </p>
+            </div>
 
             <div className="tp-grid">
-              {articles.map((article) => (
-                <article className="tp-card" key={article.id}>
-                  <span className="tp-chip">
-                    {displayCategory(article)}
-                  </span>
-                  <h3>{displayTitle(article)}</h3>
-                  <p className="tp-muted">
-                    {displaySummary(article)}
-                  </p>
-                  <button
-                    style={styles.textButton}
-                    onClick={() => openArticle(article.id)}
-                  >
-                    {t.readArticle} →
-                  </button>
+              {trendCards.map((item) => (
+                <article className="tp-card" key={item.title}>
+                  <img
+                    className="tp-card-image"
+                    src={item.image}
+                    alt={isFrench ? item.title : item.titleEn}
+                    loading="lazy"
+                  />
+
+                  <div className="tp-card-content">
+                    <span className="tp-tag">
+                      {isFrench ? item.category : (
+                        item.category === "Nutrition"
+                          ? "Nutrition"
+                          : item.category === "Sommeil"
+                            ? "Sleep"
+                            : item.category === "Activité physique"
+                              ? "Physical activity"
+                              : "Well-being"
+                      )}
+                    </span>
+
+                    <h3>
+                      {isFrench ? item.title : item.titleEn}
+                    </h3>
+
+                    <p>
+                      {isFrench ? item.text : item.textEn}
+                    </p>
+
+                    <button
+                      className="tp-button"
+                      type="button"
+                      onClick={() => navigate("articles")}
+                    >
+                      {t.discoverArticles} →
+                    </button>
+                  </div>
                 </article>
               ))}
             </div>
@@ -1064,326 +1238,530 @@ export default function App() {
 
         {page === "tips" && (
           <section className="tp-section">
-            <div className="tp-eyebrow">{t.featured}</div>
-            <h2>{t.tipsTitle}</h2>
-            <p className="tp-lead">{t.tipsIntro}</p>
-
-            <div className="tp-grid">
-              {[
-                {
-                  icon: "🥗",
-                  title: language === "fr" ? "Variez vos repas" : "Vary your meals",
-                  text: language === "fr"
-                    ? "Associez différents aliments disponibles localement et buvez de l'eau régulièrement."
-                    : "Combine locally available foods and drink water regularly."
-                },
-                {
-                  icon: "🌙",
-                  title: language === "fr" ? "Gardez une routine de sommeil" : "Keep a sleep routine",
-                  text: language === "fr"
-                    ? "Essayez de vous coucher et de vous lever à des heures régulières."
-                    : "Try to go to bed and wake up at regular times."
-                },
-                {
-                  icon: "🚶",
-                  title: language === "fr" ? "Bougez à votre rythme" : "Move at your own pace",
-                  text: language === "fr"
-                    ? "Marchez, dansez ou choisissez une activité adaptée à vos capacités."
-                    : "Walk, dance, or choose an activity suited to your abilities."
-                },
-                {
-                  icon: "🌿",
-                  title: language === "fr" ? "Faites une pause" : "Take a break",
-                  text: language === "fr"
-                    ? "Accordez-vous quelques minutes pour respirer et vous détendre."
-                    : "Take a few minutes to breathe and relax."
-                },
-                {
-                  icon: "📌",
-                  title: language === "fr" ? "Commencez petit" : "Start small",
-                  text: language === "fr"
-                    ? "Choisissez une seule habitude et répétez-la régulièrement."
-                    : "Choose one habit and practice it regularly."
-                },
-                {
-                  icon: "🤝",
-                  title: language === "fr" ? "Demandez du soutien" : "Ask for support",
-                  text: language === "fr"
-                    ? "Parlez à une personne de confiance si vous traversez une période difficile."
-                    : "Talk to someone you trust during difficult times."
-                }
-              ].map((item) => (
-                <article className="tp-card" key={item.title}>
-                  <div style={{ fontSize: 28 }}>{item.icon}</div>
-                  <h3>{item.title}</h3>
-                  <p className="tp-muted">{item.text}</p>
-                </article>
-              ))}
-            </div>
-
-            <article className="tp-card" style={{ marginTop: 22 }}>
-              <h2>{t.calculator}</h2>
-              <p className="tp-muted">{t.minutes}</p>
-              <label htmlFor="activity-minutes">
-                {t.minuteLabel}
-              </label>
-              <input
-                id="activity-minutes"
-                className="tp-input"
-                type="number"
-                min="0"
-                max="1440"
-                value={minutes}
-                onChange={(event) => setMinutes(event.target.value)}
-              />
-              <button
-                style={styles.primaryButton}
-                onClick={() =>
-                  setMinutes(
-                    String(
-                      Math.max(
-                        0,
-                        Math.min(1440, Number(minutes) || 0)
-                      )
-                    )
-                  )
-                }
-              >
-                {t.calculate}
-              </button>
-
-              <div
-                style={{
-                  background: themeColors[theme].surfaceAlt,
-                  color: themeColors[theme].text,
-                  borderRadius: 14,
-                  padding: 18,
-                  marginTop: 18
-                }}
-              >
-                <strong>{t.result}</strong>
-                <div style={{ fontSize: 32, fontWeight: 800, marginTop: 6 }}>
-                  {Math.max(0, Math.min(1440, Number(minutes) || 0))}{" "}
-                  {t.minuteLabel}
-                </div>
-                <p className="tp-muted">
-                  {language === "fr"
-                    ? "Chaque mouvement compte. Adaptez votre activité à vos capacités."
-                    : "Every movement counts. Adapt your activity to your abilities."}
-                </p>
-              </div>
-
-              <p className="tp-muted">
-                {t.officialRecommendations}:{" "}
-                <a
-                  href="https://www.who.int/health-topics/physical-activity"
-                  target="_blank"
-                  rel="noreferrer"
-                >
-                  OMS / WHO
-                </a>
+            <div className="tp-section-heading">
+              <span className="tp-eyebrow">
+                DAILY INSPIRATION
+              </span>
+              <h1>{t.tipsTitle}</h1>
+              <p className="tp-description">
+                {isFrench
+                  ? "De petites actions peuvent t'aider à construire une routine plus équilibrée."
+                  : "Small actions can help you build a more balanced routine."}
               </p>
-            </article>
-          </section>
-        )}
-      
-        {page === "videos" && (
-          <section className="tp-section">
-            <p className="tp-eyebrow">{t.videos}</p>
-            <h1>{t.videosTitle}</h1>
-            <p className="tp-lead">{t.videosText}</p>
+            </div>
+
             <div className="tp-grid">
-              {videos.map((video, index) => (
-                <article className="tp-card" key={video.title}>
-                  <div className="tp-icon">
-                    {["🥗", "🌙", "🚶", "🌿"][index % 4]}
+              {tipCards.map((item) => (
+                <article className="tp-card" key={item.title}>
+                  <img
+                    className="tp-card-image"
+                    src={item.image}
+                    alt={isFrench ? item.title : item.titleEn}
+                    loading="lazy"
+                  />
+
+                  <div className="tp-card-content">
+                    <h3>
+                      {isFrench ? item.title : item.titleEn}
+                    </h3>
+
+                    <p>
+                      {isFrench ? item.text : item.textEn}
+                    </p>
+
+                    <button
+                      className="tp-button"
+                      type="button"
+                      onClick={() => navigate("articles")}
+                    >
+                      {t.learnMore} →
+                    </button>
                   </div>
-                  <h3>{displayVideoTitle(video)}</h3>
-                  <p>{displayVideoDescription(video)}</p>
-                  <button
-                    className="tp-button"
-                    onClick={() => openExternal(video.url)}
-                  >
-                    {t.seeVideos} →
-                  </button>
                 </article>
               ))}
             </div>
-          </section>
-        )}
 
-        {page === "articles" && (
-          <section className="tp-section">
-            {!selectedArticle ? (
-              <>
-                <p className="tp-eyebrow">{t.articles}</p>
-                <h1>{t.articlesTitle}</h1>
-                <p className="tp-lead">{t.articlesText}</p>
+            <div className="tp-card" style={{ marginTop: 24 }}>
+              <div className="tp-card-content">
+                <h2>
+                  {isFrench
+                    ? "Calcule ton activité hebdomadaire"
+                    : "Calculate Your Weekly Activity"}
+                </h2>
+
+                <p>{t.activityQuestion}</p>
 
                 <input
                   className="tp-input"
-                  type="search"
-                  placeholder={t.searchPlaceholder}
-                  value={search}
-                  onChange={(event) => setSearch(event.target.value)}
+                  type="number"
+                  min="0"
+                  max="1440"
+                  value={minutesPerDay}
+                  onChange={(event) =>
+                    setMinutesPerDay(
+                      Math.max(
+                        0,
+                        Math.min(1440, Number(event.target.value) || 0)
+                      )
+                    )
+                  }
                 />
 
-                <select
+                <p>{t.activityDays}</p>
+
+                <input
                   className="tp-input"
-                  value={category}
-                  onChange={(event) => setCategory(event.target.value)}
+                  type="number"
+                  min="0"
+                  max="7"
+                  value={daysPerWeek}
+                  onChange={(event) =>
+                    setDaysPerWeek(
+                      Math.max(
+                        0,
+                        Math.min(7, Number(event.target.value) || 0)
+                      )
+                    )
+                  }
+                />
+
+                <h3>
+                  {activityTotal} {t.activityResult}
+                </h3>
+
+                <p className="tp-description">
+                  {t.activityAdvice}
+                </p>
+              </div>
+            </div>
+          </section>
+        )}
+                    
+        {page === "videos" && (
+          <section className="tp-section">
+            <div className="tp-section-heading">
+              <span className="tp-eyebrow">
+                TREND PULSE VIDEO
+              </span>
+
+              <h1>{t.videosTitle}</h1>
+
+              <p className="tp-description">
+                {isFrench
+                  ? "Découvre des vidéos et des idées pratiques pour prendre soin de toi."
+                  : "Discover videos and practical ideas to take care of yourself."}
+              </p>
+            </div>
+
+            <div className="tp-grid">
+              {videos.map((video, index) => (
+                <article className="tp-card" key={video.title}>
+                  <img
+                    className="tp-card-image"
+                    src={video.image}
+                    alt={
+                      isFrench
+                        ? video.title
+                        : video.titleEn
+                    }
+                    loading="lazy"
+                  />
+
+                  <div className="tp-card-content">
+                    <span className="tp-tag">
+                      {isFrench
+                        ? `VIDÉO ${index + 1}`
+                        : `VIDEO ${index + 1}`}
+                    </span>
+
+                    <h3>
+                      {isFrench
+                        ? video.title
+                        : video.titleEn}
+                    </h3>
+
+                    <p>
+                      {isFrench
+                        ? video.description
+                        : video.descriptionEn}
+                    </p>
+
+                    <p className="tp-description">
+                      {video.organization}
+                    </p>
+
+                    <button
+                      className="tp-button"
+                      type="button"
+                      onClick={() =>
+                        window.open(
+                          video.url,
+                          "_blank",
+                          "noopener,noreferrer"
+                        )
+                      }
+                    >
+                      ▶ {t.discoverVideos}
+                    </button>
+                  </div>
+                </article>
+              ))}
+            </div>
+
+            <div
+              className="tp-card"
+              style={{ marginTop: 24 }}
+            >
+              <div className="tp-card-content">
+                <h2>
+                  {isFrench
+                    ? "Apprends avec des vidéos"
+                    : "Learn Through Videos"}
+                </h2>
+
+                <p>
+                  {isFrench
+                    ? "Choisis une ressource, regarde-la à ton rythme et note une habitude que tu souhaites essayer."
+                    : "Choose a resource, watch at your own pace, and note one habit you would like to try."}
+                </p>
+
+                <button
+                  className="tp-button"
+                  type="button"
+                  onClick={() => navigate("articles")}
                 >
-                  {categories.map((item) => (
-                    <option key={item} value={item}>
-                      {item === "all"
-                        ? t.all
-                        : language === "fr"
+                  {t.discoverArticles} →
+                </button>
+              </div>
+            </div>
+          </section>
+        )}
+        {page === "articles" && (
+          <section className="tp-section">
+            <div className="tp-section-heading">
+              <span className="tp-eyebrow">
+                TREND PULSE JOURNAL
+              </span>
+
+              <h1>{t.articles}</h1>
+
+              <p className="tp-description">
+                {isFrench
+                  ? "Explore des articles sur la nutrition, le sommeil, l'activité physique et le bien-être."
+                  : "Explore articles about nutrition, sleep, physical activity, and well-being."}
+              </p>
+            </div>
+
+            {selectedArticle ? (
+              <article className="tp-article-body">
+                <button
+                  type="button"
+                  className="tp-button secondary"
+                  onClick={() => setSelectedArticle(null)}
+                >
+                  ← {t.back}
+                </button>
+
+                <img
+                  className="tp-hero-image"
+                  src={selectedArticle.image}
+                  alt={
+                    isFrench
+                      ? selectedArticle.title
+                      : selectedArticle.titleEn
+                  }
+                  loading="lazy"
+                  style={{ marginTop: 24 }}
+                />
+
+                <span className="tp-tag">
+                  {isFrench
+                    ? selectedArticle.category
+                    : selectedArticle.categoryEn}
+                </span>
+
+                <h1>
+                  {isFrench
+                    ? selectedArticle.title
+                    : selectedArticle.titleEn}
+                </h1>
+
+                <p className="tp-description">
+                  {isFrench
+                    ? selectedArticle.summary
+                    : selectedArticle.summaryEn}
+                </p>
+
+                {(isFrench
+                  ? selectedArticle.body
+                  : selectedArticle.bodyEn
+                ).map((paragraph, index) => (
+                  <p key={index}>{paragraph}</p>
+                ))}
+
+                <p>
+                  <strong>{t.source} :</strong>{" "}
+                  <a
+                    href={selectedArticle.source}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    style={{ color: "var(--tp-primary)" }}
+                  >
+                    {selectedArticle.source}
+                  </a>
+                </p>
+
+                <p className="tp-description">
+                  {t.disclaimer}
+                </p>
+              </article>
+            ) : (
+              <>
+                <div className="tp-fields">
+                  <input
+                    className="tp-input tp-search"
+                    type="search"
+                    placeholder={t.search}
+                    value={search}
+                    onChange={(event) =>
+                      setSearch(event.target.value)
+                    }
+                    aria-label={t.search}
+                  />
+
+                  <select
+                    className="tp-input"
+                    value={category}
+                    onChange={(event) =>
+                      setCategory(event.target.value)
+                    }
+                    aria-label={t.filter}
+                    style={{ maxWidth: 280 }}
+                  >
+                    <option value="all">{t.all}</option>
+
+                    {[...new Set(
+                      articles.map((article) => article.category)
+                    )].map((item) => (
+                      <option key={item} value={item}>
+                        {isFrench
                           ? item
-                          : articles.find((a) => a.category === item)
-                              ?.categoryEn ?? item}
-                    </option>
-                  ))}
-                </select>
+                          : articles.find(
+                              (article) =>
+                                article.category === item
+                            )?.categoryEn ?? item}
+                      </option>
+                    ))}
+                  </select>
+                </div>
 
                 <div className="tp-grid">
                   {filteredArticles.map((article) => (
-                    <article className="tp-card" key={article.title}>
-                      <span className="tp-chip">
-                        {displayCategory(article)}
-                      </span>
-                      <h3>{displayTitle(article)}</h3>
-                      <p>{displaySummary(article)}</p>
-                      <button
-                        className="tp-button"
-                        onClick={() => openArticle(article)}
-                      >
-                        {t.readArticle} →
-                      </button>
+                    <article
+                      className="tp-card"
+                      key={article.id}
+                    >
+                      <img
+                        className="tp-card-image"
+                        src={article.image}
+                        alt={
+                          isFrench
+                            ? article.title
+                            : article.titleEn
+                        }
+                        loading="lazy"
+                      />
+
+                      <div className="tp-card-content">
+                        <span className="tp-tag">
+                          {isFrench
+                            ? article.category
+                            : article.categoryEn}
+                        </span>
+
+                        <h3>
+                          {isFrench
+                            ? article.title
+                            : article.titleEn}
+                        </h3>
+
+                        <p>
+                          {isFrench
+                            ? article.summary
+                            : article.summaryEn}
+                        </p>
+
+                        <button
+                          className="tp-button"
+                          type="button"
+                          onClick={() => openArticle(article)}
+                        >
+                          {t.read} →
+                        </button>
+                      </div>
                     </article>
                   ))}
                 </div>
 
                 {filteredArticles.length === 0 && (
-                  <p>{t.noResults}</p>
+                  <p className="tp-description">
+                    {t.searchEmpty}
+                  </p>
                 )}
               </>
-            ) : (
-              <article className="tp-card">
-                <button
-                  className="tp-button tp-secondary"
-                  onClick={() => setSelectedArticle(null)}
-                >
-                  ← {t.backToArticles}
-                </button>
-                <p className="tp-eyebrow">
-                  {displayCategory(selectedArticle)}
-                </p>
-                <h1>{displayTitle(selectedArticle)}</h1>
-                <p className="tp-lead">
-                  {displaySummary(selectedArticle)}
-                </p>
-                <div className="tp-article-body">
-                  {displayBody(selectedArticle).map((paragraph, index) => (
-                    <p key={index}>{paragraph}</p>
-                  ))}
-                </div>
-                <p className="tp-muted">{t.disclaimer}</p>
-                <a
-                  className="tp-link"
-                  href={selectedArticle.source}
-                  target="_blank"
-                  rel="noreferrer"
-                >
-                  {t.readSource} ↗
-                </a>
-              </article>
             )}
           </section>
         )}
-
+          
         {page === "ebooks" && (
           <section className="tp-section">
-            <p className="tp-eyebrow">{t.ebooks}</p>
-            <h1>{t.ebooksTitle}</h1>
-            <p className="tp-lead">{t.ebooksText}</p>
+            <div className="tp-section-heading">
+              <span className="tp-eyebrow">
+                TREND PULSE LIBRARY
+              </span>
+
+              <h1>{t.ebooksTitle}</h1>
+
+              <p className="tp-description">
+                {isFrench
+                  ? "Découvre des guides et des ressources pour approfondir tes connaissances."
+                  : "Discover guides and resources to expand your knowledge."}
+              </p>
+            </div>
 
             <div className="tp-grid">
               {ebooks.map((book) => (
                 <article className="tp-card" key={book.title}>
-                  <div className="tp-icon">📘</div>
-                  <p className="tp-eyebrow">{book.organization}</p>
-                  <h3>{displayEbookTitle(book)}</h3>
-                  <p>{displayEbookDescription(book)}</p>
-                  <button
-                    className="tp-button"
-                    onClick={() => openExternal(book.url)}
-                  >
-                    {t.openResource} ↗
-                  </button>
+                  <img
+                    className="tp-card-image"
+                    src={book.image}
+                    alt={isFrench ? book.title : book.titleEn}
+                    loading="lazy"
+                  />
+
+                  <div className="tp-card-content">
+                    <h3>
+                      {isFrench ? book.title : book.titleEn}
+                    </h3>
+
+                    <p>
+                      {isFrench
+                        ? book.description
+                        : book.descriptionEn}
+                    </p>
+
+                    <p className="tp-description">
+                      {book.organization}
+                    </p>
+
+                    <a
+                      className="tp-button"
+                      href={book.url}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      style={{
+                        display: "inline-block",
+                        textDecoration: "none"
+                      }}
+                    >
+                      {t.openResource} →
+                    </a>
+                  </div>
                 </article>
               ))}
             </div>
-
-            <article className="tp-card tp-info">
-              <h2>{t.howToUseResources}</h2>
-              <p>{t.officialRecommendations}</p>
-            </article>
           </section>
         )}
 
         {page === "about" && (
           <section className="tp-section">
-            <p className="tp-eyebrow">{t.about}</p>
-            <h1>{t.aboutTitle}</h1>
-            <p className="tp-lead">{t.aboutText}</p>
+            <div className="tp-hero">
+              <div>
+                <span className="tp-eyebrow">
+                  ABOUT TREND PULSE
+                </span>
+
+                <h1>{t.aboutTitle}</h1>
+
+                <p className="tp-description">
+                  {isFrench
+                    ? "Trend Pulse est un espace consacré aux habitudes saines, à la nutrition, au sommeil, à l'activité physique et au bien-être."
+                    : "Trend Pulse is a space dedicated to healthy habits, nutrition, sleep, physical activity, and well-being."}
+                </p>
+
+                <p className="tp-description">
+                  {isFrench
+                    ? "Notre objectif est de rendre les informations pratiques plus faciles à découvrir et à appliquer au quotidien."
+                    : "Our goal is to make practical information easier to discover and apply in everyday life."}
+                </p>
+
+                <button
+                  className="tp-button"
+                  type="button"
+                  onClick={() => navigate("articles")}
+                >
+                  {t.discoverArticles} →
+                </button>
+              </div>
+
+              <img
+                className="tp-hero-image"
+                src={images.wellness}
+                alt={
+                  isFrench
+                    ? "Moment de calme et de bien-être"
+                    : "A peaceful moment of well-being"
+                }
+                loading="lazy"
+              />
+            </div>
 
             <div className="tp-grid">
               <article className="tp-card">
-                <div className="tp-icon">🎯</div>
-                <h2>{t.ourGoal}</h2>
-                <p>{t.goalText}</p>
+                <img
+                  className="tp-card-image"
+                  src={images.food}
+                  alt="Fresh food"
+                  loading="lazy"
+                />
+
+                <div className="tp-card-content">
+                  <h3>{t.quality}</h3>
+                  <p>{t.qualityText}</p>
+                </div>
               </article>
 
               <article className="tp-card">
-                <div className="tp-icon">🔎</div>
-                <h2>{t.ourSources}</h2>
-                <p>{t.sourcesText}</p>
-                <p>
-                  <a
-                    className="tp-link"
-                    href="https://www.who.int/"
-                    target="_blank"
-                    rel="noreferrer"
-                  >
-                    Organisation mondiale de la Santé / WHO ↗
-                  </a>
-                </p>
-                <p>
-                  <a
-                    className="tp-link"
-                    href="https://www.nih.gov/"
-                    target="_blank"
-                    rel="noreferrer"
-                  >
-                    National Institutes of Health ↗
-                  </a>
-                </p>
-                <p>
-                  <a
-                    className="tp-link"
-                    href="https://medlineplus.gov/"
-                    target="_blank"
-                    rel="noreferrer"
-                  >
-                    MedlinePlus ↗
-                  </a>
-                </p>
+                <img
+                  className="tp-card-image"
+                  src={images.activity}
+                  alt="Walking outdoors"
+                  loading="lazy"
+                />
+
+                <div className="tp-card-content">
+                  <h3>{t.simple}</h3>
+                  <p>{t.simpleText}</p>
+                </div>
               </article>
 
               <article className="tp-card">
-                <div className="tp-icon">⚠️</div>
-                <h2>{t.importantDisclaimer}</h2>
-                <p>{t.disclaimer}</p>
+                <img
+                  className="tp-card-image"
+                  src={images.sleep}
+                  alt="Rest and sleep"
+                  loading="lazy"
+                />
+
+                <div className="tp-card-content">
+                  <h3>
+                    {isFrench
+                      ? "Respect du bien-être"
+                      : "Well-being First"}
+                  </h3>
+
+                  <p>{t.disclaimer}</p>
+                </div>
               </article>
             </div>
           </section>
@@ -1391,51 +1769,71 @@ export default function App() {
       </main>
 
       <footer className="tp-footer">
-        <div className="tp-footer-brand">
-          <span className="tp-logo">T</span>
-          <div>
-            <strong>Trend Pulse</strong>
-            <p>{t.footer}</p>
-          </div>
-        </div>
+        <div className="tp-container">
+          <h2>Trend Pulse</h2>
 
-        <div className="tp-footer-links">
-          <button onClick={() => navigate("about")}>{t.about}</button>
-          <button onClick={() => navigate("articles")}>{t.articles}</button>
-          <button onClick={() => navigate("ebooks")}>{t.ebooks}</button>
-        </div>
+          <p>{t.footer}</p>
 
-        <div className="tp-socials">
-          {socialLinks.map((social) => (
-            <a
-              key={social.name}
-              href={social.url}
-              target="_blank"
-              rel="noreferrer"
+          <p>{t.noDiagnosis}</p>
+
+          <div className="tp-actions" style={{ justifyContent: "center" }}>
+            <button
+              className="tp-button secondary"
+              type="button"
+              onClick={() => navigate("about")}
             >
-              {social.name} ↗
-            </a>
-          ))}
-        </div>
+              {t.about}
+            </button>
 
-        <p className="tp-muted">
-          © {new Date().getFullYear()} Trend Pulse. {t.disclaimer}
-        </p>
+            <button
+              className="tp-button secondary"
+              type="button"
+              onClick={() => navigate("articles")}
+            >
+              {t.articles}
+            </button>
+          </div>
+
+          <p style={{ fontSize: 12, marginTop: 24 }}>
+            © {new Date().getFullYear()} Trend Pulse
+          </p>
+        </div>
       </footer>
 
-      <nav className="tp-bottom" aria-label="Navigation mobile">
-        {navItems.map((item) => (
+      <nav
+        className="tp-bottom-nav"
+        aria-label={isFrench ? "Navigation mobile" : "Mobile navigation"}
+      >
+        {(
+          [
+            ["home", t.home, images.hero],
+            ["trends", t.trends, images.food],
+            ["tips", t.tips, images.wellness],
+            ["videos", t.videos, images.activity],
+            ["articles", t.articles, images.books]
+          ] as [Page, string, string][]
+        ).map(([key, label, image]) => (
           <button
-            key={item.id}
-            className={page === item.id ? "active" : ""}
-            onClick={() => navigate(item.id)}
+            key={key}
+            type="button"
+            className={`tp-nav-item ${
+              page === key ? "active" : ""
+            }`}
+            onClick={() => navigate(key)}
           >
-            <span>{item.symbol}</span>
-            <small>{t[item.labelKey]}</small>
+            <img
+              className="tp-nav-icon"
+              src={image}
+              alt=""
+              loading="lazy"
+            />
+
+            <span>{label}</span>
           </button>
         ))}
       </nav>
     </div>
   );
-                  }
-                
+                }
+            
+          
