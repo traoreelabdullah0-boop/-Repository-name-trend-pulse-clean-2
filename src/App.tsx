@@ -332,6 +332,4 @@ export default function App() {
         ))}
       </nav>
     </main>
-  );
-    }
-    
+  
