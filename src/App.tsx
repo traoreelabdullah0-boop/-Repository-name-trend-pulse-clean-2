@@ -289,6 +289,291 @@ const ARTICLES: Article[] = [
   },
 ];
 
+const EXTRA_ARTICLES: Article[] = [
+  {
+    id: 10,
+    category: "wellness",
+    image: "https://images.unsplash.com/photo-1518611012118-696072aa579a?auto=format&fit=crop&w=1200&q=85",
+    date: "2026-10-13",
+    readTime: 5,
+    title: {
+      fr: "Tu prends soin de tout le monde : pense aussi à toi",
+      en: "You Care for Everyone—Remember Yourself Too",
+    },
+    excerpt: {
+      fr: "Des gestes concrets pour prendre soin de toi sans culpabiliser.",
+      en: "Practical ways to care for yourself without feeling guilty.",
+    },
+    content: {
+      fr: [
+        "Tu réponds aux messages, tu aides les autres et tu essaies de tenir toutes tes promesses. Mais as-tu pris un moment pour vérifier comment tu te sens, toi ? Tes besoins comptent aussi.",
+        "Aujourd'hui, demande-toi ce qui t'aiderait le plus : du repos, un repas, une petite marche, une conversation ou dix minutes de calme. Choisis une seule chose et réserve-lui un moment réaliste.",
+        "Tu peux aider les autres tout en posant des limites respectueuses. Commence par dix minutes pour toi et observe ce qui change. Si ton mal-être persiste, cherche du soutien auprès d'une personne de confiance ou d'un professionnel."
+      ],
+      en: [
+        "You answer messages, help others, and try to keep every promise. But have you taken a moment to check how you feel? Your needs matter too.",
+        "Ask yourself what would help most today: rest, a meal, a short walk, a conversation, or ten quiet minutes. Choose one thing and make realistic time for it.",
+        "You can support others while setting respectful boundaries. Start with ten minutes for yourself and notice how you feel. If distress persists, seek support from someone you trust or a professional."
+      ]
+    },
+    tags: ["self-care", "wellness", "boundaries"]
+  },
+  {
+    id: 11,
+    category: "nutrition",
+    image: "https://images.unsplash.com/photo-1512621776951-a57141f2eefd?auto=format&fit=crop&w=1200&q=85",
+    date: "2026-10-03",
+    readTime: 5,
+    title: {
+      fr: "Manger varié sans vider son portefeuille",
+      en: "How to Eat Varied Meals on a Budget",
+    },
+    excerpt: {
+      fr: "Planifie des repas simples avec des ingrédients accessibles.",
+      en: "Plan simple meals with affordable ingredients.",
+    },
+    content: {
+      fr: [
+        "Manger varié ne signifie pas acheter des produits coûteux. Les aliments locaux et de saison peuvent être de bons choix lorsqu'ils sont disponibles et abordables.",
+        "Pense à combiner une source de protéines, comme les haricots ou les œufs, avec des céréales ou des tubercules et des légumes disponibles. Varie les assaisonnements pour ne pas manger toujours la même chose.",
+        "Avant les courses, regarde ce que tu as déjà et prépare une liste de trois repas. Cela peut réduire les achats inutiles et le gaspillage. Adapte toujours ces idées à tes besoins et aux aliments accessibles chez toi."
+      ],
+      en: [
+        "Eating a varied diet does not mean buying expensive products. Local and seasonal foods can be good choices when available and affordable.",
+        "Combine a protein source, such as beans or eggs, with grains or starchy foods and available vegetables. Vary the seasoning to keep meals interesting.",
+        "Before shopping, check what you already have and plan three meals. This may reduce unnecessary purchases and waste. Adapt these ideas to your needs and local food options."
+      ]
+    },
+    tags: ["budget", "nutrition", "meal-planning"]
+  },
+  {
+    id: 12,
+    category: "habits",
+    image: "https://images.unsplash.com/photo-1455390582262-044cdead277a?auto=format&fit=crop&w=1200&q=85",
+    date: "2026-10-02",
+    readTime: 5,
+    title: {
+      fr: "La méthode des dix minutes contre la procrastination",
+      en: "The Ten-Minute Method for Procrastination",
+    },
+    excerpt: {
+      fr: "Commence petit au lieu d'attendre d'être parfaitement motivé.",
+      en: "Start small instead of waiting for perfect motivation.",
+    },
+    content: {
+      fr: [
+        "Quand une tâche paraît énorme, tu peux être tenté de la repousser. Parfois, le vrai problème est que tu ne sais pas précisément par où commencer.",
+        "Transforme la tâche en un geste simple : ouvrir le document, écrire un titre ou ranger une petite surface. Lance un minuteur de dix minutes. Tu n'as pas besoin de tout terminer, seulement de commencer.",
+        "Quand le temps est écoulé, continue si tu le souhaites ou décide quand reprendre. Essaie cette méthode sur une tâche que tu repousses aujourd'hui et note si le premier pas devient plus facile."
+      ],
+      en: [
+        "When a task feels huge, you may be tempted to delay it. Sometimes the real problem is not knowing exactly where to begin.",
+        "Turn the task into one simple action: open the document, write a title, or clear a small surface. Set a ten-minute timer. You do not need to finish everything; you only need to start.",
+        "When time is up, continue if you want or decide when to return. Try this with one task you have been postponing and notice whether starting feels easier."
+      ]
+    },
+    tags: ["habits", "focus", "productivity"]
+  },
+  {
+    id: 13,
+    category: "sleep",
+    image: "https://images.unsplash.com/photo-1511295742362-92c96b8f7f0a?auto=format&fit=crop&w=1200&q=85",
+    date: "2026-10-01",
+    readTime: 5,
+    title: {
+      fr: "Une routine du soir simple que tu peux vraiment suivre",
+      en: "A Simple Evening Routine You Can Actually Follow",
+    },
+    excerpt: {
+      fr: "Trois petits repères plutôt qu'un programme compliqué.",
+      en: "Three small anchors instead of a complicated plan.",
+    },
+    content: {
+      fr: [
+        "Une routine du soir ne doit pas durer une heure pour être utile. Quelques gestes faciles à répéter peuvent être plus réalistes qu'une longue liste de règles.",
+        "Essaie de préparer une chose pour demain, de réduire les activités stimulantes avant le coucher et de choisir une activité calme. Prévois une version encore plus courte pour les journées chargées.",
+        "Garde des horaires aussi réguliers que possible, sans te reprocher les soirées imparfaites. Si les difficultés de sommeil persistent ou perturbent fortement tes journées, demande conseil à un professionnel de santé."
+      ],
+      en: [
+        "An evening routine does not need to last an hour to be useful. A few easy actions may be more realistic than a long list of rules.",
+        "Prepare one thing for tomorrow, reduce stimulating activities before bed, and choose something calming. Keep an even shorter version for busy days.",
+        "Keep your schedule reasonably consistent without blaming yourself for imperfect evenings. If sleep problems persist or seriously affect your days, seek advice from a health professional."
+      ]
+    },
+    tags: ["sleep", "evening", "routine"]
+  },
+  {
+    id: 14,
+    category: "fitness",
+    image: "https://images.unsplash.com/photo-1544367567-0f2fcb009e0b?auto=format&fit=crop&w=1200&q=85",
+    date: "2026-09-30",
+    readTime: 5,
+    title: {
+      fr: "Bouger à la maison sans équipement compliqué",
+      en: "Move at Home Without Complicated Equipment",
+    },
+    excerpt: {
+      fr: "Des mouvements simples pour ajouter de l'activité à ta journée.",
+      en: "Simple movements to add activity to your day.",
+    },
+    content: {
+      fr: [
+        "Tu n'as pas forcément besoin d'une salle de sport ou d'équipements spécialisés pour bouger. L'essentiel est de choisir des mouvements adaptés à tes capacités et à l'espace disponible.",
+        "Tu peux marcher doucement sur place, bouger les épaules, danser sur une chanson ou faire quelques levers de chaise contrôlés si cela te convient. Commence lentement et prends des pauses.",
+        "Choisis une durée réaliste, même cinq minutes. Arrête si tu ressens une douleur inhabituelle, des vertiges ou un malaise. Si tu as des restrictions médicales, demande conseil sur les activités adaptées."
+      ],
+      en: [
+        "You do not necessarily need a gym or specialist equipment to move. Choose movements that suit your abilities and available space.",
+        "Try gentle marching in place, shoulder movements, dancing to one song, or controlled chair stands if suitable. Start slowly and take breaks.",
+        "Choose a realistic duration, even five minutes. Stop if you experience unusual pain, dizziness, or feel unwell. If you have medical restrictions, ask which activities are suitable."
+      ]
+    },
+    tags: ["movement", "fitness", "home-workout"]
+  },
+  {
+    id: 15,
+    category: "mindfulness",
+    image: "https://images.unsplash.com/photo-1470252649378-9c29740c9fa8?auto=format&fit=crop&w=1200&q=85",
+    date: "2026-09-29",
+    readTime: 4,
+    title: {
+      fr: "Quand tout va trop vite, fais cette pause",
+      en: "When Everything Feels Rushed, Take This Pause",
+    },
+    excerpt: {
+      fr: "Un exercice concret pour choisir ta prochaine action.",
+      en: "A practical exercise to choose your next action.",
+    },
+    content: {
+      fr: [
+        "Quand plusieurs tâches réclament ton attention, vouloir tout résoudre en même temps peut augmenter la pression. Une courte pause peut t'aider à retrouver un peu de clarté.",
+        "Pose les pieds au sol et remarque trois choses que tu vois autour de toi. Demande-toi ensuite : quelle est la prochaine action utile, et qu'est-ce qui peut attendre ?",
+        "Écris cette action en une phrase et choisis un moment réaliste pour la faire. Si cet exercice te met mal à l'aise, regarde simplement autour de toi ou marche doucement. Si le stress devient difficile à gérer, demande du soutien."
+      ],
+      en: [
+        "When several tasks demand your attention, trying to solve everything at once can increase pressure. A short pause may help you regain clarity.",
+        "Place your feet on the floor and notice three things around you. Then ask: what is the next useful action, and what can wait?",
+        "Write that action in one sentence and choose a realistic time to do it. If this exercise feels uncomfortable, simply look around or take a gentle walk. Seek support if stress becomes difficult to manage."
+      ]
+    },
+    tags: ["mindfulness", "stress", "focus"]
+  },
+  {
+    id: 16,
+    category: "lifestyle",
+    image: "https://images.unsplash.com/photo-1494438639946-1ebd1d20bf85?auto=format&fit=crop&w=1200&q=85",
+    date: "2026-09-28",
+    readTime: 5,
+    title: {
+      fr: "Ranger en quinze minutes sans tout bouleverser",
+      en: "Tidy Up in Fifteen Minutes Without Doing Everything",
+    },
+    excerpt: {
+      fr: "Une méthode par petites zones pour retrouver un espace pratique.",
+      en: "A small-area method for making your space more practical.",
+    },
+    content: {
+      fr: [
+        "Vouloir ranger toute une pièce d'un seul coup peut décourager. Choisis plutôt une seule zone : une table, une étagère ou le contenu d'un sac.",
+        "Pendant quinze minutes, regroupe les objets similaires et remets à leur place ceux dont tu connais l'emplacement. Mets de côté les objets qui demandent une décision au lieu de t'arrêter sur chacun d'eux.",
+        "Le but n'est pas d'obtenir une pièce parfaite, mais de rendre un endroit plus facile à utiliser. Si tu n'as que cinq minutes, commence par la surface qui te gêne le plus."
+      ],
+      en: [
+        "Trying to tidy an entire room at once can feel discouraging. Choose one area instead: a table, shelf, or bag.",
+        "For fifteen minutes, group similar items and return things whose place you know. Set aside items that need a decision instead of getting stuck on each one.",
+        "The goal is not a perfect room but a space that is easier to use. If you only have five minutes, start with the surface that bothers you most."
+      ]
+    },
+    tags: ["lifestyle", "organization", "home"]
+  },
+  {
+    id: 17,
+    category: "motivation",
+    image: "https://images.unsplash.com/photo-1499209974431-9dddcece7f88?auto=format&fit=crop&w=1200&q=85",
+    date: "2026-09-27",
+    readTime: 5,
+    title: {
+      fr: "Tu as raté une journée ? Reprends sans te punir",
+      en: "Missed a Day? Start Again Without Punishing Yourself",
+    },
+    excerpt: {
+      fr: "Remplace la culpabilité par une reprise simple et précise.",
+      en: "Replace guilt with a simple, specific restart.",
+    },
+    content: {
+      fr: [
+        "Une journée manquée n'efface pas les efforts précédents. Les imprévus, la fatigue et les changements de programme font partie de la vie.",
+        "Au lieu d'essayer de compenser en faisant deux fois plus, reprends la plus petite version de ton habitude. Lis une page, range un objet ou marche quelques minutes selon tes capacités.",
+        "Demande-toi ce qui a rendu l'habitude difficile et ajuste une seule chose. La constance ne signifie pas réussir parfaitement chaque jour ; elle consiste aussi à reprendre après une interruption."
+      ],
+      en: [
+        "Missing one day does not erase your previous effort. Unexpected events, tiredness, and changing schedules are part of life.",
+        "Instead of compensating by doing twice as much, return to the smallest version of your habit. Read one page, put one item away, or walk for a few minutes if appropriate.",
+        "Ask what made the habit difficult and adjust one thing. Consistency does not mean being perfect every day; it also means returning after a break."
+      ]
+    },
+    tags: ["motivation", "habits", "progress"]
+  },
+  {
+    id: 18,
+    category: "nutrition",
+    image: "https://images.unsplash.com/photo-1540420773420-3366772f4999?auto=format&fit=crop&w=1200&q=85",
+    date: "2026-09-26",
+    readTime: 5,
+    title: {
+      fr: "Préparer quelques repas à l'avance pour gagner du temps",
+      en: "Prepare a Few Meals Ahead to Save Time",
+    },
+    excerpt: {
+      fr: "Prépare quelques bases polyvalentes au lieu de cuisiner toute la semaine.",
+      en: "Prepare a few versatile basics instead of cooking everything at once.",
+    },
+    content: {
+      fr: [
+        "Préparer ses repas à l'avance ne signifie pas devoir cuisiner sept plats différents. Quelques ingrédients de base peuvent faciliter plusieurs repas.",
+        "Choisis des aliments que tu sais conserver correctement : céréales ou tubercules cuits, légumineuses et légumes préparés, par exemple. Combine-les différemment au fil des jours.",
+        "Respecte les règles de sécurité alimentaire : conserve rapidement les aliments périssables au froid, utilise des contenants propres et réchauffe correctement les portions. Commence par préparer seulement deux repas, puis ajuste selon ce qui t'aide vraiment."
+      ],
+      en: [
+        "Preparing meals ahead does not mean cooking seven different dishes. A few basic ingredients can make several meals easier.",
+        "Choose foods you can store safely, such as cooked grains or starchy foods, legumes, and prepared vegetables. Combine them differently across the week.",
+        "Follow food-safety practices: refrigerate perishable foods promptly, use clean containers, and reheat portions properly. Start with just two meals and adjust based on what genuinely helps."
+      ]
+    },
+    tags: ["meal-prep", "nutrition", "planning"]
+  },
+  {
+    id: 19,
+    category: "habits",
+    image: "https://images.unsplash.com/photo-1455390582262-044cdead277a?auto=format&fit=crop&w=1200&q=85",
+    date: "2026-09-25",
+    readTime: 5,
+    title: {
+      fr: "Faire le bilan de sa semaine en dix minutes",
+      en: "Review Your Week in Ten Minutes",
+    },
+    excerpt: {
+      fr: "Repère ce qui fonctionne et choisis une priorité réaliste.",
+      en: "Notice what works and choose one realistic priority.",
+    },
+    content: {
+      fr: [
+        "Un bilan hebdomadaire n'est pas un examen. C'est un moyen de comprendre ce qui t'a aidé et ce qui mérite d'être ajusté.",
+        "Note une chose dont tu es satisfait, une difficulté rencontrée et une priorité pour la semaine prochaine. Tu n'as pas besoin de tout analyser ni de remplir ton agenda.",
+        "Transforme ta priorité en action précise : quoi faire, quand le faire et ce qu'il faut préparer. Relis tes notes la semaine suivante et ajuste ton plan si nécessaire."
+      ],
+      en: [
+        "A weekly review is not an exam. It helps you understand what worked and what might need adjusting.",
+        "Write down one thing you are pleased with, one difficulty, and one priority for next week. You do not need to analyze everything or fill your calendar.",
+        "Turn your priority into a specific action: what to do, when to do it, and what to prepare. Review your notes next week and adjust your plan if needed."
+      ]
+    },
+    tags: ["planning", "habits", "weekly-review"]
+  }
+];
+
+ARTICLES.push(...EXTRA_ARTICLES);
+
 const TEXT = {
   fr: {
     tagline: "De petites idées pour une vie plus équilibrée.",
@@ -1200,6 +1485,19 @@ export default function App() {
         .tp-article-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:22px}
         .tp-card{background:var(--surface);border:1px solid var(--line);border-radius:17px;overflow:hidden;transition:transform .25s,box-shadow .25s;min-width:0;animation:tpRise .45s both}
         .tp-card:hover{transform:translateY(-5px);box-shadow:0 14px 34px #152b1b12}
+        .tp-card{will-change:transform;animation:tpCardEnter .6s both}
+        .tp-article-grid .tp-card:nth-child(3n+1){animation-delay:.04s}
+        .tp-article-grid .tp-card:nth-child(3n+2){animation-delay:.12s}
+        .tp-article-grid .tp-card:nth-child(3n){animation-delay:.20s}
+        .tp-card-image{filter:saturate(.94);transition:transform .65s cubic-bezier(.2,.7,.2,1),filter .45s}
+        .tp-card:hover .tp-card-image{filter:saturate(1.12)}
+        .tp-image-badge{transition:transform .25s,background .25s}
+        .tp-card:hover .tp-image-badge{transform:translateY(-3px);background:#ffffff}
+        .tp-section-heading h2{animation:tpRise .65s both}
+        @keyframes tpCardEnter{
+          from{opacity:0;transform:translateY(22px) scale(.99)}
+          to{opacity:1;transform:translateY(0) scale(1)}
+        }
         .tp-image-button{width:100%;padding:0;border:0;background:none;position:relative;display:block;text-align:left}
         .tp-card-image{width:100%;height:215px;object-fit:cover;display:block;transition:transform .5s}
         .tp-card:hover .tp-card-image{transform:scale(1.035)}
