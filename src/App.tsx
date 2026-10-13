@@ -1668,11 +1668,44 @@ export default function App() {
                     ? "Un outil pour noter ta consommation d’eau."
                     : "A tool to record your water intake."}
                 </p>
-                <p>
-                  {language === "fr"
-                    ? "Bientôt disponible"
-                    : "Coming soon"}
-                </p>
+                <div>
+  <p>
+    {language === "fr"
+      ? "Chaque verre correspond à 250 ml."
+      : "Each glass equals 250 ml."}
+  </p>
+
+  <p>
+    {language === "fr"
+      ? "Verres consommés aujourd’hui :"
+      : "Glasses consumed today:"}
+    {" "}
+    {hydrationGlasses}
+  </p>
+
+  <p>
+    {language === "fr" ? "Total :" : "Total:"}
+    {" "}
+    {hydrationGlasses * 250} ml
+  </p>
+
+  <button
+    type="button"
+    className="tp-btn tp-btn-primary"
+    onClick={addHydrationGlass}
+  >
+    {language === "fr" ? "+ Ajouter un verre" : "+ Add a glass"}
+  </button>
+
+  <button
+    type="button"
+    className="tp-btn"
+    onClick={removeHydrationGlass}
+    disabled={hydrationGlasses === 0}
+  >
+    {language === "fr" ? "− Retirer un verre" : "− Remove a glass"}
+  </button>
+</div>
               </article>
             </div>
 
