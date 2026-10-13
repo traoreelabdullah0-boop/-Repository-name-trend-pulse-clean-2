@@ -1343,6 +1343,17 @@ export default function App() {
               <div className="tp-ad-banner tp-ad-banner-a">
   <div id="tp-adsterra-banner-a"></div>
 </div>
+              
+<div className="tp-smartlink">
+  <a
+    href="https://www.profitableratecpmnetwork.com/tm1qnet015?key=398d120354b2f667241e758d9680427b"
+    target="_blank"
+    rel="nofollow sponsored noopener noreferrer"
+  >
+    {language === "fr" ? "Découvrir davantage" : "Discover more"}
+  </a>
+</div>
+              
 
               <div className="tp-tags">
                 {selectedArticle.tags.map((tag) => (
