@@ -1522,9 +1522,6 @@ export default function App() {
                 
               </article>
               
-
-              <article className="tp-resource-card">
-              
               <article className="tp-resource-card">
                 <span className="tp-resource-icon">⚖️</span>
                 <h3>
