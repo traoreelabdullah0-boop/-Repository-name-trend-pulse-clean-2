@@ -1,6 +1,5 @@
 
 import { useMemo, useState } from "react";
-import "./App.css";
 
 type Language = "fr" | "en";
 type Page = "home" | "trends" | "tips" | "videos" | "articles" | "resources" | "about";
