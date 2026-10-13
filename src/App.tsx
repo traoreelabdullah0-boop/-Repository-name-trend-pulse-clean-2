@@ -2,7 +2,7 @@
 import { useMemo, useState } from "react";
 
 type Language = "fr" | "en";
-type Page = "home" | "trends" | "tips" | "videos" | "articles" | "resources" | "about";
+type Page = "home" | "trends" | "tips" | "videos" | "articles" | "resources" | "wellness" | "about";
 
 type Article = {
   id: number;
@@ -583,6 +583,7 @@ const TEXT = {
     videos: "Vidéos",
     articles: "Articles",
     resources: "Ressources",
+    wellness: "Outils de bien-être",
     about: "À propos",
     search: "Rechercher un article...",
     explore: "Explorer les articles",
@@ -623,6 +624,7 @@ const TEXT = {
     videos: "Videos",
     articles: "Articles",
     resources: "Resources",
+    wellness: "Wellness tools",
     about: "About",
     search: "Search articles...",
     explore: "Explore articles",
@@ -664,6 +666,7 @@ const NAV_ITEMS: { id: Page; key: keyof typeof TEXT.fr }[] = [
   { id: "videos", key: "videos" },
   { id: "articles", key: "articles" },
   { id: "resources", key: "resources" },
+  { id: "wellness", key: "wellness" },
   { id: "about", key: "about" },
 ];
 
@@ -1308,6 +1311,86 @@ export default function App() {
             </div>
           </section>
         )}
+        
+        {!selectedArticle && page === "wellness" && (
+          <section className="tp-page-section">
+            {sectionHeading(
+              t.wellness,
+              language === "fr"
+                ? "Prends soin de toi, un geste à la fois"
+                : "Take care of yourself, one step at a time",
+              language === "fr"
+                ? "Des outils simples pour suivre tes habitudes et mieux comprendre ton bien-être."
+                : "Simple tools to track your habits and better understand your well-being.",
+            )}
+
+            <div className="tp-resources-grid">
+              <article className="tp-resource-card">
+                <span className="tp-resource-icon">❤️</span>
+                <h3>
+                  {language === "fr"
+                    ? "Suivi de la tension artérielle"
+                    : "Blood pressure tracker"}
+                </h3>
+                <p>
+                  {language === "fr"
+                    ? "Note tes mesures et consulte ton historique sur cet appareil."
+                    : "Record your measurements and review your history on this device."}
+                </p>
+                <p>
+                  {language === "fr"
+                    ? "Bientôt disponible"
+                    : "Coming soon"}
+                </p>
+              </article>
+
+              <article className="tp-resource-card">
+                <span className="tp-resource-icon">⚖️</span>
+                <h3>
+                  {language === "fr"
+                    ? "Calculateur d’IMC"
+                    : "BMI calculator"}
+                </h3>
+                <p>
+                  {language === "fr"
+                    ? "Une estimation basée sur la taille et le poids."
+                    : "An estimate based on height and weight."}
+                </p>
+                <p>
+                  {language === "fr"
+                    ? "Bientôt disponible"
+                    : "Coming soon"}
+                </p>
+              </article>
+
+              <article className="tp-resource-card">
+                <span className="tp-resource-icon">💧</span>
+                <h3>
+                  {language === "fr"
+                    ? "Suivi de l’hydratation"
+                    : "Hydration tracker"}
+                </h3>
+                <p>
+                  {language === "fr"
+                    ? "Un outil pour noter ta consommation d’eau."
+                    : "A tool to record your water intake."}
+                </p>
+                <p>
+                  {language === "fr"
+                    ? "Bientôt disponible"
+                    : "Coming soon"}
+                </p>
+              </article>
+            </div>
+
+            <p className="tp-info-note">
+              {language === "fr"
+                ? "Ces outils sont informatifs et ne remplacent pas l’avis d’un professionnel de santé."
+                : "These tools are for information only and do not replace advice from a health professional."}
+            </p>
+          </section>
+        )}
+        
         
         {selectedArticle && (
           <section className="tp-article-detail">
