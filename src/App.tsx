@@ -16,6 +16,13 @@ type Article = {
   content: { fr: string[]; en: string[] };
   tags: string[];
 };
+type BloodPressureRecord = {
+  id: number;
+  systolic: number;
+  diastolic: number;
+  pulse: number | null;
+  date: string;
+};
 
 const SITE_NAME = "Trend Pulse";
 
@@ -735,8 +742,75 @@ export default function App() {
   const [email, setEmail] = useState("");
   const [notice, setNotice] = useState("");
   const [mobileMenu, setMobileMenu] = useState(false);
-
+  const [bloodPressureRecords, setBloodPressureRecords] = useState<BloodPressureRecord[]>(() => {
+    try {
+      const saved = localStorage.getItem("trendPulseBloodPressure");
+      return saved ? JSON.parse(saved) as BloodPressureRecord[] : [];
+    } catch {
+      return [];
+    }
+  });
+  const [systolicInput, setSystolicInput] = useState("");
+  const [diastolicInput, setDiastolicInput] = useState("");
+  const [pulseInput, setPulseInput] = useState("");
   const t = TEXT[language];
+  const addBloodPressureRecord = () => {
+  const systolic = Number(systolicInput);
+  const diastolic = Number(diastolicInput);
+  const pulse = pulseInput.trim() === "" ? null : Number(pulseInput);
+
+    if (
+      systolicInput.trim() === "" ||
+      diastolicInput.trim() === "" ||
+      !Number.isFinite(systolic) ||
+      !Number.isFinite(diastolic) ||
+      systolic < 50 ||
+      systolic > 300 ||
+      diastolic < 30 ||
+      diastolic > 200 ||
+      (pulse !== null &&
+        (!Number.isFinite(pulse) || pulse < 30 || pulse > 220))
+    ) {
+      setNotice(
+        language === "fr"
+          ? "Vérifie les mesures saisies. Le pouls est facultatif."
+          : "Check your measurements. Pulse is optional."
+      );
+      return;
+    }
+
+    const record: BloodPressureRecord = {
+      id: Date.now(),
+      systolic,
+      diastolic,
+      pulse,
+      date: new Date().toISOString(),
+    };
+
+    const updatedRecords = [record, ...bloodPressureRecords];
+
+    try {
+      localStorage.setItem(
+        "trendPulseBloodPressure",
+        JSON.stringify(updatedRecords)
+      );
+      setBloodPressureRecords(updatedRecords);
+      setSystolicInput("");
+      setDiastolicInput("");
+      setPulseInput("");
+      setNotice(
+        language === "fr"
+          ? "Mesure enregistrée sur cet appareil."
+          : "Measurement saved on this device."
+      );
+    } catch {
+      setNotice(
+        language === "fr"
+          ? "Impossible d'enregistrer la mesure sur cet appareil."
+          : "Unable to save the measurement on this device."
+      );
+    }
+  };
 
   const changePage = (nextPage: Page) => {
     setPage(nextPage);
@@ -1325,6 +1399,7 @@ export default function App() {
             )}
 
             <div className="tp-resources-grid">
+              
               <article className="tp-resource-card">
                 <span className="tp-resource-icon">❤️</span>
                 <h3>
@@ -1334,15 +1409,87 @@ export default function App() {
                 </h3>
                 <p>
                   {language === "fr"
-                    ? "Note tes mesures et consulte ton historique sur cet appareil."
+                    ? "Enregistre tes mesures et consulte ton historique sur cet appareil."
                     : "Record your measurements and review your history on this device."}
                 </p>
-                <p>
+
+                <label>
                   {language === "fr"
-                    ? "Bientôt disponible"
-                    : "Coming soon"}
-                </p>
+                    ? "Tension systolique (max.)"
+                    : "Systolic blood pressure (top)"}
+                </label>
+                <input
+                  type="number"
+                  min="50"
+                  max="300"
+                  value={systolicInput}
+                  onChange={(event) => setSystolicInput(event.target.value)}
+                  placeholder={language === "fr" ? "Ex. : 120" : "E.g. 120"}
+                />
+
+                <label>
+                  {language === "fr"
+                    ? "Tension diastolique (min.)"
+                    : "Diastolic blood pressure (bottom)"}
+                </label>
+                <input
+                  type="number"
+                  min="30"
+                  max="200"
+                  value={diastolicInput}
+                  onChange={(event) => setDiastolicInput(event.target.value)}
+                  placeholder={language === "fr" ? "Ex. : 80" : "E.g. 80"}
+                />
+
+                <label>
+                  {language === "fr" ? "Pouls (facultatif)" : "Pulse (optional)"}
+                </label>
+                <input
+                  type="number"
+                  min="30"
+                  max="220"
+                  value={pulseInput}
+                  onChange={(event) => setPulseInput(event.target.value)}
+                  placeholder={language === "fr" ? "Ex. : 72" : "E.g. 72"}
+                />
+
+                <button
+                  type="button"
+                  onClick={addBloodPressureRecord}
+                  className="tp-btn tp-btn-primary"
+                >
+                  {language === "fr" ? "Enregistrer la mesure" : "Save measurement"}
+                </button>
+
+                {notice && <p role="status">{notice}</p>}
+
+                <h4>
+                  {language === "fr" ? "Historique des mesures" : "Measurement history"}
+                </h4>
+
+                {bloodPressureRecords.length === 0 ? (
+                  <p>
+                    {language === "fr"
+                      ? "Aucune mesure enregistrée pour le moment."
+                      : "No measurements recorded yet."}
+                  </p>
+                ) : (
+                  bloodPressureRecords.map((record) => (
+                    <p key={record.id}>
+                      <strong>{record.systolic}/{record.diastolic}</strong>
+                      {" mmHg"}
+                      {record.pulse !== null && (
+                        <> · {language === "fr" ? "Pouls" : "Pulse"}: {record.pulse}</>
+                      )}
+                      <br />
+                      {new Date(record.date).toLocaleString(
+                        language === "fr" ? "fr-FR" : "en-GB"
+                      )}
+                    </p>
+                  ))
+                )}
               </article>
+              
 
               <article className="tp-resource-card">
                 <span className="tp-resource-icon">⚖️</span>
