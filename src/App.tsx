@@ -1594,6 +1594,9 @@ export default function App() {
         .tp-article-content>p{font-size:15px;line-height:2.05;color:var(--ink);margin:0 0 22px}
         .tp-tags{display:flex;gap:9px;flex-wrap:wrap;margin:30px 0}
         .tp-tags button{border:1px solid var(--line);border-radius:30px;background:var(--surface);color:var(--green);padding:8px 12px;font-size:10px}
+        .tp-smartlink{margin:28px 0;text-align:center}
+        .tp-smartlink a{display:inline-block;padding:12px 22px;border-radius:30px;background:var(--green);color:#fff;text-decoration:none;font-size:13px;font-weight:700;transition:opacity .2s}
+        .tp-smartlink a:hover{opacity:.85}
         .tp-disclaimer{display:flex;gap:10px;padding:16px;background:var(--mint);border-radius:12px;color:var(--muted);font-size:11px;line-height:1.8}
         .tp-disclaimer p{margin:0}
         .tp-related-section{margin-top:45px}
