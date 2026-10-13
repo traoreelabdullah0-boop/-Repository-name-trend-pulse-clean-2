@@ -1524,6 +1524,8 @@ export default function App() {
               
 
               <article className="tp-resource-card">
+              
+              <article className="tp-resource-card">
                 <span className="tp-resource-icon">⚖️</span>
                 <h3>
                   {language === "fr"
@@ -1532,15 +1534,87 @@ export default function App() {
                 </h3>
                 <p>
                   {language === "fr"
-                    ? "Une estimation basée sur la taille et le poids."
-                    : "An estimate based on height and weight."}
+                    ? "Estime ton indice de masse corporelle à partir de ta taille et de ton poids."
+                    : "Estimate your body mass index from your height and weight."}
                 </p>
+
+                <label>
+                  {language === "fr" ? "Poids (kg)" : "Weight (kg)"}
+                </label>
+                <input
+                  type="number"
+                  min="1"
+                  max="500"
+                  step="0.1"
+                  id="tp-bmi-weight"
+                  placeholder={language === "fr" ? "Ex. : 70" : "E.g. 70"}
+                />
+
+                <label>
+                  {language === "fr" ? "Taille (cm)" : "Height (cm)"}
+                </label>
+                <input
+                  type="number"
+                  min="50"
+                  max="250"
+                  step="0.1"
+                  id="tp-bmi-height"
+                  placeholder={language === "fr" ? "Ex. : 170" : "E.g. 170"}
+                />
+
+                <button
+                  type="button"
+                  className="tp-btn tp-btn-primary"
+                  onClick={() => {
+                    const weightInput = document.getElementById("tp-bmi-weight") as HTMLInputElement | null;
+                    const heightInput = document.getElementById("tp-bmi-height") as HTMLInputElement | null;
+                    const weight = Number(weightInput?.value);
+                    const height = Number(heightInput?.value);
+
+                    if (
+                      !weightInput?.value.trim() ||
+                      !heightInput?.value.trim() ||
+                      !Number.isFinite(weight) ||
+                      !Number.isFinite(height) ||
+                      weight < 1 ||
+                      weight > 500 ||
+                      height < 50 ||
+                      height > 250
+                    ) {
+                      setNotice(
+                        language === "fr"
+                          ? "Entre un poids et une taille valides."
+                          : "Enter a valid weight and height."
+                      );
+                      return;
+                    }
+
+                    const bmi = weight / ((height / 100) ** 2);
+                    const category =
+                      bmi < 18.5
+                        ? (language === "fr" ? "insuffisance pondérale" : "underweight")
+                        : bmi < 25
+                          ? (language === "fr" ? "corpulence dite normale" : "normal weight")
+                          : bmi < 30
+                            ? (language === "fr" ? "surpoids" : "overweight")
+                            : (language === "fr" ? "obésité" : "obesity");
+
+                    setNotice(
+                      `${language === "fr" ? "IMC estimé" : "Estimated BMI"} : ${bmi.toFixed(1)} — ${category}.`
+                    );
+                  }}
+                >
+                  {language === "fr" ? "Calculer mon IMC" : "Calculate my BMI"}
+                </button>
+
+                {notice && <p role="status">{notice}</p>}
                 <p>
                   {language === "fr"
-                    ? "Bientôt disponible"
-                    : "Coming soon"}
+                    ? "L’IMC est un indicateur général, pas un diagnostic médical. Son interprétation dépend notamment de l’âge et du contexte individuel."
+                    : "BMI is a general indicator, not a medical diagnosis. Interpretation depends on age and individual circumstances."}
                 </p>
               </article>
+                
 
               <article className="tp-resource-card">
                 <span className="tp-resource-icon">💧</span>
