@@ -1425,6 +1425,22 @@ export default function App() {
               </button>
             ))}
           </div>
+          
+          <div style={{ display: "flex", alignItems: "center", justifyContent: "center", gap: "16px", flexWrap: "wrap", margin: "20px 0" }}>
+            <a href="https://www.facebook.com/share/14snJ1uWFZM/" target="_blank" rel="noopener noreferrer" aria-label="Facebook" title="Facebook" style={{ color: "#1877F2", display: "flex" }}>
+              <svg width="26" height="26" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M13.5 21v-8h2.7l.4-3h-3.1V8.1c0-.9.3-1.5 1.6-1.5h1.7V3.9c-.3 0-1.3-.1-2.5-.1-2.5 0-4.2 1.5-4.2 4.3V10H7.3v3h2.8v8z"/></svg>
+            </a>
+            <a href="https://www.instagram.com/trendpulses2.0/" target="_blank" rel="noopener noreferrer" aria-label="Instagram" title="Instagram" style={{ color: "#D94687", display: "flex" }}>
+              <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" aria-hidden="true"><rect x="3" y="3" width="18" height="18" rx="5"/><circle cx="12" cy="12" r="4"/><circle cx="17.5" cy="6.5" r="1" fill="currentColor" stroke="none"/></svg>
+            </a>
+            <a href="https://www.tiktok.com/@trendpulses2.0" target="_blank" rel="noopener noreferrer" aria-label="TikTok" title="TikTok" style={{ color: "var(--ink)", display: "flex" }}>
+              <svg width="26" height="26" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M19.6 7.1a6.3 6.3 0 0 1-4.1-1.5v8.1a5.7 5.7 0 1 1-5-5.6v3.1a2.7 2.7 0 1 0 2 2.6V2.5h3a6.2 6.2 0 0 0 4.1 4.6z"/></svg>
+            </a>
+            <a href="https://wa.me/22893328956" target="_blank" rel="noopener noreferrer" aria-label="WhatsApp" title="WhatsApp" style={{ color: "#25D366", display: "flex" }}>
+              <svg width="26" height="26" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M12 2a9.7 9.7 0 0 0-8.4 14.6L2.3 22l5.6-1.5A9.7 9.7 0 1 0 12 2zm0 17.7a8 8 0 0 1-4.1-1.1l-.3-.2-3.3.9.9-3.2-.2-.3A8 8 0 1 1 12 19.7zm4.4-5.9c-.2-.1-1.4-.7-1.6-.8-.2-.1-.4-.1-.5.1-.2.2-.6.8-.8 1-.1.2-.3.2-.5.1-.2-.1-1-.4-1.9-1.2-.7-.6-1.2-1.4-1.3-1.6-.1-.2 0-.3.1-.5l.4-.4c.1-.1.2-.3.2-.4.1-.2 0-.3 0-.5-.1-.1-.5-1.3-.7-1.7-.2-.4-.4-.4-.5-.4h-.4c-.2 0-.5.1-.7.3-.2.2-.9.9-.9 2.1s.9 2.4 1 2.6c.1.2 1.8 2.8 4.4 3.8.6.3 1.1.4 1.4.5.6.2 1.1.2 1.5.1.5-.1 1.4-.6 1.6-1.2.2-.6.2-1.1.1-1.2-.1-.1-.2-.2-.4-.3z"/></svg>
+            </a>
+          </div>
+          
         </div>
         <div className="tp-footer-bottom">
           <span>© {new Date().getFullYear()} Trend Pulse</span>
