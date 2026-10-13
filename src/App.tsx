@@ -1335,7 +1335,11 @@ export default function App() {
             <div className="tp-article-content">
               {selectedArticle.content[language].map((paragraph, index) => (
                 <p key={`${selectedArticle.id}-${index}`}>{paragraph}</p>
-              ))}
+              ))}             
+              
+              <div className="tp-ad-banner">
+                <div id="container-c05378bff39c37075502e6d18a07b62a"></div>
+              </div>
 
               <div className="tp-tags">
                 {selectedArticle.tags.map((tag) => (
