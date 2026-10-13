@@ -1473,21 +1473,53 @@ export default function App() {
                       ? "Aucune mesure enregistrée pour le moment."
                       : "No measurements recorded yet."}
                   </p>
+                  
                 ) : (
                   bloodPressureRecords.map((record) => (
-                    <p key={record.id}>
-                      <strong>{record.systolic}/{record.diastolic}</strong>
-                      {" mmHg"}
-                      {record.pulse !== null && (
-                        <> · {language === "fr" ? "Pouls" : "Pulse"}: {record.pulse}</>
-                      )}
-                      <br />
-                      {new Date(record.date).toLocaleString(
-                        language === "fr" ? "fr-FR" : "en-GB"
-                      )}
-                    </p>
+                    <div key={record.id} className="tp-bp-record">
+                      <p>
+                        <strong>{record.systolic}/{record.diastolic}</strong>
+                        {" mmHg"}
+                        {record.pulse !== null && (
+                          <> · {language === "fr" ? "Pouls" : "Pulse"}: {record.pulse}</>
+                        )}
+                        <br />
+                        {new Date(record.date).toLocaleString(
+                          language === "fr" ? "fr-FR" : "en-GB"
+                        )}
+                      </p>
+                      <button
+                        type="button"
+                        onClick={() => {
+                          const updatedRecords = bloodPressureRecords.filter(
+                            (item) => item.id !== record.id
+                          );
+                          try {
+                            localStorage.setItem(
+                              "trendPulseBloodPressure",
+                              JSON.stringify(updatedRecords)
+                            );
+                            setBloodPressureRecords(updatedRecords);
+                            setNotice(
+                              language === "fr"
+                                ? "Mesure supprimée."
+                                : "Measurement deleted."
+                            );
+                          } catch {
+                            setNotice(
+                              language === "fr"
+                                ? "Impossible de supprimer la mesure."
+                                : "Unable to delete the measurement."
+                            );
+                          }
+                        }}
+                      >
+                        {language === "fr" ? "Supprimer" : "Delete"}
+                      </button>
+                    </div>
                   ))
                 )}
+                
               </article>
               
 
