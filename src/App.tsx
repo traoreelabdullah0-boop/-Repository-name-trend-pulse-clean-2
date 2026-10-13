@@ -1,549 +1,462 @@
 
-import { useState } from "react";
-
-type Page =
-  | "home"
-  | "trends"
-  | "tips"
-  | "videos"
-  | "articles"
-  | "ebooks"
-  | "about";
+import { useMemo, useState } from "react";
+import "./App.css";
 
 type Language = "fr" | "en";
-type Theme = "light" | "dark";
+type Page = "home" | "trends" | "tips" | "videos" | "articles" | "resources" | "about";
 
 type Article = {
   id: number;
   category: string;
-  categoryEn: string;
-  title: string;
-  titleEn: string;
-  summary: string;
-  summaryEn: string;
-  body: string[];
-  bodyEn: string[];
-  source: string;
   image: string;
+  date: string;
+  readTime: number;
+  featured?: boolean;
+  title: { fr: string; en: string };
+  excerpt: { fr: string; en: string };
+  content: { fr: string[]; en: string[] };
+  tags: string[];
 };
 
-type Resource = {
-  title: string;
-  titleEn: string;
-  description: string;
-  descriptionEn: string;
-  organization: string;
-  url: string;
-  image: string;
-};
+const SITE_NAME = "Trend Pulse";
 
-const images = {
-  hero: "https://images.unsplash.com/photo-1490645935967-10de6ba17061?auto=format&fit=crop&w=1600&q=85",
-  food: "https://images.unsplash.com/photo-1540420773420-3366772f4999?auto=format&fit=crop&w=1000&q=85",
-  sleep: "https://images.unsplash.com/photo-1511295742362-92c96b6d4d67?auto=format&fit=crop&w=1000&q=85",
-  activity: "https://images.unsplash.com/photo-1476480862126-209bfaa8edc8?auto=format&fit=crop&w=1000&q=85",
-  wellness: "https://images.unsplash.com/photo-1506126613408-eca07ce68773?auto=format&fit=crop&w=1000&q=85",
-  habits: "https://images.unsplash.com/photo-1499209974431-9dddcece7f88?auto=format&fit=crop&w=1000&q=85",
-  books: "https://images.unsplash.com/photo-1512820790803-83ca734da794?auto=format&fit=crop&w=1000&q=85",
-  water: "https://images.unsplash.com/photo-1532634896-26909d0d4b8c?auto=format&fit=crop&w=1000&q=85"
-};
+const CATEGORIES = [
+  { id: "all", fr: "Tout", en: "All" },
+  { id: "wellness", fr: "Bien-être", en: "Wellness" },
+  { id: "nutrition", fr: "Alimentation", en: "Nutrition" },
+  { id: "fitness", fr: "Sport", en: "Fitness" },
+  { id: "sleep", fr: "Sommeil", en: "Sleep" },
+  { id: "mindfulness", fr: "Esprit", en: "Mindfulness" },
+  { id: "lifestyle", fr: "Mode de vie", en: "Lifestyle" },
+  { id: "habits", fr: "Habitudes", en: "Habits" },
+  { id: "motivation", fr: "Motivation", en: "Motivation" },
+];
 
-const articles: Article[] = [
+const ARTICLES: Article[] = [
   {
     id: 1,
-    category: "Nutrition",
-    categoryEn: "Nutrition",
-    title: "Comment construire une alimentation équilibrée",
-    titleEn: "How to Build a Balanced Diet",
-    summary: "Des habitudes simples pour varier les aliments et mieux organiser ses repas.",
-    summaryEn: "Simple habits to diversify foods and plan balanced meals.",
-    body: [
-      "Une alimentation variée aide à apporter différents nutriments au corps.",
-      "Essaie de varier les fruits, les légumes, les céréales et les sources de protéines selon tes possibilités.",
-      "Boire de l’eau et organiser ses repas peut aider à installer de bonnes habitudes.",
-      "Les besoins varient selon les personnes. Pour une situation médicale particulière, demande conseil à un professionnel de santé."
-    ],
-    bodyEn: [
-      "A varied diet helps provide the body with different nutrients.",
-      "Try to vary fruits, vegetables, grains, and protein sources according to what is available to you.",
-      "Drinking water and planning meals can help build healthy habits.",
-      "Needs vary from person to person. For a medical concern, seek advice from a qualified health professional."
-    ],
-    source: "https://www.who.int/health-topics/healthy-diet",
-    image: images.food
+    category: "wellness",
+    image: "https://images.unsplash.com/photo-1506126613408-eca07ce68773?auto=format&fit=crop&w=1200&q=85",
+    date: "2026-10-12",
+    readTime: 5,
+    featured: true,
+    title: {
+      fr: "7 petites habitudes pour se sentir mieux chaque jour",
+      en: "7 Small Habits to Feel Better Every Day",
+    },
+    excerpt: {
+      fr: "Des gestes simples pour prendre soin de soi sans bouleverser toute sa routine.",
+      en: "Simple actions to care for yourself without changing your whole routine.",
+    },
+    content: {
+      fr: [
+        "Le bien-être se construit souvent grâce à de petits gestes répétés. Tu n'as pas besoin de transformer toute ta vie en une journée.",
+        "Commence par boire de l'eau au réveil, prendre quelques minutes pour respirer, marcher un peu et préparer une journée réaliste.",
+        "Choisis une seule habitude à tester pendant une semaine. Observe comment tu te sens et adapte-la à ton quotidien.",
+      ],
+      en: [
+        "Wellness often grows from small actions repeated consistently. You do not need to change your entire life in one day.",
+        "Start by drinking water after waking up, taking a few minutes to breathe, walking a little, and planning a realistic day.",
+        "Choose one habit to try for a week. Notice how you feel and adapt it to your routine.",
+      ],
+    },
+    tags: ["routine", "wellness", "habits"],
   },
   {
     id: 2,
-    category: "Sommeil",
-    categoryEn: "Sleep",
-    title: "7 habitudes pour améliorer son sommeil",
-    titleEn: "7 Habits for Better Sleep",
-    summary: "Une routine régulière peut aider à préparer le corps au sommeil.",
-    summaryEn: "A regular routine can help prepare the body for sleep.",
-    body: [
-      "Essaie de garder des horaires de coucher et de réveil réguliers.",
-      "Crée un environnement calme, confortable et adapté au sommeil.",
-      "Réduis les activités stimulantes avant le coucher.",
-      "Si tes difficultés de sommeil persistent, demande conseil à un professionnel de santé."
-    ],
-    bodyEn: [
-      "Try to keep regular bedtimes and wake-up times.",
-      "Create a calm, comfortable sleeping environment.",
-      "Reduce stimulating activities before bedtime.",
-      "If sleep difficulties persist, seek advice from a health professional."
-    ],
-    source: "https://www.nhlbi.nih.gov/health/sleep-deprivation",
-    image: images.sleep
+    category: "nutrition",
+    image: "https://images.unsplash.com/photo-1490645935967-10de6ba17061?auto=format&fit=crop&w=1200&q=85",
+    date: "2026-10-11",
+    readTime: 4,
+    title: {
+      fr: "Composer une assiette colorée et équilibrée",
+      en: "How to Build a Colorful, Balanced Plate",
+    },
+    excerpt: {
+      fr: "Une méthode visuelle et simple pour varier les aliments au quotidien.",
+      en: "A simple visual approach to adding variety to everyday meals.",
+    },
+    content: {
+      fr: [
+        "Une assiette variée peut associer des légumes ou des fruits, des aliments riches en protéines et des sources de féculents.",
+        "Pense aussi aux aliments disponibles dans ta région : haricots, œufs, céréales, légumes locaux et fruits de saison peuvent contribuer à des repas variés.",
+        "Il n'existe pas une assiette parfaite pour tout le monde. Les besoins dépendent notamment de l'âge, de l'activité et de la santé.",
+      ],
+      en: [
+        "A varied plate can include vegetables or fruit, protein-rich foods, and sources of carbohydrates.",
+        "Consider foods available in your area. Beans, eggs, grains, local vegetables, and seasonal fruit can help create varied meals.",
+        "There is no single perfect plate for everyone. Needs depend on age, activity, and health.",
+      ],
+    },
+    tags: ["food", "nutrition", "daily life"],
   },
   {
     id: 3,
-    category: "Activité physique",
-    categoryEn: "Physical activity",
-    title: "Bouger davantage au quotidien",
-    titleEn: "Move More Every Day",
-    summary: "La marche et les activités quotidiennes peuvent aider à rester actif.",
-    summaryEn: "Walking and everyday activities can help you stay active.",
-    body: [
-      "Marcher, danser ou faire des tâches quotidiennes sont des façons de bouger.",
-      "Commence progressivement et choisis une activité adaptée à tes capacités.",
-      "Des périodes courtes de mouvement peuvent s’intégrer à ta journée.",
-      "Adapte toujours ton activité à ta condition physique et demande un avis médical si nécessaire."
-    ],
-    bodyEn: [
-      "Walking, dancing, and everyday tasks are ways to move.",
-      "Start gradually and choose an activity suited to your abilities.",
-      "Short periods of movement can fit into your day.",
-      "Adapt activity to your physical condition and seek medical advice when necessary."
-    ],
-    source: "https://www.who.int/health-topics/physical-activity",
-    image: images.activity
+    category: "sleep",
+    image: "https://images.unsplash.com/photo-1511295742362-92c96b8f7f0a?auto=format&fit=crop&w=1200&q=85",
+    date: "2026-10-10",
+    readTime: 5,
+    title: {
+      fr: "Une routine du soir pour mieux préparer son sommeil",
+      en: "An Evening Routine to Prepare for Better Sleep",
+    },
+    excerpt: {
+      fr: "Des idées simples pour ralentir et rendre la fin de journée plus calme.",
+      en: "Simple ideas to slow down and make evenings more peaceful.",
+    },
+    content: {
+      fr: [
+        "Une routine régulière peut aider ton corps à reconnaître que la journée se termine.",
+        "Essaie de réduire les activités stimulantes, de préparer tes affaires pour le lendemain et de choisir une activité calme, comme la lecture.",
+        "Garde des horaires aussi réguliers que possible. Si les problèmes de sommeil persistent ou affectent fortement tes journées, demande conseil à un professionnel de santé.",
+      ],
+      en: [
+        "A regular routine can help your body recognize that the day is ending.",
+        "Try reducing stimulating activities, preparing things for tomorrow, and choosing a calm activity such as reading.",
+        "Keep your schedule as consistent as possible. If sleep problems persist or seriously affect daily life, seek advice from a health professional.",
+      ],
+    },
+    tags: ["sleep", "evening", "routine"],
   },
+  
   {
     id: 4,
-    category: "Bien-être",
-    categoryEn: "Well-being",
-    title: "Des pauses pour mieux gérer le stress",
-    titleEn: "Simple Ways to Manage Stress",
-    summary: "Quelques minutes de pause peuvent aider à retrouver son attention.",
-    summaryEn: "A few minutes of rest can help you refocus.",
-    body: [
-      "Quand la journée est chargée, prends quelques instants pour ralentir.",
-      "Respire calmement, marche un peu ou éloigne-toi brièvement de ton écran.",
-      "Parler à une personne de confiance peut aussi être utile.",
-      "Si le stress devient difficile à gérer, un professionnel peut t’accompagner."
-    ],
-    bodyEn: [
-      "When the day feels busy, take a moment to slow down.",
-      "Breathe calmly, take a short walk, or briefly step away from your screen.",
-      "Talking to someone you trust can also help.",
-      "If stress becomes difficult to manage, a professional can support you."
-    ],
-    source: "https://www.nimh.nih.gov/health",
-    image: images.wellness
+    category: "fitness",
+    image: "https://images.unsplash.com/photo-1518611012118-696072aa579a?auto=format&fit=crop&w=1200&q=85",
+    date: "2026-10-09",
+    readTime: 4,
+    title: {
+      fr: "Bouger davantage même quand on manque de temps",
+      en: "Move More Even When You Are Short on Time",
+    },
+    excerpt: {
+      fr: "Intègre de petits moments d'activité dans une journée bien remplie.",
+      en: "Fit small moments of movement into a busy day.",
+    },
+    content: {
+      fr: [
+        "L'activité physique ne doit pas toujours prendre la forme d'une longue séance de sport.",
+        "Tu peux marcher, prendre les escaliers, danser sur une chanson ou faire quelques mouvements doux pendant une pause.",
+        "Commence à ton rythme et augmente progressivement. Choisis une activité adaptée à tes capacités.",
+      ],
+      en: [
+        "Physical activity does not always have to mean a long workout.",
+        "You can walk, take the stairs, dance to a song, or do gentle movements during a break.",
+        "Start at your own pace and build up gradually. Choose an activity that suits your abilities.",
+      ],
+    },
+    tags: ["movement", "fitness", "routine"],
   },
   {
     id: 5,
-    category: "Habitudes saines",
-    categoryEn: "Healthy habits",
-    title: "Comment construire une routine durable",
-    titleEn: "How to Build a Sustainable Routine",
-    summary: "Commence petit, répète tes habitudes et adapte-les à ton quotidien.",
-    summaryEn: "Start small, repeat your habits, and adapt them to everyday life.",
-    body: [
-      "Choisis une petite habitude facile à répéter.",
-      "Associe-la à un moment précis de ta journée.",
-      "Observe ce qui fonctionne et ajuste ton organisation sans chercher la perfection.",
-      "La régularité et la souplesse peuvent aider à maintenir une routine."
-    ],
-    bodyEn: [
-      "Choose a small habit that is easy to repeat.",
-      "Connect it to a specific moment in your day.",
-      "Notice what works and adjust your routine without aiming for perfection.",
-      "Consistency and flexibility can help you maintain a routine."
-    ],
-    source: "https://www.who.int/health-topics",
-    image: images.habits
-  }
+    category: "mindfulness",
+    image: "https://images.unsplash.com/photo-1470252649378-9c29740c9fa8?auto=format&fit=crop&w=1200&q=85",
+    date: "2026-10-08",
+    readTime: 3,
+    title: {
+      fr: "Prendre cinq minutes pour retrouver son calme",
+      en: "Take Five Minutes to Find Your Calm",
+    },
+    excerpt: {
+      fr: "Une courte pause pour ralentir et revenir à ce que tu fais.",
+      en: "A short pause to slow down and return to the present moment.",
+    },
+    content: {
+      fr: [
+        "Trouve un endroit où tu peux faire une courte pause sans danger ni distraction importante.",
+        "Pose les pieds au sol, relâche les épaules et remarque lentement ta respiration, sans chercher à la forcer.",
+        "Si cet exercice te met mal à l'aise, arrête et choisis plutôt une activité apaisante, comme marcher tranquillement.",
+      ],
+      en: [
+        "Find a place where you can take a short break without danger or major distractions.",
+        "Place your feet on the floor, relax your shoulders, and gently notice your breathing without forcing it.",
+        "If this exercise feels uncomfortable, stop and choose another calming activity, such as a gentle walk.",
+      ],
+    },
+    tags: ["calm", "mindfulness", "pause"],
+  },
+  {
+    id: 6,
+    category: "lifestyle",
+    image: "https://images.unsplash.com/photo-1494438639946-1ebd1d20bf85?auto=format&fit=crop&w=1200&q=85",
+    date: "2026-10-07",
+    readTime: 4,
+    title: {
+      fr: "Créer un espace plus agréable avec ce que l'on possède",
+      en: "Create a More Pleasant Space with What You Have",
+    },
+    excerpt: {
+      fr: "Quelques idées accessibles pour rendre son environnement plus accueillant.",
+      en: "Affordable ideas to make your surroundings feel more welcoming.",
+    },
+    content: {
+      fr: [
+        "Un espace agréable n'a pas besoin d'être cher ou parfaitement décoré.",
+        "Range une petite surface, laisse entrer la lumière si possible et garde à portée de main les objets que tu utilises souvent.",
+        "Avance par petites zones pour éviter de transformer le rangement en tâche décourageante.",
+      ],
+      en: [
+        "A pleasant space does not have to be expensive or perfectly decorated.",
+        "Clear one small surface, let in natural light if possible, and keep frequently used items within reach.",
+        "Work in small areas so that organizing does not become overwhelming.",
+      ],
+    },
+    tags: ["home", "lifestyle", "organization"],
+  },
+  
+  {
+    id: 7,
+    category: "habits",
+    image: "https://images.unsplash.com/photo-1455390582262-044cdead277a?auto=format&fit=crop&w=1200&q=85",
+    date: "2026-10-06",
+    readTime: 4,
+    title: {
+      fr: "Comment construire une habitude sans se décourager",
+      en: "How to Build a Habit Without Getting Discouraged",
+    },
+    excerpt: {
+      fr: "Rends tes objectifs plus petits, plus précis et plus faciles à commencer.",
+      en: "Make your goals smaller, clearer, and easier to start.",
+    },
+    content: {
+      fr: [
+        "Une habitude est plus facile à commencer lorsqu'elle demande peu d'efforts au départ.",
+        "Au lieu de viser une heure d'activité immédiatement, commence par cinq minutes. Associe ensuite cette action à un moment précis de ta journée.",
+        "Si tu rates un jour, reprends simplement le lendemain. La progression compte davantage que la perfection.",
+      ],
+      en: [
+        "A habit is easier to start when it requires little effort at first.",
+        "Instead of aiming for an hour of activity immediately, start with five minutes. Link the action to a specific part of your day.",
+        "If you miss a day, simply start again tomorrow. Progress matters more than perfection.",
+      ],
+    },
+    tags: ["habits", "goals", "consistency"],
+  },
+  {
+    id: 8,
+    category: "motivation",
+    image: "https://images.unsplash.com/photo-1499209974431-9dddcece7f88?auto=format&fit=crop&w=1200&q=85",
+    date: "2026-10-05",
+    readTime: 3,
+    title: {
+      fr: "Avancer même quand la motivation diminue",
+      en: "Keep Moving When Motivation Fades",
+    },
+    excerpt: {
+      fr: "Des stratégies réalistes pour continuer sans attendre le moment parfait.",
+      en: "Realistic strategies to keep going without waiting for the perfect moment.",
+    },
+    content: {
+      fr: [
+        "La motivation change naturellement. C'est pourquoi il est utile de préparer une version simple de ses objectifs.",
+        "Découpe une grande tâche en étapes courtes et choisis la prochaine action concrète à accomplir.",
+        "Reconnais les efforts déjà réalisés. Le repos et l'ajustement des objectifs peuvent aussi faire partie du progrès.",
+      ],
+      en: [
+        "Motivation naturally changes. That is why it helps to prepare a simple version of your goals.",
+        "Break a large task into short steps and choose the next concrete action.",
+        "Recognize the effort you have already made. Rest and adjusting your goals can also be part of progress.",
+      ],
+    },
+    tags: ["motivation", "progress", "goals"],
+  },
+  {
+    id: 9,
+    category: "nutrition",
+    image: "https://images.unsplash.com/photo-1540420773420-3366772f4999?auto=format&fit=crop&w=1200&q=85",
+    date: "2026-10-04",
+    readTime: 4,
+    title: {
+      fr: "Mieux s'hydrater pendant la journée",
+      en: "How to Stay Hydrated Throughout the Day",
+    },
+    excerpt: {
+      fr: "Des repères simples pour penser à boire régulièrement.",
+      en: "Simple reminders to help you drink regularly.",
+    },
+    content: {
+      fr: [
+        "Les besoins en eau varient selon la chaleur, l'activité physique, l'alimentation et la situation personnelle.",
+        "Garder de l'eau à proximité et boire à différents moments de la journée peut aider à développer une routine.",
+        "En cas de maladie ou de consignes médicales particulières concernant les liquides, suis les recommandations de ton professionnel de santé.",
+      ],
+      en: [
+        "Water needs vary with heat, physical activity, diet, and individual circumstances.",
+        "Keeping water nearby and drinking at different times of the day can help you build a routine.",
+        "If you have an illness or specific medical advice about fluids, follow your health professional's guidance.",
+      ],
+    },
+    tags: ["water", "nutrition", "daily habits"],
+  },
 ];
 
-const ebooks: Resource[] = [
-  {
-    title: "Guide pour un sommeil sain",
-    titleEn: "Your Guide to Healthy Sleep",
-    description: "Informations et conseils officiels sur le sommeil.",
-    descriptionEn: "Official sleep information and guidance.",
-    organization: "NHLBI",
-    url: "https://www.nhlbi.nih.gov/health/sleep-deprivation",
-    image: images.sleep
-  },
-  {
-    title: "Comprendre l’alimentation saine",
-    titleEn: "Understanding Healthy Eating",
-    description: "Découvrez les informations de l’OMS sur l’alimentation.",
-    descriptionEn: "Explore WHO information about healthy diets.",
-    organization: "OMS / WHO",
-    url: "https://www.who.int/health-topics/healthy-diet",
-    image: images.food
-  },
-  {
-    title: "Bouger pour sa santé",
-    titleEn: "Move for Your Health",
-    description: "Des informations pour comprendre l’activité physique.",
-    descriptionEn: "Information about physical activity and health.",
-    organization: "OMS / WHO",
-    url: "https://www.who.int/health-topics/physical-activity",
-    image: images.activity
-  },
-  {
-    title: "Ressources sur le bien-être",
-    titleEn: "Well-being Resources",
-    description: "Des informations sur la santé mentale et le bien-être.",
-    descriptionEn: "Information about mental health and well-being.",
-    organization: "NIMH",
-    url: "https://www.nimh.nih.gov/health",
-    image: images.wellness
-  },
-  {
-    title: "Bibliothèque de santé",
-    titleEn: "Health Information Library",
-    description: "Consultez une bibliothèque de ressources fiables.",
-    descriptionEn: "Explore a library of reliable health resources.",
-    organization: "MedlinePlus",
-    url: "https://medlineplus.gov/",
-    image: images.books
-  }
-];
-
-const videos: Resource[] = [
-  {
-    title: "Nutrition et alimentation saine",
-    titleEn: "Nutrition and Healthy Eating",
-    description: "Vidéos éducatives sur l’alimentation.",
-    descriptionEn: "Educational videos about healthy eating.",
-    organization: "YouTube",
-    url: "https://www.youtube.com/results?search_query=WHO+healthy+diet",
-    image: images.food
-  },
-  {
-    title: "Sommeil et récupération",
-    titleEn: "Sleep and Recovery",
-    description: "Des contenus éducatifs sur le sommeil.",
-    descriptionEn: "Educational content about sleep.",
-    organization: "YouTube",
-    url: "https://www.youtube.com/results?search_query=healthy+sleep+education",
-    image: images.sleep
-  },
-  {
-    title: "Activité physique au quotidien",
-    titleEn: "Everyday Physical Activity",
-    description: "Des idées pour bouger davantage.",
-    descriptionEn: "Ideas to move more every day.",
-    organization: "YouTube",
-    url: "https://www.youtube.com/results?search_query=WHO+physical+activity",
-    image: images.activity
-  },
-  {
-    title: "Bien-être et gestion du stress",
-    titleEn: "Well-being and Stress Management",
-    description: "Des contenus éducatifs sur le bien-être.",
-    descriptionEn: "Educational content about well-being.",
-    organization: "YouTube",
-    url: "https://www.youtube.com/results?search_query=stress+management+health+education",
-    image: images.wellness
-  }
-];
-
-const translations = {
+const TEXT = {
   fr: {
+    tagline: "De petites idées pour une vie plus équilibrée.",
     home: "Accueil",
     trends: "Tendances",
     tips: "Conseils",
     videos: "Vidéos",
     articles: "Articles",
-    ebooks: "E-books",
+    resources: "Ressources",
     about: "À propos",
-    explore: "Découvrir",
-    read: "Lire l’article",
-    learnMore: "En savoir plus",
     search: "Rechercher un article...",
-    filter: "Filtrer par thème",
-    all: "Tous les thèmes",
-    latest: "Articles récents",
-    featured: "À découvrir",
-    heroEyebrow: "VOTRE ESPACE BIEN-ÊTRE",
-    heroTitle: "De meilleures habitudes, un jour à la fois.",
-    heroText:
-      "Découvrez des idées pratiques pour prendre soin de vous, mieux manger, dormir et bouger au quotidien.",
-    trendsTitle: "Tendances et habitudes saines",
-    tipsTitle: "Des conseils pour votre quotidien",
-    videosTitle: "Vidéos éducatives",
-    ebooksTitle: "Guides et ressources",
-    aboutTitle: "À propos de Trend Pulse",
-    source: "Consulter la source",
+    explore: "Explorer les articles",
+    latest: "Dernières publications",
+    featured: "À la une",
+    read: "Lire l'article",
+    minutes: "min de lecture",
+    all: "Toutes les catégories",
+    noResults: "Aucun article trouvé. Essaie un autre mot.",
+    newsletter: "Une dose d'inspiration dans ta boîte mail",
+    newsletterText: "Des idées utiles pour nourrir ton quotidien.",
+    email: "Ton adresse e-mail",
+    subscribe: "S'inscrire",
+    footer: "Des idées pratiques pour avancer à son rythme.",
     back: "Retour aux articles",
-    disclaimer:
-      "Ces contenus sont informatifs et ne remplacent pas l’avis d’un professionnel de santé.",
-    footer:
-      "Des informations pratiques pour un quotidien plus équilibré.",
-    openResource: "Découvrir la ressource",
-    searchEmpty: "Aucun article trouvé. Essaie un autre mot.",
-    categories:
-      "Nutrition, sommeil, activité physique et bien-être",
-    activityQuestion:
-      "Combien de minutes d’activité fais-tu par jour ?",
-    activityDays: "Combien de jours par semaine ?",
-    calculate: "Calculer",
-    activityResult: "minutes d’activité par semaine",
-    activityAdvice:
-      "Commence progressivement et choisis une activité adaptée à tes capacités.",
-    welcome: "Bienvenue sur Trend Pulse",
-    discoverArticles: "Explorer les articles",
-    discoverTips: "Voir les conseils",
-    discoverVideos: "Regarder les vidéos",
-    discoverEbooks: "Explorer les ressources",
-    newsletterTitle: "Une inspiration pour chaque journée",
-    newsletterText:
-      "Découvre régulièrement de nouvelles idées pour ton bien-être.",
-    quality: "Des informations pratiques",
-    qualityText:
-      "Des explications accessibles et des sources à consulter.",
-    simple: "Des habitudes simples",
-    simpleText:
-      "Des idées réalistes à adapter à ton quotidien.",
-    exploreTopics: "Explore nos thèmes",
-    noDiagnosis:
-      "Trend Pulse ne pose aucun diagnostic et ne remplace pas un avis médical."
+    related: "À lire aussi",
+    discover: "Découvrir",
+    tipsTitle: "Des conseils faciles à mettre en pratique",
+    videosTitle: "Apprendre en quelques minutes",
+    resourcesTitle: "Des ressources pour mieux s'organiser",
+    aboutTitle: "Bienvenue sur Trend Pulse",
+    aboutText: "Trend Pulse partage des idées accessibles autour du bien-être, de l'alimentation, du mouvement et des habitudes quotidiennes.",
+    contact: "Contact",
+    allArticles: "Tous les articles",
+    close: "Fermer",
+    readMore: "En savoir plus",
+    videoNote: "Sélectionne une vidéo pour découvrir des contenus utiles.",
+    resourceNote: "Utilise ces pistes comme point de départ et adapte-les à tes besoins.",
+    disclaimer: "Les articles sont informatifs et ne remplacent pas les conseils personnalisés d'un professionnel de santé.",
+    success: "Merci ! Ton inscription est prête à être connectée à un service de newsletter.",
+    noEmail: "Saisis une adresse e-mail valide.",
   },
   en: {
+    tagline: "Small ideas for a more balanced life.",
     home: "Home",
     trends: "Trends",
     tips: "Tips",
     videos: "Videos",
     articles: "Articles",
-    ebooks: "E-books",
+    resources: "Resources",
     about: "About",
-    explore: "Explore",
-    read: "Read article",
-    learnMore: "Learn more",
     search: "Search articles...",
-    filter: "Filter by topic",
-    all: "All topics",
-    latest: "Latest articles",
+    explore: "Explore articles",
+    latest: "Latest stories",
     featured: "Featured",
-    heroEyebrow: "YOUR WELL-BEING SPACE",
-    heroTitle: "Better habits, one day at a time.",
-    heroText:
-      "Discover practical ideas to care for yourself, eat well, sleep better, and stay active every day.",
-    trendsTitle: "Trends and healthy habits",
-    tipsTitle: "Tips for everyday life",
-    videosTitle: "Educational videos",
-    ebooksTitle: "Guides and resources",
-    aboutTitle: "About Trend Pulse",
-    source: "View source",
+    read: "Read article",
+    minutes: "min read",
+    all: "All categories",
+    noResults: "No articles found. Try another keyword.",
+    newsletter: "A little inspiration in your inbox",
+    newsletterText: "Useful ideas to enrich your everyday life.",
+    email: "Your email address",
+    subscribe: "Subscribe",
+    footer: "Practical ideas to help you move at your own pace.",
     back: "Back to articles",
-    disclaimer:
-      "This content is for information only and does not replace professional medical advice.",
-    footer:
-      "Practical information for a more balanced everyday life.",
-    openResource: "Explore resource",
-    searchEmpty: "No articles found. Try another search term.",
-    categories:
-      "Nutrition, sleep, physical activity, and well-being",
-    activityQuestion:
-      "How many minutes do you exercise each day?",
-    activityDays: "How many days per week?",
-    calculate: "Calculate",
-    activityResult: "activity minutes per week",
-    activityAdvice:
-      "Start gradually and choose an activity suited to your abilities.",
-    welcome: "Welcome to Trend Pulse",
-    discoverArticles: "Explore articles",
-    discoverTips: "View tips",
-    discoverVideos: "Watch videos",
-    discoverEbooks: "Explore resources",
-    newsletterTitle: "A little inspiration for every day",
-    newsletterText:
-      "Discover fresh ideas for your well-being regularly.",
-    quality: "Practical information",
-    qualityText:
-      "Accessible explanations and sources to explore.",
-    simple: "Simple habits",
-    simpleText:
-      "Realistic ideas you can adapt to everyday life.",
-    exploreTopics: "Explore our topics",
-    noDiagnosis:
-      "Trend Pulse does not diagnose conditions or replace medical advice."
-  }
+    related: "You may also like",
+    discover: "Discover",
+    tipsTitle: "Simple tips you can put into practice",
+    videosTitle: "Learn something in a few minutes",
+    resourcesTitle: "Resources to help you get organized",
+    aboutTitle: "Welcome to Trend Pulse",
+    aboutText: "Trend Pulse shares accessible ideas about wellness, nutrition, movement, and everyday habits.",
+    contact: "Contact",
+    allArticles: "All articles",
+    close: "Close",
+    readMore: "Learn more",
+    videoNote: "Choose a video to explore useful content.",
+    resourceNote: "Use these ideas as a starting point and adapt them to your needs.",
+    disclaimer: "Articles are for information only and do not replace personalized advice from a health professional.",
+    success: "Thank you! Your signup is ready to be connected to a newsletter service.",
+    noEmail: "Enter a valid email address.",
+  },
 };
 
-const trendCards = [
-  {
-    title: "Mieux organiser ses repas",
-    titleEn: "Plan Meals More Effectively",
-    text:
-      "Préparer quelques repas à l’avance peut faciliter l’organisation.",
-    textEn:
-      "Preparing a few meals in advance can make planning easier.",
-    image: images.food,
-    category: "Nutrition",
-    icon: "🥗"
-  },
-  {
-    title: "Créer une routine de sommeil",
-    titleEn: "Build a Sleep Routine",
-    text:
-      "Des horaires réguliers peuvent favoriser de bonnes habitudes de sommeil.",
-    textEn:
-      "Regular schedules can support healthier sleep habits.",
-    image: images.sleep,
-    category: "Sommeil",
-    icon: "🌙"
-  },
-  {
-    title: "Ajouter du mouvement à sa journée",
-    titleEn: "Add More Movement to Your Day",
-    text:
-      "La marche et les pauses actives sont des moyens simples de bouger.",
-    textEn:
-      "Walking and active breaks are simple ways to move more.",
-    image: images.activity,
-    category: "Activité physique",
-    icon: "🏃"
-  },
-  {
-    title: "Prendre le temps de respirer",
-    titleEn: "Make Time to Breathe",
-    text:
-      "Une courte pause peut aider à retrouver son attention.",
-    textEn:
-      "A short pause can help you refocus your attention.",
-    image: images.wellness,
-    category: "Bien-être",
-    icon: "🌿"
-  }
+const NAV_ITEMS: { id: Page; key: keyof typeof TEXT.fr }[] = [
+  { id: "home", key: "home" },
+  { id: "trends", key: "trends" },
+  { id: "tips", key: "tips" },
+  { id: "videos", key: "videos" },
+  { id: "articles", key: "articles" },
+  { id: "resources", key: "resources" },
+  { id: "about", key: "about" },
 ];
 
-const tipCards = [
+const VIDEO_CARDS = [
   {
-    title: "Prépare tes repas",
-    titleEn: "Plan Your Meals",
-    text:
-      "Prévois des repas variés et garde des options simples à portée de main.",
-    textEn:
-      "Plan varied meals and keep simple options within reach.",
-    image: images.food,
-    icon: "🍎"
+    id: 1,
+    image: "https://images.unsplash.com/photo-1544367567-0f2fcb009e0b?auto=format&fit=crop&w=1000&q=85",
+    fr: "Étirements doux pour commencer la journée",
+    en: "Gentle stretches to start your day",
+    category: "fitness",
   },
   {
-    title: "Protège ton sommeil",
-    titleEn: "Protect Your Sleep",
-    text:
-      "Essaie de garder des horaires réguliers et une routine calme le soir.",
-    textEn:
-      "Try to keep regular sleep times and a calm evening routine.",
-    image: images.sleep,
-    icon: "😴"
+    id: 2,
+    image: "https://images.unsplash.com/photo-1512621776951-a57141f2eefd?auto=format&fit=crop&w=1000&q=85",
+    fr: "Des repas colorés et faciles à préparer",
+    en: "Colorful meals that are easy to prepare",
+    category: "nutrition",
   },
   {
-    title: "Bouge à ton rythme",
-    titleEn: "Move at Your Own Pace",
-    text:
-      "Choisis une activité agréable et augmente progressivement sa durée.",
-    textEn:
-      "Choose an enjoyable activity and gradually increase its duration.",
-    image: images.activity,
-    icon: "🚶"
+    id: 3,
+    image: "https://images.unsplash.com/photo-1500530855697-b586d89ba3ee?auto=format&fit=crop&w=1000&q=85",
+    fr: "Une pause pour respirer et ralentir",
+    en: "A mindful break to breathe and slow down",
+    category: "mindfulness",
   },
-  {
-    title: "Fais une pause",
-    titleEn: "Take a Break",
-    text:
-      "Éloigne-toi quelques instants de ton écran et respire calmement.",
-    textEn:
-      "Step away from your screen briefly and breathe calmly.",
-    image: images.wellness,
-    icon: "🌼"
-  }
 ];
 
-const visualCards = [
+const RESOURCES = [
   {
-    title: "La beauté de la nature",
-    titleEn: "The Beauty of Nature",
-    text: "Prends un instant pour apprécier les petites choses de la vie.",
-    textEn: "Take a moment to appreciate the little things in life.",
-    image:
-      "https://images.unsplash.com/photo-1470252649378-9c29740c9fa8?auto=format&fit=crop&w=1000&q=85",
-    page: "tips" as Page
+    icon: "🗓️",
+    fr: "Planifier sa semaine",
+    en: "Plan Your Week",
+    descFr: "Choisis trois priorités réalistes et répartis-les sur la semaine.",
+    descEn: "Choose three realistic priorities and spread them across the week.",
   },
   {
-    title: "Marcher pour se sentir mieux",
-    titleEn: "Walk to Feel Better",
-    text: "Intègre quelques minutes de marche à ta routine quotidienne.",
-    textEn: "Add a few minutes of walking to your daily routine.",
-    image: images.activity,
-    page: "trends" as Page
+    icon: "🥗",
+    fr: "Préparer ses repas",
+    en: "Plan Your Meals",
+    descFr: "Note les repas que tu souhaites préparer et les ingrédients nécessaires.",
+    descEn: "Write down the meals you want to prepare and the ingredients you need.",
   },
   {
-    title: "Préparer une nuit paisible",
-    titleEn: "Prepare for a Peaceful Night",
-    text: "Crée une ambiance calme avant de te coucher.",
-    textEn: "Create a calm atmosphere before going to bed.",
-    image: images.sleep,
-    page: "tips" as Page
+    icon: "🌙",
+    fr: "Créer une routine du soir",
+    en: "Build an Evening Routine",
+    descFr: "Prévois une activité calme et une heure de coucher régulière.",
+    descEn: "Plan a calming activity and a consistent bedtime.",
   },
   {
-    title: "Découvrir nos vidéos",
-    titleEn: "Discover Our Videos",
-    text: "Retrouve des idées simples pour améliorer tes habitudes.",
-    textEn: "Discover simple ideas to improve your habits.",
-    image:
-      "https://images.unsplash.com/photo-1492619375914-88005aa9e8fb?auto=format&fit=crop&w=1000&q=85",
-    page: "videos" as Page
-  }
+    icon: "🚶",
+    fr: "Ajouter du mouvement",
+    en: "Add More Movement",
+    descFr: "Repère des occasions simples de marcher ou de bouger chaque jour.",
+    descEn: "Find simple opportunities to walk or move each day.",
+  },
 ];
 
 export default function App() {
-  const [page, setPage] = useState<Page>("home");
   const [language, setLanguage] = useState<Language>("fr");
-  const [theme, setTheme] = useState<Theme>("light");
+  const [page, setPage] = useState<Page>("home");
   const [search, setSearch] = useState("");
   const [category, setCategory] = useState("all");
-  const [selectedArticle, setSelectedArticle] =
-    useState<Article | null>(null);
-  const [minutesPerDay, setMinutesPerDay] = useState(30);
-  const [daysPerWeek, setDaysPerWeek] = useState(5);
+  const [darkMode, setDarkMode] = useState(false);
+  const [selectedArticle, setSelectedArticle] = useState<Article | null>(null);
+  const [email, setEmail] = useState("");
+  const [notice, setNotice] = useState("");
+  const [mobileMenu, setMobileMenu] = useState(false);
 
-  const t = translations[language];
+  const t = TEXT[language];
 
-  const isFrench = language === "fr";
-
-  const filteredArticles = articles.filter((article) => {
-    const matchesSearch = [
-      article.title,
-      article.titleEn,
-      article.summary,
-      article.summaryEn,
-      article.category,
-      article.categoryEn
-    ]
-      .join(" ")
-      .toLowerCase()
-      .includes(search.toLowerCase());
-
-    const matchesCategory =
-      category === "all" ||
-      article.category === category ||
-      article.categoryEn === category;
-
-    return matchesSearch && matchesCategory;
-  });
-
-  const activityTotal = minutesPerDay * daysPerWeek;
-
-  const navigate = (nextPage: Page) => {
+  const changePage = (nextPage: Page) => {
     setPage(nextPage);
     setSelectedArticle(null);
+    setMobileMenu(false);
+    setSearch("");
+    setCategory("all");
     window.scrollTo({ top: 0, behavior: "smooth" });
   };
 
@@ -552,1288 +465,845 @@ export default function App() {
     window.scrollTo({ top: 0, behavior: "smooth" });
   };
 
-  const toggleTheme = () => {
-    setTheme((current) =>
-      current === "light" ? "dark" : "light"
-    );
+  const categoryName = (id: string) => {
+    const item = CATEGORIES.find((entry) => entry.id === id);
+    return item ? item[language] : id;
   };
-      
-  const styles = `
-    .tp-app {
-      --tp-bg: #f6f8f4;
-      --tp-card: #ffffff;
-      --tp-text: #24352d;
-      --tp-muted: #68776d;
-      --tp-primary: #24734b;
-      --tp-accent: #e6b83f;
-      min-height: 100vh;
-      background: var(--tp-bg);
-      color: var(--tp-text);
-      font-family: Arial, Helvetica, sans-serif;
-      transition: background 0.3s, color 0.3s;
+  
+  const filteredArticles = useMemo(() => {
+    const term = search.trim().toLowerCase();
+
+    return ARTICLES.filter((article) => {
+      const matchesCategory =
+        category === "all" || article.category === category;
+
+      const searchableText = [
+        article.title[language],
+        article.excerpt[language],
+        ...article.tags,
+        ...article.content[language],
+      ]
+        .join(" ")
+        .toLowerCase();
+
+      return matchesCategory && (!term || searchableText.includes(term));
+    });
+  }, [search, category, language]);
+
+  const featuredArticle =
+    ARTICLES.find((article) => article.featured) ?? ARTICLES[0];
+
+  const latestArticles = [...ARTICLES]
+    .sort((a, b) => b.date.localeCompare(a.date))
+    .slice(0, 6);
+
+  const relatedArticles = selectedArticle
+    ? ARTICLES.filter(
+        (article) =>
+          article.id !== selectedArticle.id &&
+          article.category === selectedArticle.category,
+      ).slice(0, 3)
+    : [];
+
+  const handleSubscribe = (event: React.FormEvent<HTMLFormElement>) => {
+    event.preventDefault();
+
+    if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
+      setNotice(t.noEmail);
+      return;
     }
 
-    .tp-app.dark {
-      --tp-bg: #142019;
-      --tp-card: #202e25;
-      --tp-text: #f1f5ef;
-      --tp-muted: #bdc9bf;
-      --tp-primary: #81c99b;
-      --tp-accent: #f2cf69;
-    }
+    setNotice(t.success);
+    setEmail("");
+  };
+  
+  const articleCard = (article: Article) => (
+    <article className="tp-card" key={article.id}>
+      <button
+        className="tp-image-button"
+        onClick={() => openArticle(article)}
+        aria-label={article.title[language]}
+      >
+        <img
+          className="tp-card-image"
+          src={article.image}
+          alt={article.title[language]}
+          loading="lazy"
+        />
+        <span className="tp-image-badge">
+          {categoryName(article.category)}
+        </span>
+      </button>
 
-    .tp-app * {
-      box-sizing: border-box;
-    }
+      <div className="tp-card-body">
+        <div className="tp-meta">
+          <span>{article.date}</span>
+          <span>·</span>
+          <span>{article.readTime} {t.minutes}</span>
+        </div>
 
-    .tp-container {
-      width: min(1180px, 92%);
-      margin: 0 auto;
-    }
+        <h3>{article.title[language]}</h3>
+        <p>{article.excerpt[language]}</p>
 
-    .tp-header {
-      position: sticky;
-      top: 0;
-      z-index: 20;
-      background: var(--tp-card);
-      border-bottom: 1px solid rgba(120, 140, 120, 0.18);
-    }
+        <button
+          className="tp-text-link"
+          onClick={() => openArticle(article)}
+        >
+          {t.read} <span aria-hidden="true">↗</span>
+        </button>
+      </div>
+    </article>
+  );
 
-    .tp-header-inner {
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      gap: 16px;
-      padding: 15px 0;
-    }
-
-    .tp-logo {
-      color: var(--tp-primary);
-      font-size: 25px;
-      font-weight: 800;
-      letter-spacing: -1px;
-      cursor: pointer;
-    }
-
-    .tp-actions {
-      display: flex;
-      align-items: center;
-      gap: 8px;
-      flex-wrap: wrap;
-    }
-
-    .tp-button {
-      border: 0;
-      border-radius: 24px;
-      padding: 10px 15px;
-      background: var(--tp-primary);
-      color: #ffffff;
-      font-weight: 700;
-      cursor: pointer;
-      transition: transform 0.2s, opacity 0.2s;
-    }
-
-    .tp-button:hover {
-      transform: translateY(-2px);
-      opacity: 0.9;
-    }
-
-    .tp-button.secondary {
-      background: transparent;
-      color: var(--tp-text);
-      border: 1px solid rgba(130, 150, 130, 0.4);
-    }
-
-    .tp-hero {
-      display: grid;
-      grid-template-columns: 1.05fr 0.95fr;
-      align-items: center;
-      gap: 32px;
-      padding: 44px 0;
-    }
-
-    .tp-hero h1 {
-      font-size: clamp(34px, 5vw, 58px);
-      line-height: 1.08;
-      margin: 12px 0 18px;
-      letter-spacing: -1.8px;
-    }
-
-    .tp-hero p,
-    .tp-description {
-      color: var(--tp-muted);
-      line-height: 1.8;
-    }
-
-    .tp-eyebrow {
-      color: var(--tp-primary);
-      font-weight: 800;
-      font-size: 12px;
-      letter-spacing: 2px;
-    }
-
-    .tp-hero-image {
-      width: 100%;
-      height: 390px;
-      object-fit: cover;
-      border-radius: 28px;
-      box-shadow: 0 18px 45px rgba(30, 60, 35, 0.13);
-    }
-
-    .tp-section {
-      padding: 32px 0 46px;
-    }
-
-    .tp-section-heading {
-      margin-bottom: 22px;
-    }
-
-    .tp-section-heading h2 {
-      font-size: clamp(25px, 3vw, 36px);
-      margin: 0 0 8px;
-    }
-
-    .tp-grid {
-      display: grid;
-      grid-template-columns: repeat(3, minmax(0, 1fr));
-      gap: 22px;
-    }
-
-    .tp-card {
-      background: var(--tp-card);
-      border-radius: 20px;
-      overflow: hidden;
-      box-shadow: 0 8px 28px rgba(35, 60, 40, 0.07);
-      animation: tp-appear 0.5s ease both;
-    }
-
-    .tp-card-image {
-      display: block;
-      width: 100%;
-      height: 220px;
-      object-fit: cover;
-      transition: transform 0.4s;
-    }
-
-    .tp-card:hover .tp-card-image {
-      transform: scale(1.04);
-    }
-
-    .tp-card-content {
-      padding: 20px;
-    }
-
-    .tp-card h3 {
-      margin: 0 0 10px;
-      line-height: 1.4;
-    }
-
-    .tp-card p {
-      color: var(--tp-muted);
-      line-height: 1.7;
-    }
-
-    .tp-tag {
-      display: inline-block;
-      color: var(--tp-primary);
-      font-size: 12px;
-      font-weight: 800;
-      margin-bottom: 10px;
-    }
-
-    .tp-fields {
-      display: flex;
-      gap: 12px;
-      flex-wrap: wrap;
-      margin: 18px 0;
-    }
-
-    .tp-input {
-      width: 100%;
-      min-width: 0;
-      padding: 13px 15px;
-      border: 1px solid rgba(130, 150, 130, 0.4);
-      border-radius: 12px;
-      background: var(--tp-card);
-      color: var(--tp-text);
-      font: inherit;
-    }
-
-    .tp-search {
-      flex: 1;
-      min-width: 200px;
-    }
-
-    .tp-article-body {
-      max-width: 780px;
-      margin: 0 auto;
-      line-height: 1.9;
-      font-size: 17px;
-    }
-
-    .tp-article-body p {
-      margin: 20px 0;
-    }
-
-    .tp-footer {
-      margin-top: 35px;
-      padding: 35px 0 110px;
-      background: var(--tp-card);
-      color: var(--tp-muted);
-      text-align: center;
-      line-height: 1.8;
-    }
-
-    .tp-bottom-nav {
-      display: none;
-    }
-
-    @keyframes tp-appear {
-      from {
-        opacity: 0;
-        transform: translateY(12px);
-      }
-      to {
-        opacity: 1;
-        transform: translateY(0);
-      }
-    }
-
-    @media (max-width: 760px) {
-      .tp-container {
-        width: 92%;
-      }
-
-      .tp-header-inner {
-        padding: 12px 0;
-      }
-
-      .tp-logo {
-        font-size: 21px;
-      }
-
-      .tp-hero {
-        grid-template-columns: 1fr;
-        gap: 20px;
-        padding: 28px 0;
-      }
-
-      .tp-hero-image {
-        height: 260px;
-      }
-
-      .tp-grid {
-        grid-template-columns: repeat(2, minmax(0, 1fr));
-        gap: 13px;
-      }
-
-      .tp-card-image {
-        height: 155px;
-      }
-
-      .tp-card-content {
-        padding: 14px;
-      }
-
-      .tp-card h3 {
-        font-size: 16px;
-      }
-
-      .tp-card p {
-        font-size: 14px;
-      }
-
-      .tp-bottom-nav {
-        position: fixed;
-        z-index: 30;
-        bottom: 0;
-        left: 0;
-        right: 0;
-        display: grid;
-        grid-template-columns: repeat(5, minmax(0, 1fr));
-        gap: 2px;
-        padding: 8px 3px calc(8px + env(safe-area-inset-bottom));
-        background: var(--tp-card);
-        border-top: 1px solid rgba(120, 140, 120, 0.22);
-        box-shadow: 0 -5px 22px rgba(0, 0, 0, 0.06);
-      }
-
-      .tp-nav-item {
-        border: 0;
-        background: transparent;
-        color: var(--tp-muted);
-        display: flex;
-        flex-direction: column;
-        align-items: center;
-        justify-content: center;
-        gap: 4px;
-        min-width: 0;
-        padding: 6px 0;
-        font-size: 10px;
-        cursor: pointer;
-      }
-
-      .tp-nav-item.active {
-        color: var(--tp-primary);
-        font-weight: 800;
-      }
-
-      .tp-nav-icon {
-        width: 28px;
-        height: 28px;
-        object-fit: cover;
-        border-radius: 9px;
-      }
-    }
-
-    @media (max-width: 390px) {
-      .tp-grid {
-        grid-template-columns: 1fr;
-      }
-
-      .tp-actions .tp-button {
-        padding: 8px 10px;
-        font-size: 12px;
-      }
-    }
-
-    @media (prefers-reduced-motion: reduce) {
-      .tp-app *,
-      .tp-app *::before,
-      .tp-app *::after {
-        animation-duration: 0.01ms !important;
-        transition-duration: 0.01ms !important;
-      }
-    }
-  `;
-      
+  const sectionHeading = (eyebrow: string, title: string, description?: string) => (
+    <div className="tp-section-heading">
+      <span className="tp-eyebrow">{eyebrow}</span>
+      <h2>{title}</h2>
+      {description && <p>{description}</p>}
+    </div>
+  );
+  
   return (
-    <div className={`tp-app ${theme}`}>
-      <style>{styles}</style>
+    <div className={`tp-app ${darkMode ? "tp-dark" : ""}`}>
+      <div className="tp-announcement">
+        <span className="tp-pulse-dot" />
+        {language === "fr"
+          ? "De nouvelles idées pour prendre soin de soi"
+          : "Fresh ideas to help you care for yourself"}
+      </div>
 
       <header className="tp-header">
-        <div className="tp-container tp-header-inner">
-          <div
-            className="tp-logo"
-            onClick={() => navigate("home")}
-          >
-            Trend Pulse
-          </div>
+        <button className="tp-brand" onClick={() => changePage("home")}>
+          <span className="tp-brand-mark">T</span>
+          <span>
+            <strong>Trend Pulse</strong>
+            <small>{language === "fr" ? "Vivre mieux, simplement" : "Better living, simply"}</small>
+          </span>
+        </button>
 
-          <div className="tp-actions">
+        <button
+          className="tp-menu-toggle"
+          onClick={() => setMobileMenu(!mobileMenu)}
+          aria-label="Toggle navigation"
+          aria-expanded={mobileMenu}
+        >
+          {mobileMenu ? "✕" : "☰"}
+        </button>
+
+        <nav className={`tp-nav ${mobileMenu ? "tp-nav-open" : ""}`}>
+          {NAV_ITEMS.map((item) => (
             <button
-              className="tp-button secondary"
-              onClick={() =>
-                setLanguage(isFrench ? "en" : "fr")
-              }
-              type="button"
+              key={item.id}
+              className={page === item.id ? "tp-nav-link active" : "tp-nav-link"}
+              onClick={() => changePage(item.id)}
             >
-              {isFrench ? "EN 🇬🇧" : "FR 🇫🇷"}
+              {t[item.key]}
             </button>
+          ))}
+        </nav>
 
-            <button
-              className="tp-button secondary"
-              onClick={toggleTheme}
-              type="button"
-              aria-label={
-                isFrench
-                  ? "Changer le thème"
-                  : "Change theme"
-              }
-            >
-              {theme === "light" ? "🌙" : "☀️"}
-            </button>
-          </div>
-        </div>
-
-        <div className="tp-container">
-          <nav
-            style={{
-              display: "flex",
-              gap: "8px",
-              overflowX: "auto",
-              paddingBottom: "12px"
-            }}
+        <div className="tp-header-actions">
+          <button
+            className="tp-icon-button"
+            onClick={() => setDarkMode(!darkMode)}
+            aria-label={darkMode ? "Switch to light mode" : "Switch to dark mode"}
+            title={darkMode ? "Light mode" : "Dark mode"}
           >
-            {(
-              [
-                ["home", t.home],
-                ["trends", t.trends],
-                ["tips", t.tips],
-                ["videos", t.videos],
-                ["articles", t.articles],
-                ["ebooks", t.ebooks],
-                ["about", t.about]
-              ] as [Page, string][]
-            ).map(([key, label]) => (
-              <button
-                key={key}
-                type="button"
-                className={`tp-button ${
-                  page === key
-                    ? ""
-                    : "secondary"
-                }`}
-                onClick={() => navigate(key)}
-                style={{ whiteSpace: "nowrap" }}
-              >
-                {label}
-              </button>
-            ))}
-          </nav>
+            {darkMode ? "☀️" : "🌙"}
+          </button>
+          <button
+            className="tp-language-button"
+            onClick={() => setLanguage(language === "fr" ? "en" : "fr")}
+          >
+            {language === "fr" ? "EN" : "FR"}
+          </button>
         </div>
       </header>
-        
-      <main className="tp-container">
-        {page === "home" && (
+      
+      <main>
+        {!selectedArticle && page === "home" && (
           <>
             <section className="tp-hero">
-              <div>
+              <div className="tp-hero-content">
                 <span className="tp-eyebrow">
-                  {t.heroEyebrow}
+                  {language === "fr" ? "TON ESPACE D'INSPIRATION" : "YOUR SPACE FOR INSPIRATION"}
                 </span>
+                <h1>
+                  {language === "fr"
+                    ? <>Une vie plus équilibrée commence par <em>de petits gestes.</em></>
+                    : <>A more balanced life starts with <em>small steps.</em></>}
+                </h1>
+                <p>{t.tagline} {language === "fr"
+                  ? "Découvre des idées pratiques pour nourrir ton corps, ton esprit et tes habitudes."
+                  : "Discover practical ideas for your body, mind, and everyday habits."}</p>
 
-                <h1>{t.heroTitle}</h1>
-
-                <p>{t.heroText}</p>
-
-                <div className="tp-fields">
-                  <button
-                    className="tp-button"
-                    onClick={() => navigate("articles")}
-                    type="button"
-                  >
-                    {t.discoverArticles} →
+                <div className="tp-hero-actions">
+                  <button className="tp-primary-button" onClick={() => changePage("articles")}>
+                    {t.explore} <span>→</span>
                   </button>
-
-                  <button
-                    className="tp-button secondary"
-                    onClick={() => navigate("tips")}
-                    type="button"
-                  >
-                    {t.discoverTips}
+                  <button className="tp-secondary-button" onClick={() => changePage("about")}>
+                    {t.about} <span>↗</span>
                   </button>
+                </div>
+
+                <div className="tp-hero-note">
+                  <span>✦</span>
+                  {language === "fr" ? "Des idées accessibles, à ton rythme." : "Accessible ideas, at your own pace."}
                 </div>
               </div>
 
-              <img
-                className="tp-hero-image"
-                src={images.hero}
-                alt={
-                  isFrench
-                    ? "Aliments frais et colorés pour une alimentation équilibrée"
-                    : "Fresh colorful food for a balanced diet"
-                }
-                loading="eager"
-              />
+              <div className="tp-hero-visual">
+                <img
+                  src="https://images.unsplash.com/photo-1545389336-cf090694435e?auto=format&fit=crop&w=1400&q=90"
+                  alt={language === "fr" ? "Moment calme en pleine nature" : "A peaceful moment in nature"}
+                />
+                <div className="tp-floating-note tp-floating-top">
+                  <span>🌿</span>
+                  <div><strong>{language === "fr" ? "Prends une pause" : "Take a pause"}</strong><small>{language === "fr" ? "Respire. Recommence." : "Breathe. Begin again."}</small></div>
+                </div>
+                <div className="tp-floating-note tp-floating-bottom">
+                  <span>✦</span>
+                  <div><strong>{language === "fr" ? "Un jour à la fois" : "One day at a time"}</strong><small>Trend Pulse</small></div>
+                </div>
+              </div>
+              <div className="tp-hero-orb" />
             </section>
 
-            <section className="tp-section">
-              <div className="tp-section-heading">
-                <span className="tp-eyebrow">
-                  TREND PULSE
-                </span>
-
-                <h2>{t.exploreTopics}</h2>
-
-                <p className="tp-description">
-                  {t.categories}
-                </p>
-              </div>
-
-              <div className="tp-grid">
-                {visualCards.map((item, index) => (
-                  <article className="tp-card" key={item.title}>
-                    <img
-                      className="tp-card-image"
-                      src={item.image}
-                      alt={
-                        isFrench
-                          ? item.title
-                          : item.titleEn
-                      }
-                      loading="lazy"
-                    />
-
-                    <div className="tp-card-content">
-                      <span className="tp-tag">
-                        {index === 0
-                          ? isFrench
-                            ? "NATURE"
-                            : "NATURE"
-                          : index === 1
-                            ? isFrench
-                              ? "ACTIVITÉ"
-                              : "ACTIVITY"
-                            : index === 2
-                              ? isFrench
-                                ? "SOMMEIL"
-                                : "SLEEP"
-                              : isFrench
-                                ? "VIDÉOS"
-                                : "VIDEOS"}
-                      </span>
-
-                      <h3>
-                        {isFrench
-                          ? item.title
-                          : item.titleEn}
-                      </h3>
-
-                      <p>
-                        {isFrench
-                          ? item.text
-                          : item.textEn}
-                      </p>
-
-                      <button
-                        className="tp-button"
-                        type="button"
-                        onClick={() => navigate(item.page)}
-                      >
-                        {t.explore} →
-                      </button>
-                    </div>
-                  </article>
-                ))}
-              </div>
-            </section>
-
-            <section className="tp-section">
-              <div className="tp-section-heading">
-                <h2>{t.latest}</h2>
-                <p className="tp-description">
-                  {isFrench
-                    ? "Des lectures pratiques pour prendre soin de toi au quotidien."
-                    : "Practical reading to help you care for yourself every day."}
-                </p>
-              </div>
-
-              <div className="tp-grid">
-                {articles.slice(0, 3).map((article) => (
-                  <article
-                    className="tp-card"
-                    key={article.id}
-                  >
-                    <img
-                      className="tp-card-image"
-                      src={article.image}
-                      alt={
-                        isFrench
-                          ? article.title
-                          : article.titleEn
-                      }
-                      loading="lazy"
-                    />
-
-                    <div className="tp-card-content">
-                      <span className="tp-tag">
-                        {isFrench
-                          ? article.category
-                          : article.categoryEn}
-                      </span>
-
-                      <h3>
-                        {isFrench
-                          ? article.title
-                          : article.titleEn}
-                      </h3>
-
-                      <p>
-                        {isFrench
-                          ? article.summary
-                          : article.summaryEn}
-                      </p>
-
-                      <button
-                        className="tp-button"
-                        type="button"
-                        onClick={() => openArticle(article)}
-                      >
-                        {t.read} →
-                      </button>
-                    </div>
-                  </article>
-                ))}
-              </div>
-            </section>
-
-            <section className="tp-section">
-              <div className="tp-card">
-                <div className="tp-card-content">
-                  <h2>{t.newsletterTitle}</h2>
-                  <p>{t.newsletterText}</p>
-
-                  <button
-                    className="tp-button"
-                    type="button"
-                    onClick={() => navigate("videos")}
-                  >
-                    {t.discoverVideos} →
+            <section className="tp-section tp-featured-section">
+              {sectionHeading(
+                t.featured,
+                language === "fr" ? "Une idée à découvrir aujourd'hui" : "An idea to discover today",
+                language === "fr" ? "Prends quelques minutes pour trouver ton prochain petit changement." : "Take a few minutes to find your next small change.",
+              )}
+              <div className="tp-featured-card">
+                <img src={featuredArticle.image} alt={featuredArticle.title[language]} loading="lazy" />
+                <div className="tp-featured-copy">
+                  <span className="tp-pill">{categoryName(featuredArticle.category)}</span>
+                  <h3>{featuredArticle.title[language]}</h3>
+                  <p>{featuredArticle.excerpt[language]}</p>
+                  <button className="tp-primary-button" onClick={() => openArticle(featuredArticle)}>
+                    {t.read} →
                   </button>
                 </div>
               </div>
             </section>
           </>
         )}
-                          
-        {page === "trends" && (
+        
+        {!selectedArticle && page === "home" && (
           <section className="tp-section">
-            <div className="tp-section-heading">
-              <span className="tp-eyebrow">
-                TREND PULSE
-              </span>
-              <h1>{t.trendsTitle}</h1>
-              <p className="tp-description">
-                {isFrench
-                  ? "Découvre des habitudes simples à intégrer dans ta journée."
-                  : "Discover simple habits you can add to your day."}
-              </p>
-            </div>
+            {sectionHeading(
+              language === "fr" ? "Explore par thème" : "Explore by topic",
+              language === "fr" ? "Qu'est-ce qui t'intéresse ?" : "What interests you?",
+            )}
 
-            <div className="tp-grid">
-              {trendCards.map((item) => (
-                <article className="tp-card" key={item.title}>
-                  <img
-                    className="tp-card-image"
-                    src={item.image}
-                    alt={isFrench ? item.title : item.titleEn}
-                    loading="lazy"
-                  />
-
-                  <div className="tp-card-content">
-                    <span className="tp-tag">
-                      {isFrench ? item.category : (
-                        item.category === "Nutrition"
-                          ? "Nutrition"
-                          : item.category === "Sommeil"
-                            ? "Sleep"
-                            : item.category === "Activité physique"
-                              ? "Physical activity"
-                              : "Well-being"
-                      )}
-                    </span>
-
-                    <h3>
-                      {isFrench ? item.title : item.titleEn}
-                    </h3>
-
-                    <p>
-                      {isFrench ? item.text : item.textEn}
-                    </p>
-
-                    <button
-                      className="tp-button"
-                      type="button"
-                      onClick={() => navigate("articles")}
-                    >
-                      {t.discoverArticles} →
-                    </button>
-                  </div>
-                </article>
-              ))}
-            </div>
-          </section>
-        )}
-
-        {page === "tips" && (
-          <section className="tp-section">
-            <div className="tp-section-heading">
-              <span className="tp-eyebrow">
-                DAILY INSPIRATION
-              </span>
-              <h1>{t.tipsTitle}</h1>
-              <p className="tp-description">
-                {isFrench
-                  ? "De petites actions peuvent t'aider à construire une routine plus équilibrée."
-                  : "Small actions can help you build a more balanced routine."}
-              </p>
-            </div>
-
-            <div className="tp-grid">
-              {tipCards.map((item) => (
-                <article className="tp-card" key={item.title}>
-                  <img
-                    className="tp-card-image"
-                    src={item.image}
-                    alt={isFrench ? item.title : item.titleEn}
-                    loading="lazy"
-                  />
-
-                  <div className="tp-card-content">
-                    <h3>
-                      {isFrench ? item.title : item.titleEn}
-                    </h3>
-
-                    <p>
-                      {isFrench ? item.text : item.textEn}
-                    </p>
-
-                    <button
-                      className="tp-button"
-                      type="button"
-                      onClick={() => navigate("articles")}
-                    >
-                      {t.learnMore} →
-                    </button>
-                  </div>
-                </article>
-              ))}
-            </div>
-
-            <div className="tp-card" style={{ marginTop: 24 }}>
-              <div className="tp-card-content">
-                <h2>
-                  {isFrench
-                    ? "Calcule ton activité hebdomadaire"
-                    : "Calculate Your Weekly Activity"}
-                </h2>
-
-                <p>{t.activityQuestion}</p>
-
-                <input
-                  className="tp-input"
-                  type="number"
-                  min="0"
-                  max="1440"
-                  value={minutesPerDay}
-                  onChange={(event) =>
-                    setMinutesPerDay(
-                      Math.max(
-                        0,
-                        Math.min(1440, Number(event.target.value) || 0)
-                      )
-                    )
-                  }
-                />
-
-                <p>{t.activityDays}</p>
-
-                <input
-                  className="tp-input"
-                  type="number"
-                  min="0"
-                  max="7"
-                  value={daysPerWeek}
-                  onChange={(event) =>
-                    setDaysPerWeek(
-                      Math.max(
-                        0,
-                        Math.min(7, Number(event.target.value) || 0)
-                      )
-                    )
-                  }
-                />
-
-                <h3>
-                  {activityTotal} {t.activityResult}
-                </h3>
-
-                <p className="tp-description">
-                  {t.activityAdvice}
-                </p>
-              </div>
-            </div>
-          </section>
-        )}
-                    
-        {page === "videos" && (
-          <section className="tp-section">
-            <div className="tp-section-heading">
-              <span className="tp-eyebrow">
-                TREND PULSE VIDEO
-              </span>
-
-              <h1>{t.videosTitle}</h1>
-
-              <p className="tp-description">
-                {isFrench
-                  ? "Découvre des vidéos et des idées pratiques pour prendre soin de toi."
-                  : "Discover videos and practical ideas to take care of yourself."}
-              </p>
-            </div>
-
-            <div className="tp-grid">
-              {videos.map((video, index) => (
-                <article className="tp-card" key={video.title}>
-                  <img
-                    className="tp-card-image"
-                    src={video.image}
-                    alt={
-                      isFrench
-                        ? video.title
-                        : video.titleEn
-                    }
-                    loading="lazy"
-                  />
-
-                  <div className="tp-card-content">
-                    <span className="tp-tag">
-                      {isFrench
-                        ? `VIDÉO ${index + 1}`
-                        : `VIDEO ${index + 1}`}
-                    </span>
-
-                    <h3>
-                      {isFrench
-                        ? video.title
-                        : video.titleEn}
-                    </h3>
-
-                    <p>
-                      {isFrench
-                        ? video.description
-                        : video.descriptionEn}
-                    </p>
-
-                    <p className="tp-description">
-                      {video.organization}
-                    </p>
-
-                    <button
-                      className="tp-button"
-                      type="button"
-                      onClick={() =>
-                        window.open(
-                          video.url,
-                          "_blank",
-                          "noopener,noreferrer"
-                        )
-                      }
-                    >
-                      ▶ {t.discoverVideos}
-                    </button>
-                  </div>
-                </article>
-              ))}
-            </div>
-
-            <div
-              className="tp-card"
-              style={{ marginTop: 24 }}
-            >
-              <div className="tp-card-content">
-                <h2>
-                  {isFrench
-                    ? "Apprends avec des vidéos"
-                    : "Learn Through Videos"}
-                </h2>
-
-                <p>
-                  {isFrench
-                    ? "Choisis une ressource, regarde-la à ton rythme et note une habitude que tu souhaites essayer."
-                    : "Choose a resource, watch at your own pace, and note one habit you would like to try."}
-                </p>
-
+            <div className="tp-category-grid">
+              {CATEGORIES.filter((item) => item.id !== "all").map((item, index) => (
                 <button
-                  className="tp-button"
-                  type="button"
-                  onClick={() => navigate("articles")}
+                  className="tp-category-card"
+                  key={item.id}
+                  onClick={() => {
+                    setCategory(item.id);
+                    changePage("articles");
+                    setCategory(item.id);
+                  }}
                 >
-                  {t.discoverArticles} →
+                  <span className="tp-category-icon">
+                    {["🌿", "🥗", "🏃", "🌙", "🧘", "🏡", "✨", "🌞"][index]}
+                  </span>
+                  <strong>{item[language]}</strong>
+                  <span className="tp-category-arrow">↗</span>
                 </button>
-              </div>
+              ))}
             </div>
           </section>
         )}
-        {page === "articles" && (
-          <section className="tp-section">
-            <div className="tp-section-heading">
-              <span className="tp-eyebrow">
-                TREND PULSE JOURNAL
-              </span>
 
-              <h1>{t.articles}</h1>
+        {!selectedArticle && page === "home" && (
+          <section className="tp-section tp-soft-section">
+            {sectionHeading(t.latest, language === "fr" ? "Les idées les plus récentes" : "Fresh ideas for you")}
 
-              <p className="tp-description">
-                {isFrench
-                  ? "Explore des articles sur la nutrition, le sommeil, l'activité physique et le bien-être."
-                  : "Explore articles about nutrition, sleep, physical activity, and well-being."}
-              </p>
+            <div className="tp-article-grid">
+              {latestArticles.slice(0, 3).map(articleCard)}
             </div>
 
-            {selectedArticle ? (
-              <article className="tp-article-body">
-                <button
-                  type="button"
-                  className="tp-button secondary"
-                  onClick={() => setSelectedArticle(null)}
-                >
-                  ← {t.back}
-                </button>
+            <div className="tp-centered">
+              <button className="tp-secondary-button" onClick={() => changePage("articles")}>
+                {t.allArticles} <span>→</span>
+              </button>
+            </div>
+          </section>
+        )}
 
-                <img
-                  className="tp-hero-image"
-                  src={selectedArticle.image}
-                  alt={
-                    isFrench
-                      ? selectedArticle.title
-                      : selectedArticle.titleEn
-                  }
-                  loading="lazy"
-                  style={{ marginTop: 24 }}
+        {!selectedArticle && page === "home" && (
+          <section className="tp-quote-band">
+            <span className="tp-quote-mark">“</span>
+            <p>{language === "fr"
+              ? "Tu n'as pas besoin de tout changer aujourd'hui. Commence par une petite chose."
+              : "You do not need to change everything today. Start with one small thing."}</p>
+            <span className="tp-quote-caption">— Trend Pulse</span>
+          </section>
+        )}
+        
+        {!selectedArticle && page === "articles" && (
+          <section className="tp-page-section">
+            {sectionHeading(
+              t.articles,
+              language === "fr" ? "Des idées pour ton quotidien" : "Ideas for everyday living",
+              language === "fr" ? "Recherche un sujet ou choisis une catégorie." : "Search a topic or choose a category.",
+            )}
+
+            <div className="tp-search-panel">
+              <label className="tp-search-box">
+                <span aria-hidden="true">⌕</span>
+                <input
+                  type="search"
+                  value={search}
+                  onChange={(event) => setSearch(event.target.value)}
+                  placeholder={t.search}
+                  aria-label={t.search}
                 />
-
-                <span className="tp-tag">
-                  {isFrench
-                    ? selectedArticle.category
-                    : selectedArticle.categoryEn}
-                </span>
-
-                <h1>
-                  {isFrench
-                    ? selectedArticle.title
-                    : selectedArticle.titleEn}
-                </h1>
-
-                <p className="tp-description">
-                  {isFrench
-                    ? selectedArticle.summary
-                    : selectedArticle.summaryEn}
-                </p>
-
-                {(isFrench
-                  ? selectedArticle.body
-                  : selectedArticle.bodyEn
-                ).map((paragraph, index) => (
-                  <p key={index}>{paragraph}</p>
-                ))}
-
-                <p>
-                  <strong>{t.source} :</strong>{" "}
-                  <a
-                    href={selectedArticle.source}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    style={{ color: "var(--tp-primary)" }}
-                  >
-                    {selectedArticle.source}
-                  </a>
-                </p>
-
-                <p className="tp-description">
-                  {t.disclaimer}
-                </p>
-              </article>
-            ) : (
-              <>
-                <div className="tp-fields">
-                  <input
-                    className="tp-input tp-search"
-                    type="search"
-                    placeholder={t.search}
-                    value={search}
-                    onChange={(event) =>
-                      setSearch(event.target.value)
-                    }
-                    aria-label={t.search}
-                  />
-
-                  <select
-                    className="tp-input"
-                    value={category}
-                    onChange={(event) =>
-                      setCategory(event.target.value)
-                    }
-                    aria-label={t.filter}
-                    style={{ maxWidth: 280 }}
-                  >
-                    <option value="all">{t.all}</option>
-
-                    {[...new Set(
-                      articles.map((article) => article.category)
-                    )].map((item) => (
-                      <option key={item} value={item}>
-                        {isFrench
-                          ? item
-                          : articles.find(
-                              (article) =>
-                                article.category === item
-                            )?.categoryEn ?? item}
-                      </option>
-                    ))}
-                  </select>
-                </div>
-
-                <div className="tp-grid">
-                  {filteredArticles.map((article) => (
-                    <article
-                      className="tp-card"
-                      key={article.id}
-                    >
-                      <img
-                        className="tp-card-image"
-                        src={article.image}
-                        alt={
-                          isFrench
-                            ? article.title
-                            : article.titleEn
-                        }
-                        loading="lazy"
-                      />
-
-                      <div className="tp-card-content">
-                        <span className="tp-tag">
-                          {isFrench
-                            ? article.category
-                            : article.categoryEn}
-                        </span>
-
-                        <h3>
-                          {isFrench
-                            ? article.title
-                            : article.titleEn}
-                        </h3>
-
-                        <p>
-                          {isFrench
-                            ? article.summary
-                            : article.summaryEn}
-                        </p>
-
-                        <button
-                          className="tp-button"
-                          type="button"
-                          onClick={() => openArticle(article)}
-                        >
-                          {t.read} →
-                        </button>
-                      </div>
-                    </article>
-                  ))}
-                </div>
-
-                {filteredArticles.length === 0 && (
-                  <p className="tp-description">
-                    {t.searchEmpty}
-                  </p>
+                {search && (
+                  <button onClick={() => setSearch("")} aria-label={t.close}>✕</button>
                 )}
-              </>
+              </label>
+
+              <label className="tp-filter-label">
+                <span>{language === "fr" ? "Catégorie" : "Category"}</span>
+                <select value={category} onChange={(event) => setCategory(event.target.value)}>
+                  {CATEGORIES.map((item) => (
+                    <option value={item.id} key={item.id}>
+                      {item.id === "all" ? t.all : item[language]}
+                    </option>
+                  ))}
+                </select>
+              </label>
+            </div>
+
+            <p className="tp-results-count">
+              {filteredArticles.length} {language === "fr" ? "article(s) trouvé(s)" : "article(s) found"}
+            </p>
+
+            {filteredArticles.length > 0 ? (
+              <div className="tp-article-grid">
+                {filteredArticles.map(articleCard)}
+              </div>
+            ) : (
+              <div className="tp-empty-state">
+                <span>🔎</span>
+                <h3>{t.noResults}</h3>
+                <button className="tp-secondary-button" onClick={() => {
+                  setSearch("");
+                  setCategory("all");
+                }}>
+                  {language === "fr" ? "Effacer les filtres" : "Clear filters"}
+                </button>
+              </div>
             )}
           </section>
         )}
-          
-        {page === "ebooks" && (
-          <section className="tp-section">
-            <div className="tp-section-heading">
-              <span className="tp-eyebrow">
-                TREND PULSE LIBRARY
-              </span>
+        
+        {!selectedArticle && page === "trends" && (
+          <section className="tp-page-section">
+            {sectionHeading(
+              t.trends,
+              language === "fr" ? "Les thèmes à explorer" : "Topics worth exploring",
+              language === "fr" ? "Des pistes pour découvrir de nouvelles idées et habitudes." : "Ideas for discovering new perspectives and habits.",
+            )}
 
-              <h1>{t.ebooksTitle}</h1>
+            <div className="tp-trend-layout">
+              <button className="tp-trend-feature" onClick={() => openArticle(ARTICLES[0])}>
+                <img src="https://images.unsplash.com/photo-1506126613408-eca07ce68773?auto=format&fit=crop&w=1200&q=85" alt="Moment de bien-être" loading="lazy" />
+                <div className="tp-trend-overlay">
+                  <span className="tp-pill">{language === "fr" ? "À découvrir" : "Explore"}</span>
+                  <h3>{language === "fr" ? "Le bien-être au quotidien" : "Everyday wellness"}</h3>
+                  <span>{t.read} ↗</span>
+                </div>
+              </button>
 
-              <p className="tp-description">
-                {isFrench
-                  ? "Découvre des guides et des ressources pour approfondir tes connaissances."
-                  : "Discover guides and resources to expand your knowledge."}
-              </p>
+              <div className="tp-trend-list">
+                {[
+                  { icon: "🥬", titleFr: "Une alimentation variée", titleEn: "A varied diet", category: "nutrition" },
+                  { icon: "🌙", titleFr: "Des soirées plus calmes", titleEn: "Calmer evenings", category: "sleep" },
+                  { icon: "🚶", titleFr: "Bouger à son rythme", titleEn: "Move at your own pace", category: "fitness" },
+                  { icon: "📓", titleFr: "De meilleures habitudes", titleEn: "Better habits", category: "habits" },
+                ].map((item) => (
+                  <button
+                    className="tp-trend-row"
+                    key={item.category}
+                    onClick={() => {
+                      setCategory(item.category);
+                      changePage("articles");
+                      setCategory(item.category);
+                    }}
+                  >
+                    <span className="tp-trend-row-icon">{item.icon}</span>
+                    <strong>{language === "fr" ? item.titleFr : item.titleEn}</strong>
+                    <span>↗</span>
+                  </button>
+                ))}
+              </div>
             </div>
 
-            <div className="tp-grid">
-              {ebooks.map((book) => (
-                <article className="tp-card" key={book.title}>
-                  <img
-                    className="tp-card-image"
-                    src={book.image}
-                    alt={isFrench ? book.title : book.titleEn}
-                    loading="lazy"
-                  />
+            <div className="tp-article-grid tp-trend-articles">
+              {ARTICLES.slice(1, 4).map(articleCard)}
+            </div>
+          </section>
+        )}
+        
+        {!selectedArticle && page === "tips" && (
+          <section className="tp-page-section">
+            {sectionHeading(
+              t.tips,
+              t.tipsTitle,
+              language === "fr" ? "De petites actions, des progrès à ton rythme." : "Small actions, progress at your own pace.",
+            )}
 
-                  <div className="tp-card-content">
-                    <h3>
-                      {isFrench ? book.title : book.titleEn}
-                    </h3>
+            <div className="tp-tips-grid">
+              {[
+                {
+                  icon: "🌅",
+                  fr: "Commence doucement",
+                  en: "Start gently",
+                  frText: "Choisis une petite action le matin plutôt que de vouloir tout accomplir immédiatement.",
+                  enText: "Choose one small morning action instead of trying to do everything at once.",
+                },
+                {
+                  icon: "💧",
+                  fr: "Fais des pauses",
+                  en: "Take breaks",
+                  frText: "Éloigne-toi quelques instants de ton écran et pense à boire régulièrement.",
+                  enText: "Step away from your screen briefly and remember to drink regularly.",
+                },
+                {
+                  icon: "🥗",
+                  fr: "Varie tes repas",
+                  en: "Vary your meals",
+                  frText: "Découvre différents aliments et privilégie la variété selon tes possibilités.",
+                  enText: "Explore different foods and aim for variety within your means.",
+                },
+                {
+                  icon: "🚶",
+                  fr: "Bouge un peu",
+                  en: "Move a little",
+                  frText: "Une marche courte ou quelques mouvements peuvent être un bon début.",
+                  enText: "A short walk or a few movements can be a good start.",
+                },
+                {
+                  icon: "📵",
+                  fr: "Accorde-toi une pause numérique",
+                  en: "Take a digital break",
+                  frText: "Choisis un moment pour poser ton téléphone et faire autre chose.",
+                  enText: "Choose a moment to put your phone down and do something else.",
+                },
+                {
+                  icon: "🌙",
+                  fr: "Prépare ta soirée",
+                  en: "Prepare your evening",
+                  frText: "Organise une petite tâche à l'avance pour terminer la journée plus sereinement.",
+                  enText: "Prepare one small task in advance to end the day more calmly.",
+                },
+              ].map((tip, index) => (
+                <article className="tp-tip-card" key={tip.fr}>
+                  <span className="tp-tip-number">{String(index + 1).padStart(2, "0")}</span>
+                  <span className="tp-tip-icon">{tip.icon}</span>
+                  <h3>{language === "fr" ? tip.fr : tip.en}</h3>
+                  <p>{language === "fr" ? tip.frText : tip.enText}</p>
+                </article>
+              ))}
+            </div>
 
-                    <p>
-                      {isFrench
-                        ? book.description
-                        : book.descriptionEn}
-                    </p>
+            <div className="tp-tip-banner">
+              <div>
+                <span className="tp-eyebrow">{language === "fr" ? "À TON RYTHME" : "AT YOUR OWN PACE"}</span>
+                <h3>{language === "fr" ? "Le progrès n'a pas besoin d'être parfait." : "Progress does not have to be perfect."}</h3>
+                <p>{language === "fr" ? "Choisis un conseil et essaie-le aujourd'hui." : "Choose one tip and try it today."}</p>
+              </div>
+              <span className="tp-tip-banner-icon">🌱</span>
+            </div>
+          </section>
+        )}
+        
+        {!selectedArticle && page === "videos" && (
+          <section className="tp-page-section">
+            {sectionHeading(
+              t.videos,
+              t.videosTitle,
+              language === "fr" ? "Des idées visuelles pour apprendre et passer à l'action." : "Visual ideas to learn and take action.",
+            )}
 
-                    <p className="tp-description">
-                      {book.organization}
-                    </p>
-
-                    <a
-                      className="tp-button"
-                      href={book.url}
-                      target="_blank"
-                      rel="noopener noreferrer"
-                      style={{
-                        display: "inline-block",
-                        textDecoration: "none"
+            <div className="tp-video-grid">
+              {VIDEO_CARDS.map((video) => (
+                <article className="tp-video-card" key={video.id}>
+                  <div className="tp-video-image">
+                    <img src={video.image} alt={video[language === "fr" ? "fr" : "en"]} loading="lazy" />
+                    <span className="tp-play-icon">▶</span>
+                  </div>
+                  <div className="tp-video-copy">
+                    <span className="tp-eyebrow">{categoryName(video.category)}</span>
+                    <h3>{language === "fr" ? video.fr : video.en}</h3>
+                    <p>{language === "fr"
+                      ? "Explore ce thème avec une vidéo adaptée à tes intérêts."
+                      : "Explore this topic with a video that matches your interests."}</p>
+                    <button
+                      className="tp-text-link"
+                      onClick={() => {
+                        setCategory(video.category);
+                        changePage("articles");
+                        setCategory(video.category);
                       }}
                     >
-                      {t.openResource} →
-                    </a>
+                      {t.discover} <span>→</span>
+                    </button>
                   </div>
                 </article>
               ))}
             </div>
+
+            <div className="tp-info-note">
+              <span>💡</span>
+              <p>{t.videoNote} {language === "fr"
+                ? "Ces cartes sont des suggestions thématiques : ajoute les liens de tes propres vidéos pour les rendre cliquables."
+                : "These cards are topic suggestions: add your own video links to make them playable."}</p>
+            </div>
+          </section>
+        )}
+        
+        {!selectedArticle && page === "resources" && (
+          <section className="tp-page-section">
+            {sectionHeading(t.resources, t.resourcesTitle, t.resourceNote)}
+
+            <div className="tp-resources-grid">
+              {RESOURCES.map((resource) => (
+                <article className="tp-resource-card" key={resource.fr}>
+                  <span className="tp-resource-icon">{resource.icon}</span>
+                  <h3>{language === "fr" ? resource.fr : resource.en}</h3>
+                  <p>{language === "fr" ? resource.descFr : resource.descEn}</p>
+                  <button
+                    className="tp-text-link"
+                    onClick={() => setNotice(language === "fr"
+                      ? `Astuce : ${resource.descFr}`
+                      : `Tip: ${resource.descEn}`)}
+                  >
+                    {t.readMore} →
+                  </button>
+                </article>
+              ))}
+            </div>
+
+            {notice && (
+              <div className="tp-info-note">
+                <span>✦</span><p>{notice}</p>
+                <button onClick={() => setNotice("")} aria-label={t.close}>✕</button>
+              </div>
+            )}
           </section>
         )}
 
-        {page === "about" && (
-          <section className="tp-section">
-            <div className="tp-hero">
-              <div>
-                <span className="tp-eyebrow">
-                  ABOUT TREND PULSE
-                </span>
-
-                <h1>{t.aboutTitle}</h1>
-
-                <p className="tp-description">
-                  {isFrench
-                    ? "Trend Pulse est un espace consacré aux habitudes saines, à la nutrition, au sommeil, à l'activité physique et au bien-être."
-                    : "Trend Pulse is a space dedicated to healthy habits, nutrition, sleep, physical activity, and well-being."}
-                </p>
-
-                <p className="tp-description">
-                  {isFrench
-                    ? "Notre objectif est de rendre les informations pratiques plus faciles à découvrir et à appliquer au quotidien."
-                    : "Our goal is to make practical information easier to discover and apply in everyday life."}
-                </p>
-
-                <button
-                  className="tp-button"
-                  type="button"
-                  onClick={() => navigate("articles")}
-                >
-                  {t.discoverArticles} →
-                </button>
-              </div>
-
+        {!selectedArticle && page === "about" && (
+          <section className="tp-page-section tp-about-section">
+            <div className="tp-about-image">
               <img
-                className="tp-hero-image"
-                src={images.wellness}
-                alt={
-                  isFrench
-                    ? "Moment de calme et de bien-être"
-                    : "A peaceful moment of well-being"
-                }
+                src="https://images.unsplash.com/photo-1470770841072-f978cf4d019e?auto=format&fit=crop&w=1200&q=85"
+                alt={language === "fr" ? "Paysage paisible" : "Peaceful landscape"}
                 loading="lazy"
               />
             </div>
-
-            <div className="tp-grid">
-              <article className="tp-card">
-                <img
-                  className="tp-card-image"
-                  src={images.food}
-                  alt="Fresh food"
-                  loading="lazy"
-                />
-
-                <div className="tp-card-content">
-                  <h3>{t.quality}</h3>
-                  <p>{t.qualityText}</p>
-                </div>
-              </article>
-
-              <article className="tp-card">
-                <img
-                  className="tp-card-image"
-                  src={images.activity}
-                  alt="Walking outdoors"
-                  loading="lazy"
-                />
-
-                <div className="tp-card-content">
-                  <h3>{t.simple}</h3>
-                  <p>{t.simpleText}</p>
-                </div>
-              </article>
-
-              <article className="tp-card">
-                <img
-                  className="tp-card-image"
-                  src={images.sleep}
-                  alt="Rest and sleep"
-                  loading="lazy"
-                />
-
-                <div className="tp-card-content">
-                  <h3>
-                    {isFrench
-                      ? "Respect du bien-être"
-                      : "Well-being First"}
-                  </h3>
-
-                  <p>{t.disclaimer}</p>
-                </div>
-              </article>
+            <div className="tp-about-copy">
+              <span className="tp-eyebrow">{SITE_NAME}</span>
+              <h2>{t.aboutTitle}</h2>
+              <p>{t.aboutText}</p>
+              <p>{language === "fr"
+                ? "Notre objectif est de rendre les idées utiles plus faciles à découvrir, à comprendre et à appliquer au quotidien."
+                : "Our goal is to make useful ideas easier to discover, understand, and apply in everyday life."}</p>
+              <div className="tp-about-values">
+                <span>🌿 {language === "fr" ? "Simplicité" : "Simplicity"}</span>
+                <span>✨ {language === "fr" ? "Curiosité" : "Curiosity"}</span>
+                <span>🌍 {language === "fr" ? "Accessibilité" : "Accessibility"}</span>
+              </div>
             </div>
+          </section>
+        )}
+        
+        {selectedArticle && (
+          <section className="tp-article-detail">
+            <button className="tp-back-button" onClick={() => setSelectedArticle(null)}>
+              ← {t.back}
+            </button>
+
+            <div className="tp-detail-heading">
+              <span className="tp-pill">{categoryName(selectedArticle.category)}</span>
+              <h1>{selectedArticle.title[language]}</h1>
+              <p>{selectedArticle.excerpt[language]}</p>
+              <div className="tp-meta">
+                <span>{selectedArticle.date}</span>
+                <span>·</span>
+                <span>{selectedArticle.readTime} {t.minutes}</span>
+              </div>
+            </div>
+
+            <img
+              className="tp-detail-image"
+              src={selectedArticle.image}
+              alt={selectedArticle.title[language]}
+            />
+
+            <div className="tp-article-content">
+              {selectedArticle.content[language].map((paragraph, index) => (
+                <p key={`${selectedArticle.id}-${index}`}>{paragraph}</p>
+              ))}
+
+              <div className="tp-tags">
+                {selectedArticle.tags.map((tag) => (
+                  <button
+                    key={tag}
+                    onClick={() => {
+                      setSearch(tag);
+                      setCategory("all");
+                      setSelectedArticle(null);
+                      setPage("articles");
+                    }}
+                  >
+                    #{tag}
+                  </button>
+                ))}
+              </div>
+
+              <div className="tp-disclaimer">
+                <span>ⓘ</span>
+                <p>{t.disclaimer}</p>
+              </div>
+            </div>
+
+            {relatedArticles.length > 0 && (
+              <div className="tp-related-section">
+                {sectionHeading(t.related, language === "fr" ? "Continue ta découverte" : "Keep exploring")}
+                <div className="tp-article-grid">
+                  {relatedArticles.map(articleCard)}
+                </div>
+              </div>
+            )}
+          </section>
+        )}
+        
+        {!selectedArticle && (
+          <section className="tp-newsletter">
+            <div className="tp-newsletter-icon">✉</div>
+            <span className="tp-eyebrow">{language === "fr" ? "RESTONS EN CONTACT" : "LET'S STAY IN TOUCH"}</span>
+            <h2>{t.newsletter}</h2>
+            <p>{t.newsletterText}</p>
+
+            <form className="tp-newsletter-form" onSubmit={handleSubscribe}>
+              <input
+                type="email"
+                value={email}
+                onChange={(event) => setEmail(event.target.value)}
+                placeholder={t.email}
+                aria-label={t.email}
+                required
+              />
+              <button className="tp-primary-button" type="submit">{t.subscribe} →</button>
+            </form>
+            {notice && <p className="tp-form-notice">{notice}</p>}
           </section>
         )}
       </main>
 
       <footer className="tp-footer">
-        <div className="tp-container">
-          <h2>Trend Pulse</h2>
-
+        <div className="tp-footer-main">
+          <button className="tp-brand tp-footer-brand" onClick={() => changePage("home")}>
+            <span className="tp-brand-mark">T</span>
+            <span><strong>Trend Pulse</strong><small>{t.tagline}</small></span>
+          </button>
           <p>{t.footer}</p>
-
-          <p>{t.noDiagnosis}</p>
-
-          <div className="tp-actions" style={{ justifyContent: "center" }}>
-            <button
-              className="tp-button secondary"
-              type="button"
-              onClick={() => navigate("about")}
-            >
-              {t.about}
-            </button>
-
-            <button
-              className="tp-button secondary"
-              type="button"
-              onClick={() => navigate("articles")}
-            >
-              {t.articles}
-            </button>
+          <div className="tp-footer-links">
+            {NAV_ITEMS.map((item) => (
+              <button key={item.id} onClick={() => changePage(item.id)}>
+                {t[item.key]}
+              </button>
+            ))}
           </div>
-
-          <p style={{ fontSize: 12, marginTop: 24 }}>
-            © {new Date().getFullYear()} Trend Pulse
-          </p>
+        </div>
+        <div className="tp-footer-bottom">
+          <span>© {new Date().getFullYear()} Trend Pulse</span>
+          <span>{language === "fr" ? "Créé pour apprendre et progresser." : "Made for learning and growth."}</span>
+          <button onClick={() => window.scrollTo({ top: 0, behavior: "smooth" })}>
+            ↑ {language === "fr" ? "Haut de page" : "Back to top"}
+          </button>
         </div>
       </footer>
 
-      <nav
-        className="tp-bottom-nav"
-        aria-label={isFrench ? "Navigation mobile" : "Mobile navigation"}
-      >
-        {(
-          [
-            ["home", t.home, images.hero],
-            ["trends", t.trends, images.food],
-            ["tips", t.tips, images.wellness],
-            ["videos", t.videos, images.activity],
-            ["articles", t.articles, images.books]
-          ] as [Page, string, string][]
-        ).map(([key, label, image]) => (
-          <button
-            key={key}
-            type="button"
-            className={`tp-nav-item ${
-              page === key ? "active" : ""
-            }`}
-            onClick={() => navigate(key)}
-          >
-            <img
-              className="tp-nav-icon"
-              src={image}
-              alt=""
-              loading="lazy"
-            />
-
-            <span>{label}</span>
-          </button>
-        ))}
-      </nav>
+      <style>{`
+        @import url('https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Playfair+Display:ital,wght@0,500;0,600;0,700;1,500;1,600&display=swap');
+        :root{font-family:'DM Sans',sans-serif;color:#21332b;background:#fbfaf6;font-synthesis:none;text-rendering:optimizeLegibility}
+        *{box-sizing:border-box}
+        html{scroll-behavior:smooth}
+        body{margin:0}
+        button,input,select{font:inherit}
+        button{cursor:pointer}
+        .tp-app{--bg:#fbfaf6;--surface:#fff;--ink:#21332b;--muted:#718077;--line:#e8e9df;--green:#2f654a;--mint:#e8f0e7;--accent:#d6e5c7;min-height:100vh;background:var(--bg);color:var(--ink);transition:background .3s,color .3s;overflow:hidden}
+        .tp-dark{--bg:#15221b;--surface:#1e3026;--ink:#edf4ec;--muted:#b4c3b8;--line:#35483b;--green:#b7d9b6;--mint:#293f31;--accent:#334a38}
+        .tp-announcement{display:flex;justify-content:center;align-items:center;gap:9px;padding:9px 16px;background:#234b38;color:#f5f7ed;font-size:11px;letter-spacing:.07em;text-align:center}
+        .tp-pulse-dot{width:7px;height:7px;background:#b9db9c;border-radius:50%;box-shadow:0 0 0 4px #ffffff15;animation:tpPulse 2s infinite}
+        .tp-header{max-width:1240px;margin:auto;padding:20px 28px;display:flex;align-items:center;justify-content:space-between;gap:20px}
+        .tp-brand{display:flex;align-items:center;gap:11px;text-align:left;background:none;border:0;color:var(--ink);padding:0;flex-shrink:0}
+        .tp-brand-mark{display:grid;place-items:center;width:43px;height:43px;border-radius:15px;background:#2f654a;color:white;font-family:'Playfair Display',serif;font-size:27px}
+        .tp-brand strong,.tp-brand small{display:block}
+        .tp-brand strong{font-family:'Playfair Display',serif;font-size:21px;letter-spacing:-.5px}
+        .tp-brand small{font-size:10px;color:var(--muted);margin-top:3px}
+        .tp-nav{display:flex;align-items:center;justify-content:center;gap:5px;flex-wrap:wrap}
+        .tp-nav-link{border:0;background:transparent;color:var(--muted);padding:9px 10px;border-radius:9px;font-size:12px;transition:all .2s}
+        .tp-nav-link:hover,.tp-nav-link.active{background:var(--mint);color:var(--green)}
+        .tp-header-actions{display:flex;align-items:center;gap:7px}
+        .tp-icon-button,.tp-language-button{border:1px solid var(--line);background:var(--surface);color:var(--ink);border-radius:11px;min-width:38px;height:38px}
+        .tp-language-button{font-size:11px;font-weight:700}
+        .tp-menu-toggle{display:none}
+        .tp-hero{max-width:1240px;margin:18px auto 35px;padding:48px 28px 55px;display:grid;grid-template-columns:1fr 1fr;gap:52px;align-items:center;position:relative}
+        .tp-hero-content{position:relative;z-index:1;animation:tpRise .7s both}
+        .tp-eyebrow{display:block;color:#65906d;font-size:10px;letter-spacing:.17em;font-weight:700;text-transform:uppercase;margin-bottom:15px}
+        .tp-hero h1,.tp-detail-heading h1{font-family:'Playfair Display',serif;font-weight:500;letter-spacing:-1.9px;font-size:clamp(38px,5vw,65px);line-height:1.1;margin:0 0 22px}
+        .tp-hero h1 em{font-weight:500;color:#68916a}
+        .tp-hero-content>p{font-size:15px;color:var(--muted);line-height:1.9;max-width:490px}
+        .tp-hero-actions{display:flex;gap:12px;flex-wrap:wrap;margin-top:27px}
+        .tp-primary-button,.tp-secondary-button{display:inline-flex;justify-content:center;align-items:center;gap:12px;border-radius:10px;padding:13px 18px;font-size:12px;font-weight:700;transition:transform .2s,box-shadow .2s}
+        .tp-primary-button{border:1px solid #2f654a;background:#2f654a;color:white}
+        .tp-secondary-button{border:1px solid var(--line);background:var(--surface);color:var(--ink)}
+        .tp-primary-button:hover,.tp-secondary-button:hover{transform:translateY(-2px);box-shadow:0 8px 22px #21332b12}
+        .tp-hero-note{margin-top:28px;color:var(--muted);font-size:11px;display:flex;align-items:center;gap:9px}
+        .tp-hero-note span{color:#719a69;font-size:18px}
+        .tp-hero-visual{position:relative;padding:0 15px 18px;animation:tpRise .8s .12s both}
+        .tp-hero-visual>img{width:100%;height:460px;object-fit:cover;border-radius:48% 48% 22px 22px;display:block}
+        .tp-floating-note{position:absolute;display:flex;align-items:center;gap:10px;background:var(--surface);padding:12px 15px;border-radius:14px;box-shadow:0 12px 35px #1e34241b;animation:tpFloat 5s ease-in-out infinite}
+        .tp-floating-note>span{font-size:22px}
+        .tp-floating-note strong,.tp-floating-note small{display:block}
+        .tp-floating-note strong{font-size:11px}
+        .tp-floating-note small{font-size:9px;color:var(--muted);margin-top:4px}
+        .tp-floating-top{top:55px;left:-30px}
+        .tp-floating-bottom{bottom:45px;right:-8px;animation-delay:1s}
+        .tp-hero-orb{position:absolute;width:120px;height:120px;border-radius:50%;background:#dbe8c9;opacity:.55;top:4px;right:0;z-index:0;filter:blur(2px)}
+        .tp-section,.tp-page-section,.tp-article-detail{max-width:1180px;margin:0 auto;padding:60px 28px}
+        .tp-section-heading{margin-bottom:28px}
+        .tp-section-heading h2,.tp-newsletter h2,.tp-about-copy h2{font-family:'Playfair Display',serif;font-size:clamp(28px,3.4vw,41px);font-weight:500;letter-spacing:-.8px;margin:0 0 10px;line-height:1.2}
+        .tp-section-heading>p{color:var(--muted);font-size:13px;line-height:1.8;max-width:620px}
+        .tp-featured-card{display:grid;grid-template-columns:1fr 1fr;background:var(--surface);border:1px solid var(--line);border-radius:22px;overflow:hidden}
+        .tp-featured-card>img{width:100%;height:340px;object-fit:cover}
+        .tp-featured-copy{padding:35px;align-self:center}
+        .tp-featured-copy h3{font:500 30px/1.25 'Playfair Display',serif;margin:16px 0}
+        .tp-featured-copy p{color:var(--muted);font-size:13px;line-height:1.8;margin-bottom:22px}
+        .tp-pill,.tp-image-badge{display:inline-flex;background:var(--mint);color:var(--green);padding:7px 10px;border-radius:30px;font-size:10px;font-weight:700}
+        .tp-category-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:12px}
+        .tp-category-card{position:relative;display:flex;flex-direction:column;align-items:flex-start;gap:13px;padding:20px;background:var(--surface);border:1px solid var(--line);border-radius:16px;text-align:left;color:var(--ink);transition:transform .25s,border-color .25s}
+        .tp-category-card:hover{transform:translateY(-5px);border-color:#91b49a}
+        .tp-category-icon{display:grid;place-items:center;width:45px;height:45px;border-radius:14px;background:var(--mint);font-size:22px}
+        .tp-category-card strong{font-size:12px}
+        .tp-category-arrow{position:absolute;right:15px;bottom:18px;color:var(--muted)}
+        .tp-soft-section{max-width:none;background:var(--mint);padding-left:max(28px,calc((100vw - 1124px)/2));padding-right:max(28px,calc((100vw - 1124px)/2))}
+        .tp-article-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:22px}
+        .tp-card{background:var(--surface);border:1px solid var(--line);border-radius:17px;overflow:hidden;transition:transform .25s,box-shadow .25s;min-width:0;animation:tpRise .45s both}
+        .tp-card:hover{transform:translateY(-5px);box-shadow:0 14px 34px #152b1b12}
+        .tp-image-button{width:100%;padding:0;border:0;background:none;position:relative;display:block;text-align:left}
+        .tp-card-image{width:100%;height:215px;object-fit:cover;display:block;transition:transform .5s}
+        .tp-card:hover .tp-card-image{transform:scale(1.035)}
+        .tp-image-badge{position:absolute;bottom:12px;left:12px;background:#fffefaeb}
+        .tp-card-body{padding:20px}
+        .tp-meta{display:flex;gap:7px;align-items:center;color:var(--muted);font-size:10px}
+        .tp-card h3{font:500 21px/1.35 'Playfair Display',serif;margin:13px 0 9px}
+        .tp-card-body>p{font-size:12px;line-height:1.8;color:var(--muted);min-height:44px}
+        .tp-text-link{display:inline-flex;align-items:center;gap:10px;margin-top:8px;padding:4px 0;border:0;background:none;color:var(--green);font-size:11px;font-weight:700}
+        .tp-centered{text-align:center;margin-top:30px}
+        .tp-quote-band{background:#244a37;color:#f5f7ef;text-align:center;padding:60px 25px}
+        .tp-quote-mark{font:70px 'Playfair Display',serif;color:#b8d4a5;line-height:1}
+        .tp-quote-band p{font:italic 25px/1.5 'Playfair Display',serif;max-width:680px;margin:10px auto 18px}
+        .tp-quote-caption{font-size:10px;color:#c5d4c5}
+        .tp-page-section{min-height:55vh;padding-top:55px;padding-bottom:75px}
+        .tp-search-panel{display:flex;gap:14px;align-items:end;margin:25px 0}
+        .tp-search-box{display:flex;align-items:center;gap:10px;flex:1;min-width:0;padding:0 15px;border:1px solid var(--line);border-radius:12px;background:var(--surface);color:var(--muted)}
+        .tp-search-box>span{font-size:24px}
+        .tp-search-box input{width:100%;height:48px;border:0;outline:0;background:transparent;color:var(--ink);font-size:12px}
+        .tp-search-box button{border:0;background:none;color:var(--muted)}
+        .tp-filter-label{display:flex;flex-direction:column;gap:7px;font-size:10px;color:var(--muted)}
+        .tp-filter-label select{min-width:180px;height:48px;padding:0 12px;border:1px solid var(--line);border-radius:12px;background:var(--surface);color:var(--ink)}
+        .tp-results-count{font-size:11px;color:var(--muted);margin:20px 0}
+        .tp-empty-state{text-align:center;padding:55px 20px;border:1px dashed var(--line);border-radius:18px}
+        .tp-empty-state>span{font-size:34px}
+        .tp-empty-state h3{font:500 22px 'Playfair Display',serif}
+        .tp-trend-layout{display:grid;grid-template-columns:1.1fr .9fr;gap:22px}
+        .tp-trend-feature{position:relative;min-height:380px;border:0;border-radius:20px;overflow:hidden;padding:0;text-align:left;background:#223b2c;color:white}
+        .tp-trend-feature img{width:100%;height:100%;position:absolute;inset:0;object-fit:cover;transition:transform .5s}
+        .tp-trend-feature:hover img{transform:scale(1.04)}
+        .tp-trend-overlay{position:absolute;inset:0;display:flex;flex-direction:column;align-items:flex-start;justify-content:flex-end;padding:28px;background:linear-gradient(transparent,#142a20d9)}
+        .tp-trend-overlay h3{font:500 32px 'Playfair Display',serif;margin:12px 0}
+        .tp-trend-overlay>span:last-child{font-size:11px}
+        .tp-trend-list{display:flex;flex-direction:column;justify-content:center;gap:12px}
+        .tp-trend-row{display:flex;align-items:center;gap:14px;padding:17px;border:1px solid var(--line);border-radius:14px;background:var(--surface);color:var(--ink);text-align:left}
+        .tp-trend-row strong{flex:1;font-size:12px}
+        .tp-trend-row>span:last-child{color:var(--muted)}
+        .tp-trend-row-icon{display:grid;place-items:center;width:43px;height:43px;border-radius:12px;background:var(--mint);font-size:21px}
+        .tp-trend-articles{margin-top:40px}
+        .tp-tips-grid,.tp-resources-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:17px}
+        .tp-tip-card,.tp-resource-card{position:relative;padding:24px;background:var(--surface);border:1px solid var(--line);border-radius:17px}
+        .tp-tip-number{position:absolute;right:18px;top:17px;font-size:11px;color:var(--muted)}
+        .tp-tip-icon,.tp-resource-icon{display:grid;place-items:center;width:48px;height:48px;border-radius:15px;background:var(--mint);font-size:23px;margin-bottom:19px}
+        .tp-tip-card h3,.tp-resource-card h3{font:500 21px 'Playfair Display',serif;margin:0 0 10px}
+        .tp-tip-card p,.tp-resource-card p{font-size:12px;line-height:1.85;color:var(--muted)}
+        .tp-tip-banner{display:flex;justify-content:space-between;align-items:center;gap:20px;margin-top:28px;padding:30px;background:var(--mint);border-radius:18px}
+        .tp-tip-banner h3{font:500 26px 'Playfair Display',serif;margin:0 0 8px}
+        .tp-tip-banner p{font-size:12px;color:var(--muted)}
+        .tp-tip-banner-icon{font-size:55px}
+        .tp-video-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:22px}
+        .tp-video-card{background:var(--surface);border:1px solid var(--line);border-radius:17px;overflow:hidden}
+        .tp-video-image{position:relative;height:220px;overflow:hidden}
+        .tp-video-image img{width:100%;height:100%;object-fit:cover;transition:transform .4s}
+        .tp-video-card:hover img{transform:scale(1.05)}
+        .tp-play-icon{position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);display:grid;place-items:center;width:48px;height:48px;border-radius:50%;background:#fff;color:#2f654a;box-shadow:0 5px 20px #0002}
+        .tp-video-copy{padding:20px}
+        .tp-video-copy h3{font:500 21px/1.35 'Playfair Display',serif;margin:8px 0}
+        .tp-video-copy p{font-size:12px;line-height:1.8;color:var(--muted)}
+        .tp-info-note{display:flex;align-items:flex-start;gap:12px;padding:16px;margin-top:25px;background:var(--mint);border-radius:12px;color:var(--muted);font-size:12px;line-height:1.7}
+        .tp-info-note p{margin:0;flex:1}
+        .tp-info-note button{border:0;background:none;color:var(--muted)}
+        .tp-resource-card{padding:27px}
+        .tp-about-section{display:grid;grid-template-columns:1fr 1fr;align-items:center;gap:55px}
+        .tp-about-image img{width:100%;height:460px;object-fit:cover;border-radius:45% 45% 18px 18px}
+        .tp-about-copy>p{font-size:13px;line-height:2;color:var(--muted)}
+        .tp-about-values{display:flex;gap:10px;flex-wrap:wrap;margin-top:24px}
+        .tp-about-values span{background:var(--mint);padding:10px 12px;border-radius:10px;font-size:11px}
+        .tp-article-detail{max-width:900px;padding-top:35px}
+        .tp-back-button{border:0;background:none;color:var(--green);font-size:12px;font-weight:700;padding:10px 0}
+        .tp-detail-heading{max-width:750px;margin:30px auto;text-align:center}
+        .tp-detail-heading h1{font-size:clamp(34px,5vw,54px);margin:20px 0}
+        .tp-detail-heading>p{font-size:14px;line-height:1.8;color:var(--muted)}
+        .tp-detail-heading .tp-meta{justify-content:center;margin-top:18px}
+        .tp-detail-image{width:100%;max-height:490px;object-fit:cover;border-radius:20px}
+        .tp-article-content{max-width:690px;margin:35px auto 60px}
+        .tp-article-content>p{font-size:15px;line-height:2.05;color:var(--ink);margin:0 0 22px}
+        .tp-tags{display:flex;gap:9px;flex-wrap:wrap;margin:30px 0}
+        .tp-tags button{border:1px solid var(--line);border-radius:30px;background:var(--surface);color:var(--green);padding:8px 12px;font-size:10px}
+        .tp-disclaimer{display:flex;gap:10px;padding:16px;background:var(--mint);border-radius:12px;color:var(--muted);font-size:11px;line-height:1.8}
+        .tp-disclaimer p{margin:0}
+        .tp-related-section{margin-top:45px}
+        .tp-newsletter{padding:65px 24px;text-align:center;background:var(--mint)}
+        .tp-newsletter-icon{display:grid;place-items:center;width:48px;height:48px;margin:0 auto 20px;background:var(--surface);border-radius:15px;font-size:21px}
+        .tp-newsletter h2{max-width:560px;margin:0 auto 12px}
+        .tp-newsletter>p{font-size:12px;color:var(--muted)}
+        .tp-newsletter-form{display:flex;gap:9px;max-width:490px;margin:25px auto 0}
+        .tp-newsletter-form input{flex:1;min-width:0;height:47px;padding:0 14px;border:1px solid var(--line);border-radius:10px;background:var(--surface);color:var(--ink);outline-color:#86a98a;font-size:12px}
+        .tp-form-notice{max-width:550px;margin:15px auto 0;font-size:12px;color:var(--green)}
+        .tp-footer{max-width:1240px;margin:auto;padding:35px 28px 20px}
+        .tp-footer-main{display:flex;align-items:center;justify-content:space-between;gap:20px;flex-wrap:wrap;padding-bottom:28px}
+        .tp-footer-main>p{font-size:11px;color:var(--muted)}
+        .tp-footer-links{display:flex;gap:13px;flex-wrap:wrap}
+        .tp-footer-links button,.tp-footer-bottom button{border:0;background:none;color:var(--muted);font-size:10px}
+        .tp-footer-bottom{border-top:1px solid var(--line);padding-top:20px;display:flex;justify-content:space-between;align-items:center;gap:15px;flex-wrap:wrap;color:var(--muted);font-size:10px}
+        @keyframes tpRise{from{opacity:0;transform:translateY(18px)}to{opacity:1;transform:translateY(0)}}
+        @keyframes tpFloat{0%,100%{transform:translateY(0)}50%{transform:translateY(-8px)}}
+        @keyframes tpPulse{0%,100%{box-shadow:0 0 0 4px #ffffff15}50%{box-shadow:0 0 0 7px #ffffff08}}
+        @media(min-width:1400px){.tp-hero{padding-top:65px;padding-bottom:75px}}
+        @media(max-width:1050px){.tp-header{flex-wrap:wrap}.tp-nav{order:3;width:100%}.tp-hero{gap:25px}.tp-hero-visual>img{height:390px}.tp-category-grid{grid-template-columns:repeat(4,1fr)}.tp-card-image{height:185px}}
+        @media(max-width:760px){.tp-header{padding:16px 18px;flex-wrap:nowrap}.tp-brand strong{font-size:19px}.tp-brand small{font-size:9px}.tp-menu-toggle{display:block;margin-left:auto;border:1px solid var(--line);background:var(--surface);color:var(--ink);width:39px;height:39px;border-radius:10px;font-size:18px}.tp-header-actions{gap:5px}.tp-nav{display:none;position:absolute;z-index:10;top:115px;left:12px;right:12px;width:auto;order:initial;padding:12px;background:var(--surface);border:1px solid var(--line);border-radius:14px;box-shadow:0 12px 30px #0001;flex-direction:column;align-items:stretch}.tp-nav.tp-nav-open{display:flex}.tp-nav-link{text-align:left;padding:12px}.tp-hero{grid-template-columns:1fr;padding:30px 20px 45px;gap:28px;margin-top:0}.tp-hero h1{font-size:43px}.tp-hero-content>p{font-size:13px}.tp-hero-visual{padding:0 8px 10px}.tp-hero-visual>img{height:330px;border-radius:38% 38% 20px 20px}.tp-floating-top{left:-3px;top:35px}.tp-floating-bottom{right:-3px;bottom:28px}.tp-section,.tp-page-section,.tp-article-detail{padding:42px 18px}.tp-featured-card{grid-template-columns:1fr}.tp-featured-card>img{height:240px}.tp-featured-copy{padding:24px}.tp-category-grid{grid-template-columns:repeat(2,minmax(0,1fr));gap:10px}.tp-category-card{padding:15px}.tp-article-grid,.tp-video-grid,.tp-tips-grid,.tp-resources-grid{grid-template-columns:1fr}.tp-card-image{height:235px}.tp-soft-section{padding-left:18px;padding-right:18px}.tp-quote-band{padding:45px 22px}.tp-quote-band p{font-size:22px}.tp-search-panel{flex-direction:column;align-items:stretch}.tp-filter-label select{width:100%}.tp-trend-layout{grid-template-columns:1fr}.tp-trend-feature{min-height:300px}.tp-trend-row{padding:13px}.tp-tip-banner{padding:22px}.tp-tip-banner h3{font-size:22px}.tp-about-section{grid-template-columns:1fr;gap:28px}.tp-about-image img{height:300px}.tp-newsletter{padding:48px 18px}.tp-newsletter-form{flex-direction:column}.tp-newsletter-form .tp-primary-button{min-height:45px}.tp-footer{padding:28px 18px 18px}.tp-footer-main{align-items:flex-start;flex-direction:column}.tp-footer-links{gap:10px}.tp-footer-bottom{align-items:flex-start;flex-direction:column}.tp-detail-heading h1{letter-spacing:-1px}.tp-article-content>p{font-size:14px}}
+@media(prefers-reduced-motion:reduce){*,*::before,*::after{animation-duration:.01ms!important;animation-iteration-count:1!important;scroll-behavior:auto!important;transition-duration:.01ms!important}}      `}</style>
     </div>
   );
-                }
-            
-          
+}
+
+export const TREND_PULSE_VERSION = "1.0.0";
