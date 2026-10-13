@@ -1340,6 +1340,9 @@ export default function App() {
               <div className="tp-ad-banner">
                 <div id="container-c05378bff39c37075502e6d18a07b62a"></div>
               </div>
+              <div className="tp-ad-banner tp-ad-banner-a">
+  <div id="tp-adsterra-banner-a"></div>
+</div>
 
               <div className="tp-tags">
                 {selectedArticle.tags.map((tag) => (
