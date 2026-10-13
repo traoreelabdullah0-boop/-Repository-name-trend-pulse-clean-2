@@ -753,6 +753,27 @@ export default function App() {
   const [systolicInput, setSystolicInput] = useState("");
   const [diastolicInput, setDiastolicInput] = useState("");
   const [pulseInput, setPulseInput] = useState("");
+  const [hydrationGlasses, setHydrationGlasses] = useState<number>(() => {
+  try {
+    const saved = localStorage.getItem("trendPulseHydration");
+    if (!saved) return 0;
+
+    const data = JSON.parse(saved) as {
+      date: string;
+      glasses: number;
+    };
+
+    const today = new Date().toISOString().slice(0, 10);
+
+    return data.date === today &&
+      Number.isFinite(data.glasses) &&
+      data.glasses >= 0
+      ? data.glasses
+      : 0;
+  } catch {
+    return 0;
+  }
+});
   const t = TEXT[language];
   const addBloodPressureRecord = () => {
   const systolic = Number(systolicInput);
@@ -820,7 +841,29 @@ export default function App() {
     setCategory("all");
     window.scrollTo({ top: 0, behavior: "smooth" });
   };
+  const saveHydrationGlasses = (glasses: number) => {
+    const today = new Date().toISOString().slice(0, 10);
 
+    localStorage.setItem(
+      "trendPulseHydration",
+      JSON.stringify({
+        date: today,
+        glasses,
+      })
+    );
+
+    setHydrationGlasses(glasses);
+  };
+
+  const addHydrationGlass = () => {
+    saveHydrationGlasses(hydrationGlasses + 1);
+  };
+
+  const removeHydrationGlass = () => {
+    if (hydrationGlasses > 0) {
+      saveHydrationGlasses(hydrationGlasses - 1);
+    }
+  };
   const openArticle = (article: Article) => {
     setSelectedArticle(article);
     window.scrollTo({ top: 0, behavior: "smooth" });
